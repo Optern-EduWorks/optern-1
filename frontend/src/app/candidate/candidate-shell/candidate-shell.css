@@ -1,0 +1,28 @@
+.candidate-shell-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.sidebar-wrapper {
+  flex: 0 0 280px;
+  overflow: hidden;
+}
+
+.candidate-content {
+  flex: 1 1 auto;
+  height: 100vh;
+  overflow-y: auto;
+  padding-left: 10px;
+}
+
+.sidebar-toggle-btn {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  font-size: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}

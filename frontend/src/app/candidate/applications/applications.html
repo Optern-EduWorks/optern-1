@@ -1,0 +1,159 @@
+<div class="applications-container">
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-content">
+        <h1><i class="bi bi-stack"></i> My Applications</h1>
+        <p>Track the status of your job applications and manage your pipeline.</p>
+    </div>
+    <div class="header-actions">
+      <button class="activity-tracker-btn"><i class="bi bi-bar-chart-line-fill"></i> Activity Tracker</button>
+    </div>
+  </header>
+
+  <!-- Filter and View Controls -->
+  <div class="controls-bar">
+    <div class="status-filters">
+      <button *ngFor="let filter of ['All Applications', 'Applied', 'Interview Scheduled', 'Shortlisted', 'Rejected']"
+              [class.active]="activeFilter === filter"
+              (click)="setFilter(filter)">
+        {{ filter }} <span class="filter-count">{{ filterCounts[filter] }}</span>
+      </button>
+    </div>
+    <div class="view-toggle">
+      <button [class.active]="viewMode === 'list'" (click)="setView('list')"><i class="bi bi-list-ul"></i></button>
+      <button [class.active]="viewMode === 'grid'" (click)="setView('grid')"><i class="bi bi-grid-fill"></i></button>
+    </div>
+  </div>
+
+  <!-- Application Listings -->
+  <div [ngSwitch]="viewMode">
+    <!-- Grid View -->
+    <div *ngSwitchCase="'grid'" class="listings-grid">
+      <div class="card-grid" *ngFor="let app of filteredApplications">
+        <div class="card-header">
+          <img [src]="app.logo" alt="{{app.company}} Logo" class="company-logo">
+          <div>
+            <h3 class="job-title">{{ app.title }}</h3>
+            <p class="company-name">{{ app.company }}</p>
+          </div>
+        </div>
+        <div class="job-details">
+          <span><i class="bi bi-geo-alt"></i> {{ app.location }}</span>
+          <span *ngIf="app.remote" class="job-tag remote">Remote</span>
+          <span *ngIf="app.hybrid" class="job-tag hybrid">Hybrid</span>
+          <span *ngIf="app.onsite" class="job-tag onsite">Onsite</span>
+        </div>
+        <div class="job-details">
+          <span class="job-tag">{{ app.type }}</span>
+          <span class="job-tag salary">{{ app.salary }}</span>
+        </div>
+        <p class="applied-date">Applied on {{ app.appliedDate }}</p>
+
+        <div class="status-section">
+            <div *ngIf="app.status === 'Interview Scheduled'" class="interview-details">
+                <i class="bi bi-calendar-check"></i> Interview scheduled for {{ app.interviewDate }}
+            </div>
+            <button class="status-tag" [ngClass]="'status-' + app.status.toLowerCase().replace(' ', '-')">
+                <i [ngClass]="{
+                    'bi-check-circle-fill': app.status === 'Applied' || app.status === 'Shortlisted',
+                    'bi-calendar-event-fill': app.status === 'Interview Scheduled',
+                    'bi-x-circle-fill': app.status === 'Rejected'
+                }"></i> {{ app.status }}
+            </button>
+            <button class="view-details-btn" (click)="openModal(app)"><i class="bi bi-eye"></i> View Details</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- List View -->
+    <div *ngSwitchCase="'list'" class="listings-list">
+      <div class="card-list" *ngFor="let app of filteredApplications">
+        <img [src]="app.logo" alt="{{app.company}} Logo" class="company-logo">
+        <div class="job-info">
+          <h3 class="job-title">{{ app.title }}</h3>
+          <p class="company-name">{{ app.company }} &bull; {{ app.location }}</p>
+          <div class="job-tags">
+            <span class="job-tag">{{ app.type }}</span>
+            <span class="job-tag salary">{{ app.salary }}</span>
+            <span *ngIf="app.remote" class="job-tag remote">Remote</span>
+            <span *ngIf="app.hybrid" class="job-tag hybrid">Hybrid</span>
+            <span *ngIf="app.onsite" class="job-tag onsite">Onsite</span>
+          </div>
+        </div>
+        <div class="application-status">
+            <p class="applied-date">Applied on {{ app.appliedDate }}</p>
+             <div *ngIf="app.status === 'Interview Scheduled'" class="interview-details">
+                <i class="bi bi-calendar-check"></i> Interview scheduled for {{ app.interviewDate }}
+            </div>
+        </div>
+        <div class="status-actions">
+           <button class="status-tag" [ngClass]="'status-' + app.status.toLowerCase().replace(' ', '-')">
+                <i [ngClass]="{
+                    'bi-check-circle-fill': app.status === 'Applied' || app.status === 'Shortlisted',
+                    'bi-calendar-event-fill': app.status === 'Interview Scheduled',
+                    'bi-x-circle-fill': app.status === 'Rejected'
+                }"></i> {{ app.status }}
+            </button>
+            <button class="view-details-btn" (click)="openModal(app)"><i class="bi bi-eye"></i> View Details</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Details Modal -->
+<div class="modal-overlay" *ngIf="isModalVisible" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()" *ngIf="selectedApplication">
+
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <div class="modal-header-info">
+        <img [src]="selectedApplication.logo" alt="{{selectedApplication.company}} Logo" class="modal-company-logo">
+        <div>
+          <h2 class="modal-title">{{ selectedApplication.title }}</h2>
+          <p class="modal-company">{{ selectedApplication.company }}</p>
+        </div>
+      </div>
+      <button class="modal-close-btn" (click)="closeModal()"><i class="bi bi-x"></i></button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <div class="modal-status-bar">
+        <span class="status-tag" [ngClass]="'status-' + selectedApplication.status.toLowerCase().replace(' ', '-')">
+          <i [ngClass]="{
+              'bi-check-circle-fill': selectedApplication.status === 'Applied' || selectedApplication.status === 'Shortlisted',
+              'bi-calendar-event-fill': selectedApplication.status === 'Interview Scheduled',
+              'bi-x-circle-fill': selectedApplication.status === 'Rejected'
+          }"></i> {{ selectedApplication.status }}
+        </span>
+        <span class="modal-applied-date">Applied on {{ selectedApplication.appliedDate }}</span>
+      </div>
+
+      <div class="modal-details-grid">
+        <span><i class="bi bi-geo-alt"></i> {{ selectedApplication.location }}</span>
+        <span *ngIf="selectedApplication.hybrid" class="job-tag hybrid"><i class="bi bi-pc-display-horizontal"></i> Hybrid</span>
+        <span *ngIf="selectedApplication.remote" class="job-tag remote"><i class="bi bi-house"></i> Remote</span>
+        <span><i class="bi bi-briefcase"></i> {{ selectedApplication.type }}</span>
+        <span class="job-tag salary"><i class="bi bi-cash"></i> {{ selectedApplication.salary }}</span>
+      </div>
+
+      <div class="modal-section">
+        <h3>Job Description</h3>
+        <p>{{ selectedApplication.description }}</p>
+      </div>
+
+      <div class="modal-section">
+        <h3>Requirements</h3>
+        <div class="job-skills">
+            <span *ngFor="let req of selectedApplication.requirements" class="skill-tag">{{ req }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <button class="view-posting-btn"><i class="bi bi-box-arrow-up-right"></i> View Job Posting</button>
+      <button class="contact-company-btn">Contact Company</button>
+    </div>
+  </div>
+</div>

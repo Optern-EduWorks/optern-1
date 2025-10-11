@@ -1,0 +1,272 @@
+<div class="find-candidates-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-icon">
+      <span class="icon-circle">○</span>
+    </div>
+    <div class="header-content">
+      <h1 class="page-title">Find <span class="highlight">Candidates</span></h1>
+      <p class="page-description">Search and discover talented candidates based on skills, experience, and location.</p>
+    </div>
+    <button class="search-history-btn" (click)="openSearchHistory()">
+      <span class="history-icon">🕐</span> Search History
+    </button>
+  </div>
+
+  <!-- Search and Filter Section -->
+  <div class="search-filter-section">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        placeholder="Search candidates, skills, or job titles..." 
+        class="search-input"
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="onSearch()">
+    </div>
+    
+    <button class="filters-btn">
+      <span class="filter-icon">▼</span> Filters
+    </button>
+    
+    <button 
+      class="view-toggle grid-view" 
+      [class.active]="viewMode === 'grid'"
+      (click)="setViewMode('grid')">
+      <span class="grid-icon">⊞</span>
+    </button>
+    
+    <button 
+      class="view-toggle list-view" 
+      [class.active]="viewMode === 'list'"
+      (click)="setViewMode('list')">
+      <span class="list-icon">☰</span>
+    </button>
+    
+    <button class="search-btn" (click)="onSearch()">Search</button>
+  </div>
+
+  <!-- Results Count -->
+  <div class="results-info">
+    <p>Found <strong>{{ candidates.length }}</strong> candidates</p>
+  </div>
+
+  <!-- Grid View -->
+  <div class="candidates-grid" *ngIf="viewMode === 'grid'">
+    <div class="candidate-card" *ngFor="let candidate of candidates">
+      <div class="card-header">
+        <div class="avatar" [ngClass]="candidate.avatarColor">{{ candidate.avatarLetter }}</div>
+        <div class="candidate-info">
+          <h3 class="candidate-name">{{ candidate.name }}</h3>
+          <p class="candidate-role">{{ candidate.role }}</p>
+        </div>
+        <button class="bookmark-btn" (click)="toggleBookmark(candidate.id)">★</button>
+      </div>
+      
+      <div class="card-details">
+        <div class="detail-item">
+          <span class="icon">📍</span>
+          <span>{{ candidate.location }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="icon">💼</span>
+          <span>{{ candidate.experience }}</span>
+        </div>
+      </div>
+      
+      <div class="skills-section">
+        <p class="skills-label">Skills</p>
+        <div class="skills-tags">
+          <span 
+            class="skill-tag" 
+            *ngFor="let skill of candidate.skills.slice(0, 4)"
+            [ngClass]="getSkillTagClass(skill)">
+            {{ skill }}
+          </span>
+          <span class="skill-more" *ngIf="candidate.extraSkillsCount > 0">
+            +{{ candidate.extraSkillsCount }} more
+          </span>
+        </div>
+      </div>
+      
+      <div class="card-footer">
+        <div class="education">
+          <span class="icon">🎓</span>
+          <span>{{ candidate.education }}</span>
+        </div>
+        <div class="views">
+          <span class="icon">👁</span>
+          <span>{{ candidate.views }} views</span>
+        </div>
+      </div>
+      
+      <div class="card-actions">
+        <button class="view-profile-btn" (click)="viewProfile(candidate.id)">
+          <span>👁</span> View Profile
+        </button>
+        <button class="contact-btn" (click)="contactCandidate(candidate.id)">
+          <span>✉</span> Contact
+        </button>
+      </div>
+      
+      <span class="status-badge" [ngClass]="candidate.status">
+        {{ getStatusText(candidate.status) }}
+      </span>
+    </div>
+  </div>
+
+  <!-- List View -->
+  <div class="candidates-list" *ngIf="viewMode === 'list'">
+    <div class="candidate-list-item" *ngFor="let candidate of candidates">
+      <div class="list-item-left">
+        <div class="avatar" [ngClass]="candidate.avatarColor">{{ candidate.avatarLetter }}</div>
+        <div class="list-candidate-info">
+          <div class="list-header">
+            <h3 class="candidate-name">{{ candidate.name }}</h3>
+            <span class="status-badge-inline" [ngClass]="candidate.status">
+              {{ getStatusText(candidate.status) }}
+            </span>
+          </div>
+          <p class="candidate-role">{{ candidate.role }}</p>
+          <div class="list-details">
+            <span class="detail-item">
+              <span class="icon">📍</span>
+              {{ candidate.location }}
+            </span>
+            <span class="detail-item">
+              <span class="icon">💼</span>
+              {{ candidate.experience }}
+            </span>
+            <span class="detail-item">
+              <span class="icon">🎓</span>
+              {{ candidate.education }}
+            </span>
+            <span class="detail-item">
+              <span class="icon">👁</span>
+              {{ candidate.views }} views
+            </span>
+          </div>
+          <div class="skills-tags">
+            <span 
+              class="skill-tag" 
+              *ngFor="let skill of candidate.skills.slice(0, 4)"
+              [ngClass]="getSkillTagClass(skill)">
+              {{ skill }}
+            </span>
+            <span class="skill-more" *ngIf="candidate.extraSkillsCount > 0">
+              +{{ candidate.extraSkillsCount }} more
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="list-item-actions">
+        <button class="bookmark-btn" (click)="toggleBookmark(candidate.id)">★</button>
+        <button class="view-profile-btn" (click)="viewProfile(candidate.id)">
+          <span>👁</span> View Profile
+        </button>
+        <button class="contact-btn" (click)="contactCandidate(candidate.id)">
+          <span>✉</span> Contact
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Search History Modal -->
+<div class="modal-overlay" *ngIf="showSearchHistoryModal" (click)="closeSearchHistory()">
+  <div class="modal-content search-history-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Recent Searches</h2>
+      <button class="close-btn" (click)="closeSearchHistory()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="search-history-list">
+        <div 
+          class="search-history-item" 
+          *ngFor="let search of searchHistory"
+          (click)="loadSearchHistory(search)">
+          <div class="search-history-content">
+            <h3>{{ search.title }}</h3>
+            <p class="search-details">Skills: {{ search.skills }}</p>
+            <p class="search-details" *ngIf="search.experience">Experience: {{ search.experience }}</p>
+            <p class="search-details" *ngIf="search.location">Location: {{ search.location }}</p>
+            <p class="search-results">{{ search.resultsCount }} results found</p>
+          </div>
+          <div class="search-timestamp">
+            {{ search.timestamp }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Profile View Modal -->
+<div class="modal-overlay" *ngIf="showProfileModal && selectedCandidate" (click)="closeProfileModal()">
+  <div class="modal-content profile-modal" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="closeProfileModal()">×</button>
+    
+    <div class="profile-header">
+      <div class="profile-avatar-section">
+        <div class="profile-avatar" [ngClass]="selectedCandidate.avatarColor">
+          {{ selectedCandidate.avatarLetter }}
+        </div>
+      </div>
+      <div class="profile-info">
+        <h2>{{ selectedCandidate.name }}</h2>
+        <p class="profile-role">{{ selectedCandidate.role }}</p>
+        <p class="profile-email">{{ selectedCandidate.email }}</p>
+      </div>
+      <div class="profile-status">
+        <span class="status-badge-large" [ngClass]="selectedCandidate.status">
+          {{ getStatusText(selectedCandidate.status) }}
+        </span>
+        <p class="profile-views">Profile views: {{ selectedCandidate.views }}</p>
+        <p class="last-active">Last active: {{ selectedCandidate.lastActive }}</p>
+      </div>
+    </div>
+
+    <div class="profile-details-grid">
+      <div class="profile-detail-item">
+        <span class="icon">📍</span>
+        <span>{{ selectedCandidate.location }}</span>
+      </div>
+      <div class="profile-detail-item">
+        <span class="icon">💼</span>
+        <span>{{ selectedCandidate.experience }} experience</span>
+      </div>
+      <div class="profile-detail-item" *ngIf="selectedCandidate.degree">
+        <span class="icon">🎓</span>
+        <span>{{ selectedCandidate.degree }}</span>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h3>Skills</h3>
+      <div class="skills-tags">
+        <span 
+          class="skill-tag" 
+          *ngFor="let skill of selectedCandidate.skills"
+          [ngClass]="getSkillTagClass(skill)">
+          {{ skill }}
+        </span>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h3>Work Experience</h3>
+      <div class="work-experience-list">
+        <div class="work-item" *ngFor="let work of selectedCandidate.workExperience">
+          <p class="work-position">{{ work.position }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-actions">
+      <button class="send-message-btn" (click)="contactCandidate(selectedCandidate.id)">
+        <span>✉</span> Send Message
+      </button>
+      <button class="close-modal-btn" (click)="closeProfileModal()">Close</button>
+    </div>
+  </div>
+</div>

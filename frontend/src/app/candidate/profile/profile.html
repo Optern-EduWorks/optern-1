@@ -1,0 +1,259 @@
+<div class="profile-page-container">
+  <!-- Page Header (no changes) -->
+  <header class="page-header">
+    <h1>Candidate Profile</h1>
+    <p>Manage your candidate profile and personal information.</p>
+  </header>
+
+  <!-- Blue User Card (no changes) -->
+  <div class="user-banner">
+    <div class="user-avatar">JS</div>
+    <div class="user-details">
+      <h2>John Student</h2>
+      <div class="user-meta">
+        <span><i class="bi bi-briefcase-fill"></i> Electronics and Communication • BTECH</span>
+        <span><i class="bi bi-envelope-fill"></i> student@example.com</span>
+        <span><i class="bi bi-calendar-check-fill"></i> Since 2024</span>
+      </div>
+    </div>
+    <button class="edit-profile-btn"><i class="bi bi-pencil-fill"></i> Edit Profile</button>
+  </div>
+
+  <!-- Tabs Navigation (MODIFIED) -->
+  <nav class="profile-tabs">
+    <a class="tab-link" [class.active]="activeTab === 'personal'" (click)="selectTab('personal')">
+      <i class="bi bi-person-circle"></i> Personal
+    </a>
+    <a class="tab-link" [class.active]="activeTab === 'academic'" (click)="selectTab('academic')">
+      <i class="bi bi-mortarboard-fill"></i> Academic
+    </a>
+    <a class="tab-link" [class.active]="activeTab === 'notification'" (click)="selectTab('notification')">
+      <i class="bi bi-bell-fill"></i> Notification
+    </a>
+    <a class="tab-link" [class.active]="activeTab === 'security'" (click)="selectTab('security')">
+      <i class="bi bi-shield-lock-fill"></i> Security
+    </a>
+  </nav>
+
+  <!-- Tab Content Area (MODIFIED) -->
+  <div class="tab-content-container">
+    <!-- Personal Tab Content -->
+    <div *ngIf="activeTab === 'personal'">
+      <div class="form-header">
+        <h3 class="form-title">Personal Information</h3>
+        <p class="form-subtitle">Update your personal details and contact information.</p>
+      </div>
+      <form class="profile-form">
+        <!-- (Personal form fields from previous step go here... no changes needed to them) -->
+        <div class="form-row">
+          <div class="form-field">
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name" value="John">
+          </div>
+          <div class="form-field">
+            <label for="last-name">Last Name</label>
+            <input type="text" id="last-name" value="Student">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" value="student@example.com">
+          </div>
+          <div class="form-field">
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" value="+91 74845 43469">
+          </div>
+        </div>
+        <div class="form-row single-column">
+          <div class="form-field">
+            <label for="dob">Date of Birth</label>
+            <input type="text" id="dob" placeholder="mm/dd/yyyy">
+          </div>
+        </div>
+        <div class="form-row single-column">
+          <div class="form-field">
+            <label for="address">Address</label>
+            <textarea id="address">dadarwadi, nizamabad 503230</textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="save-btn">Update Profile</button>
+          <button type="button" class="cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Academic Tab Content (NEW) -->
+    <div *ngIf="activeTab === 'academic'">
+      <div class="form-header">
+        <h3 class="form-title">Academic Information</h3>
+        <p class="form-subtitle">Manage your educational background and qualifications.</p>
+      </div>
+
+      <form class="profile-form">
+        <!-- Current Education Section -->
+        <h4 class="form-section-title">Current Education</h4>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="institution">Institution</label>
+            <input type="text" id="institution" value="BTECH">
+          </div>
+          <div class="form-field">
+            <label for="degree">Degree</label>
+            <input type="text" id="degree" value="Electronics and Communication">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="cgpa">CGPA</label>
+            <input type="text" id="cgpa" value="8.5">
+          </div>
+          <div class="form-field">
+            <label for="grad-year">Expected Graduation</label>
+            <input type="text" id="grad-year" value="2024">
+          </div>
+        </div>
+
+        <!-- Previous Education Section -->
+        <h4 class="form-section-title">Previous Education</h4>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="prev-school">School/College</label>
+            <input type="text" id="prev-school" value="ABC Junior College">
+          </div>
+          <div class="form-field">
+            <label for="prev-grade">Percentage/Grade</label>
+            <input type="text" id="prev-grade" value="85%">
+          </div>
+        </div>
+        <div class="form-row single-column">
+          <div class="form-field">
+            <label for="prev-year">Year Completed</label>
+            <input type="text" id="prev-year" value="2020">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="save-btn">Update Academic Info</button>
+          <button type="button" class="cancel-btn">Add More Qualifications</button>
+        </div>
+      </form>
+    </div>
+    <!-- Notification Tab Content (NEW) -->
+    <div *ngIf="activeTab === 'notification'">
+      <div class="form-header">
+        <h3 class="form-title">Notification Preferences</h3>
+        <p class="form-subtitle">Manage how you receive notifications and updates.</p>
+      </div>
+
+      <div class="notification-settings">
+        <div class="setting-item">
+          <div class="setting-details">
+            <h4>Email Notifications</h4>
+            <p>Receive important updates via email.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <div class="setting-details">
+            <h4>Job Application Updates</h4>
+            <p>Get notified about application status changes.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <div class="setting-details">
+            <h4>Interview Reminders</h4>
+            <p>Receive reminders for scheduled interviews.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <div class="setting-details">
+            <h4>Marketing Communications</h4>
+            <p>Receive promotional emails and notifications.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="save-btn">Save Preferences</button>
+        <button type="button" class="cancel-btn">Reset to Default</button>
+      </div>
+    </div>
+
+    <!-- Security Tab Content (NEW) -->
+    <div *ngIf="activeTab === 'security'">
+      <div class="form-header">
+        <h3 class="form-title">Security Settings</h3>
+        <p class="form-subtitle">Manage your account security and privacy settings.</p>
+      </div>
+
+      <form class="profile-form">
+        <!-- Password Management -->
+        <h4 class="form-section-title">Password Management</h4>
+        <div class="form-row single-column">
+          <div class="form-field password-field">
+            <label for="current-password">Current Password</label>
+            <input type="password" id="current-password" value="fakepassword">
+            <i class="bi bi-eye-slash toggle-password"></i>
+          </div>
+        </div>
+        <div class="form-row single-column">
+          <div class="form-field password-field">
+            <label for="new-password">New Password</label>
+            <input type="password" id="new-password">
+            <i class="bi bi-eye-slash toggle-password"></i>
+          </div>
+        </div>
+        <div class="form-row single-column">
+          <div class="form-field password-field">
+            <label for="confirm-password">Confirm New Password</label>
+            <input type="password" id="confirm-password">
+            <i class="bi bi-eye-slash toggle-password"></i>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="save-btn">Update Password</button>
+        </div>
+
+        <!-- Two-Factor Authentication -->
+        <h4 class="form-section-title">Two-Factor Authentication (2FA)</h4>
+        <div class="security-feature">
+          <div class="setting-details">
+            <h4>Enable 2FA</h4>
+            <p>Add an extra layer of security to your account.</p>
+          </div>
+          <button class="save-btn">Setup 2FA</button>
+        </div>
+
+        <!-- Login Sessions -->
+        <h4 class="form-section-title">Login Sessions</h4>
+        <div class="security-feature">
+          <div class="setting-details">
+            <h4>Active Sessions</h4>
+            <p>View and manage devices logged into your account.</p>
+          </div>
+          <button class="view-sessions-btn">
+            <i class="bi bi-laptop"></i> View Active Sessions
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

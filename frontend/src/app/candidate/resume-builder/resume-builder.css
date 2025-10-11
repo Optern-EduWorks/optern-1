@@ -1,0 +1,216 @@
+:host {
+  display: block;
+  background-color: #f9faff;
+}
+
+.page-container {
+  padding: 30px;
+  /* REMOVED max-width to allow full-width layout */
+  margin: 0 auto;
+}
+
+/* --- Header --- */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.page-icon {
+  font-size: 24px;
+  color: #1976D2;
+}
+
+.page-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.header-actions button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.build-btn {
+  background-color: #198754;
+  color: white;
+}
+
+.save-btn {
+  background-color: #1976D2;
+  color: white;
+}
+
+/* --- Tabs --- */
+.builder-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.tab-link {
+  padding: 10px 16px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #495057;
+  text-decoration: none;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+
+.tab-link:hover {
+    border-color: #1976D2;
+    color: #1976D2;
+}
+
+.tab-link.active {
+  color: #1976D2;
+  background-color: #e3f2fd;
+  border-color: #1976D2;
+  font-weight: 600;
+}
+
+/* --- Form Container --- */
+.tab-content-container {
+  background-color: #ffffff;
+  padding: 28px;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+}
+
+.form-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.form-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: #212529;
+}
+
+/* --- Form Fields --- */
+.resume-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.resume-form .form-row.single-column {
+  grid-template-columns: 1fr;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #495057;
+}
+
+.form-field label span {
+  color: #dc3545; /* Red asterisk */
+  margin-left: 2px;
+}
+
+.form-field input,
+.form-field textarea {
+  padding: 12px 14px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #ffffff; /* White background */
+  transition: all 0.2s ease-in-out;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+    background-color: #ffffff;
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+}
+
+.form-field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* ADD THIS to the end of your CSS file */
+
+/* --- Section Headers --- */
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.add-item-btn {
+  background-color: #1976D2;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* --- Fieldset for repeatable items --- */
+.form-section {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.form-section legend {
+  font-weight: 600;
+  font-size: 14px;
+  color: #495057;
+  padding: 0 8px;
+}
+
+/* --- Hint text for skills --- */
+.field-hint {
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 8px;
+}

@@ -1,0 +1,21 @@
+body {
+  font-family: 'Inter', 'Poppins', sans-serif;
+  color: #1a1a1a;
+  background-color: #f9fafb;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: 600; /* semi-bold like candidate portal */
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+p, span, a, li, label {
+  font-weight: 400;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+body {
+  margin: 0;
+}

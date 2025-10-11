@@ -1,0 +1,67 @@
+.landing-root {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.main-title {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 1.3rem;
+  color: #444;
+  margin-bottom: 18px;
+}
+
+.tagline {
+  max-width: 600px;
+  margin: 0 auto 40px auto;
+  color: #707282;
+  font-size: 1.08rem;
+}
+
+.portal-cards {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+
+.portal-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 36px rgba(60,68,130,0.10);
+  padding: 38px 30px 28px 30px;
+  min-width: 270px;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.portal-icon { width: 54px; height: 54px; margin-bottom: 16px; border-radius: 16px; background: #e5ecff; }
+.portal-icon.graduate { background: #2563eb; }
+.portal-icon.recruiter { background: #22c55e; }
+.portal-icon.admin { background: #8b5cf6; }
+.portal-title { font-weight: 700; font-size: 1.19rem; margin-bottom: 2px; }
+.portal-desc { color: #6d6e7f; font-size: .98rem; margin-bottom: 14px; }
+.portal-btn { font-weight: 700; margin: 6px 0; width: 96%; border: none; border-radius: 9px; padding: 10px 10px; font-size: 1rem;}
+.portal-btn.blue { color: #fff; background: #2563eb; }
+.portal-btn.green { color: #fff; background: #22c55e; }
+.portal-btn.purple { color: #fff; background: #8b5cf6; }
+.portal-btn.secondary { background: #f3f6fd; color: #252a45; }
+
+.landing-features {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  margin-top: 32px;
+}
+
+.feature { padding: 12px 18px; }
+.feature-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 2px; }
+.feature-desc { max-width: 160px; margin: 0 auto; color: #707282; font-size: .97em; }
+.feature-icon { width: 33px; height: 33px; margin: 0 auto 14px auto; }

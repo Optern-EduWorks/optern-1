@@ -1,0 +1,264 @@
+<div class="grievances-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title"><span class="highlight">Grievances</span> & Support</h1>
+      <p class="page-description">Submit and track your concerns. We're here to help resolve any issues.</p>
+    </div>
+    <button class="submit-grievance-btn" (click)="openSubmitModal()">
+      <span class="plus-icon">+</span> Submit Grievance
+    </button>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="tabs-navigation">
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'all'"
+      (click)="setActiveTab('all')">
+      All Grievances
+      <span class="tab-count">{{ tabCounts.all }}</span>
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'submitted'"
+      (click)="setActiveTab('submitted')">
+      Submitted
+      <span class="tab-count">{{ tabCounts.submitted }}</span>
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'in-review'"
+      (click)="setActiveTab('in-review')">
+      In Review
+      <span class="tab-count">{{ tabCounts.inReview }}</span>
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'resolved'"
+      (click)="setActiveTab('resolved')">
+      Resolved
+      <span class="tab-count">{{ tabCounts.resolved }}</span>
+    </button>
+    <button 
+      class="tab-btn" 
+      [class.active]="activeTab === 'closed'"
+      (click)="setActiveTab('closed')">
+      Closed
+      <span class="tab-count">{{ tabCounts.closed }}</span>
+    </button>
+  </div>
+
+  <!-- Grievances List -->
+  <div class="grievances-list">
+    <div class="grievance-card" *ngFor="let grievance of filteredGrievances">
+      <div class="grievance-header">
+        <div class="grievance-title-section">
+          <h3 class="grievance-title">{{ grievance.title }}</h3>
+          <span class="priority-badge" [ngClass]="getPriorityClass(grievance.priority)">
+            {{ grievance.priority }}
+          </span>
+        </div>
+        <div class="grievance-actions">
+          <span class="status-badge" [ngClass]="getStatusClass(grievance.status)">
+            <span class="status-icon" *ngIf="grievance.status === 'in-review'">⚠</span>
+            <span class="status-icon" *ngIf="grievance.status === 'resolved'">✓</span>
+            <span class="status-icon" *ngIf="grievance.status === 'closed'">○</span>
+            {{ getStatusText(grievance.status) }}
+          </span>
+          <button class="view-details-btn" (click)="viewDetails(grievance.id)">
+            <span class="eye-icon">👁</span> View Details
+          </button>
+        </div>
+      </div>
+
+      <div class="grievance-meta">
+        <span class="meta-item">Category: {{ grievance.category }}</span>
+        <span class="meta-separator">•</span>
+        <span class="meta-item">Submitted: {{ grievance.submittedDate }}</span>
+        <span class="meta-separator">•</span>
+        <span class="meta-item">Updated: {{ grievance.updatedDate }}</span>
+      </div>
+
+      <p class="grievance-description">{{ grievance.description }}</p>
+
+      <div class="grievance-footer">
+        <div class="attachment-info" *ngIf="grievance.attachments.length > 0">
+          <span class="attachment-icon">📎</span>
+          <span>{{ grievance.attachments.length }} attachment{{ grievance.attachments.length > 1 ? 's' : '' }}</span>
+        </div>
+
+        <div class="response-indicator" *ngIf="grievance.responses.length > 0">
+          <span class="response-icon">💬</span>
+          <span class="response-text">Response from Support Team</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Submit Grievance Modal -->
+<div class="modal-overlay" *ngIf="showSubmitModal" (click)="closeSubmitModal()">
+  <div class="modal-content submit-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <h2>Submit a Grievance</h2>
+        <p class="modal-subtitle">Describe your concern and we'll help resolve it.</p>
+      </div>
+      <button class="close-btn" (click)="closeSubmitModal()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <form class="grievance-form">
+        <!-- Title Field -->
+        <div class="form-group full-width">
+          <label class="form-label">Title <span class="required">*</span></label>
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="Brief summary of your issue"
+            [(ngModel)]="grievanceForm.title"
+            name="title">
+        </div>
+
+        <!-- Category and Priority -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Category <span class="required">*</span></label>
+            <select class="form-select" [(ngModel)]="grievanceForm.category" name="category">
+              <option value="technical">Technical Issue</option>
+              <option value="application">Application Related</option>
+              <option value="company">Company Related</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Priority <span class="required">*</span></label>
+            <select class="form-select" [(ngModel)]="grievanceForm.priority" name="priority">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Description Field -->
+        <div class="form-group full-width">
+          <label class="form-label">Description <span class="required">*</span></label>
+          <textarea 
+            class="form-textarea" 
+            rows="5" 
+            placeholder="Please provide detailed information about your issue..."
+            [(ngModel)]="grievanceForm.description"
+            name="description"></textarea>
+        </div>
+
+        <!-- File Upload -->
+        <div class="form-group full-width">
+          <label class="form-label">Attachments (Optional)</label>
+          <div class="file-upload-area">
+            <input 
+              type="file" 
+              id="file-upload" 
+              class="file-input" 
+              multiple
+              (change)="onFileSelect($event)"
+              accept=".png,.jpg,.pdf,.doc,.docx">
+            <label for="file-upload" class="file-upload-label">
+              <span class="upload-icon">📎</span>
+              <div class="upload-text">
+                <p class="upload-main">Click to upload files or drag and drop</p>
+                <p class="upload-sub">PNG, JPG, PDF, DOC up to 10MB each</p>
+              </div>
+            </label>
+          </div>
+          <div class="uploaded-files" *ngIf="grievanceForm.attachments.length > 0">
+            <div class="file-item" *ngFor="let file of grievanceForm.attachments">
+              <span class="file-name">{{ file.name }}</span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeSubmitModal()">Cancel</button>
+      <button class="submit-btn" (click)="submitGrievance()">
+        <span class="send-icon">📤</span> Submit Grievance
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Grievance Detail Modal -->
+<div class="modal-overlay" *ngIf="showDetailModal && selectedGrievance" (click)="closeDetailModal()">
+  <div class="modal-content detail-modal" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="closeDetailModal()">×</button>
+
+    <div class="detail-header">
+      <h2 class="detail-title">{{ selectedGrievance.title }}</h2>
+      <p class="detail-id">Grievance #{{ selectedGrievance.id }}</p>
+    </div>
+
+    <div class="detail-status-bar">
+      <span class="status-badge-large" [ngClass]="getStatusClass(selectedGrievance.status)">
+        {{ getStatusText(selectedGrievance.status) }}
+      </span>
+      <div class="detail-dates">
+        <p class="detail-date">Submitted: {{ selectedGrievance.submittedDate }}</p>
+        <p class="detail-date">Last Updated: {{ selectedGrievance.updatedDate }}</p>
+      </div>
+    </div>
+
+    <div class="detail-meta">
+      <div class="meta-row">
+        <span class="meta-label">Category:</span>
+        <span class="meta-value">{{ selectedGrievance.category }}</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Priority:</span>
+        <span class="priority-badge-small" [ngClass]="getPriorityClass(selectedGrievance.priority)">
+          {{ selectedGrievance.priority }}
+        </span>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h3 class="section-title">Description</h3>
+      <p class="section-content">{{ selectedGrievance.description }}</p>
+    </div>
+
+    <div class="detail-section" *ngIf="selectedGrievance.attachments.length > 0">
+      <h3 class="section-title">Attachments</h3>
+      <div class="attachments-list">
+        <div 
+          class="attachment-item" 
+          *ngFor="let attachment of selectedGrievance.attachments"
+          (click)="downloadAttachment(attachment)">
+          <span class="attachment-icon">📄</span>
+          <div class="attachment-info">
+            <p class="attachment-name">{{ attachment.name }}</p>
+            <p class="attachment-size">{{ attachment.size }}</p>
+          </div>
+          <span class="download-link">Download</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-section" *ngIf="selectedGrievance.responses.length > 0">
+      <h3 class="section-title">Support Team Response</h3>
+      <div class="response-box" *ngFor="let response of selectedGrievance.responses">
+        <div class="response-header">
+          <span class="response-icon-large">💬</span>
+          <span class="response-label">Response from Support Team</span>
+        </div>
+        <p class="response-text">{{ response.text }}</p>
+      </div>
+    </div>
+
+    <div class="detail-footer">
+      <button class="close-detail-btn" (click)="closeDetailModal()">Close</button>
+    </div>
+  </div>
+</div>

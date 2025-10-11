@@ -1,0 +1,113 @@
+<div class="opportunities-container">
+  <!-- Main Header -->
+  <header class="main-header">
+    <h1><i class="bi bi-lightbulb"></i> Discover Your Next Opportunity</h1>
+    <p>Find the perfect job that matches your skills and aspirations.</p>
+  </header>
+
+  <!-- Filter and Search Bar -->
+  <div class="filter-bar">
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Search jobs, companies, or skills...">
+    </div>
+    <div class="filter-options">
+      <button class="filter-btn">
+        <span>All Categories (6)</span>
+        <i class="bi bi-chevron-down"></i>
+      </button>
+      <div class="view-toggle">
+        <button [class.active]="viewMode === 'list'" (click)="setView('list')"><i class="bi bi-list-ul"></i></button>
+        <button [class.active]="viewMode === 'grid'" (click)="setView('grid')"><i class="bi bi-grid-fill"></i></button>
+      </div>
+      <button class="filters-main-btn">
+        <i class="bi bi-funnel"></i>
+        <span>Filters</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Job Listings Header -->
+  <div class="listings-header">
+    <p>Found 6 opportunities</p>
+  </div>
+
+  <!-- Job Listings - Grid or List -->
+  <div [ngSwitch]="viewMode">
+    <!-- List View -->
+    <div *ngSwitchCase="'list'" class="job-listings-list">
+      <div class="job-card-list" *ngFor="let job of jobs">
+        <div class="job-card-list-header">
+          <img [src]="job.logo" alt="{{job.company}} logo" class="company-logo">
+          <div class="job-title-section">
+            <h3 class="job-title">{{ job.title }}</h3>
+            <p class="job-company">{{ job.company }}</p>
+          </div>
+          <div class="job-tags-and-priority">
+            <div class="wishlist-icon">
+              <i class="bi bi-heart"></i>
+            </div>
+            <span class="priority-tag" [ngClass]="job.priority.replace(' ', '-')">{{ job.priority }}</span>
+          </div>
+        </div>
+        <div class="job-details-bar">
+          <span><i class="bi bi-geo-alt"></i> {{ job.location }}</span>
+          <span><i class="bi bi-briefcase"></i> {{ job.type }}</span>
+          <span *ngIf="job.remote" class="remote-tag">Remote</span>
+          <span><i class="bi bi-cash-stack"></i> {{ job.salary }}</span>
+          <span><i class="bi bi-people"></i> {{ job.applicants }} applicants</span>
+        </div>
+        <div class="job-card-list-body">
+          <div class="job-skills">
+            <span *ngFor="let skill of job.skills" class="skill-tag">{{ skill }}</span>
+          </div>
+          <p class="job-description">{{ job.description }}</p>
+        </div>
+        <div class="job-card-list-footer">
+          <div class="job-rating">
+            <i class="bi bi-star-fill"></i> {{ job.rating }} &bull; {{ job.posted }}
+          </div>
+          <button class="apply-now-btn">Apply Now <i class="bi bi-arrow-right-short"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid View -->
+    <div *ngSwitchCase="'grid'" class="job-listings-grid">
+      <div class="job-card-grid" *ngFor="let job of jobs">
+        <div class="job-card-grid-header">
+          <img [src]="job.logo" alt="{{job.company}} logo" class="company-logo">
+          <div>
+            <h3 class="job-title">{{ job.title }}</h3>
+            <p class="job-company">{{ job.company }}</p>
+          </div>
+          <div class="wishlist-icon">
+            <i class="bi bi-heart"></i>
+          </div>
+        </div>
+        <div class="job-card-grid-priority">
+          <span class="priority-tag" [ngClass]="job.priority.replace(' ', '-')">{{ job.priority }}</span>
+        </div>
+        <div class="job-details-grid">
+            <span>{{ job.location }}</span> &bull;
+            <span>{{ job.type }}</span>
+            <span *ngIf="job.remote" class="remote-tag">Remote</span>
+        </div>
+        <div class="job-details-grid">
+            <span>{{ job.salary }}</span> &bull;
+            <span>{{ job.applicants }} applicants</span>
+        </div>
+        <p class="job-description">{{ job.description }}</p>
+        <div class="job-skills">
+          <span *ngFor="let skill of job.skills" class="skill-tag">{{ skill }}</span>
+        </div>
+        <div class="job-card-grid-footer">
+          <div class="job-rating">
+            <i class="bi bi-star-fill"></i> {{ job.rating }} &bull; {{ job.posted }}
+          </div>
+          <button class="apply-now-btn">Apply Now <i class="bi bi-arrow-right-short"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

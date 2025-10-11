@@ -1,0 +1,311 @@
+<div class="profile-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Recruiter <span class="highlight">Profile</span></h1>
+      <p class="page-description">Manage your recruiter profile and company information.</p>
+    </div>
+    <button class="edit-profile-btn" (click)="toggleEditMode()" *ngIf="activeTab === 'personal' && !isEditMode">
+      <span class="edit-icon">✏</span> Edit Profile
+    </button>
+    <div class="edit-actions" *ngIf="isEditMode">
+      <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+      <button class="save-btn" (click)="saveProfile()">Save Changes</button>
+    </div>
+  </div>
+
+  <!-- Profile Header Card -->
+  <div class="profile-header-card">
+    <div class="profile-avatar-section">
+      <div class="profile-avatar-large">{{ userProfile.initials }}</div>
+      <div class="profile-header-info">
+        <h2 class="profile-name">{{ userProfile.fullName }}</h2>
+        <p class="profile-title">{{ userProfile.title }} • {{ userProfile.company }}</p>
+        <div class="profile-meta">
+          <span class="meta-item">
+            <span class="icon">🏢</span>
+            {{ userProfile.company }}
+          </span>
+          <span class="meta-item">
+            <span class="icon">✉</span>
+            {{ userProfile.email }}
+          </span>
+          <span class="meta-item">
+            <span class="icon">📅</span>
+            {{ userProfile.memberSince }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="profile-tabs">
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'personal'"
+        (click)="setActiveTab('personal')">
+        <span class="tab-icon">👤</span>
+        Personal Information
+      </button>
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'company'"
+        (click)="setActiveTab('company')">
+        <span class="tab-icon">🏢</span>
+        Company Information
+      </button>
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'stats'"
+        (click)="setActiveTab('stats')">
+        <span class="tab-icon">📊</span>
+        Recruitment Stats
+      </button>
+    </div>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    
+    <!-- Personal Information Tab -->
+    <div class="tab-pane" *ngIf="activeTab === 'personal'">
+      <div class="info-section">
+        <div class="section-header">
+          <span class="section-icon">👤</span>
+          <h3 class="section-title">Personal Information</h3>
+        </div>
+
+        <div class="info-grid">
+          <!-- First Name -->
+          <div class="info-item">
+            <label class="info-label">First Name</label>
+            <input 
+              *ngIf="isEditMode" 
+              type="text" 
+              class="info-input" 
+              [(ngModel)]="personalInfo.firstName">
+            <p *ngIf="!isEditMode" class="info-value">{{ personalInfo.firstName }}</p>
+          </div>
+
+          <!-- Last Name -->
+          <div class="info-item">
+            <label class="info-label">Last Name</label>
+            <input 
+              *ngIf="isEditMode" 
+              type="text" 
+              class="info-input" 
+              [(ngModel)]="personalInfo.lastName">
+            <p *ngIf="!isEditMode" class="info-value">{{ personalInfo.lastName }}</p>
+          </div>
+
+          <!-- Email -->
+          <div class="info-item">
+            <label class="info-label">Email</label>
+            <div class="info-value-with-icon">
+              <span class="value-icon">✉</span>
+              <input 
+                *ngIf="isEditMode" 
+                type="email" 
+                class="info-input" 
+                [(ngModel)]="personalInfo.email">
+              <p *ngIf="!isEditMode" class="info-value">{{ personalInfo.email }}</p>
+            </div>
+          </div>
+
+          <!-- Phone -->
+          <div class="info-item">
+            <label class="info-label">Phone</label>
+            <div class="info-value-with-icon">
+              <span class="value-icon">📞</span>
+              <input 
+                *ngIf="isEditMode" 
+                type="tel" 
+                class="info-input" 
+                [(ngModel)]="personalInfo.phone">
+              <p *ngIf="!isEditMode" class="info-value">{{ personalInfo.phone }}</p>
+            </div>
+          </div>
+
+          <!-- Position -->
+          <div class="info-item">
+            <label class="info-label">Position</label>
+            <div class="info-value-with-icon">
+              <span class="value-icon">💼</span>
+              <p class="info-value">{{ personalInfo.position }}</p>
+            </div>
+          </div>
+
+          <!-- Department -->
+          <div class="info-item">
+            <label class="info-label">Department</label>
+            <p class="info-value">{{ personalInfo.department }}</p>
+          </div>
+
+          <!-- Join Date -->
+          <div class="info-item">
+            <label class="info-label">Join Date</label>
+            <div class="info-value-with-icon">
+              <span class="value-icon">📅</span>
+              <p class="info-value">{{ personalInfo.joinDate }}</p>
+            </div>
+          </div>
+
+          <!-- Employee ID -->
+          <div class="info-item">
+            <label class="info-label">Employee ID</label>
+            <p class="info-value">{{ personalInfo.employeeId }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Company Information Tab -->
+    <div class="tab-pane" *ngIf="activeTab === 'company'">
+      <div class="info-section">
+        <div class="section-header">
+          <span class="section-icon">🏢</span>
+          <h3 class="section-title">Company Information</h3>
+        </div>
+
+        <div class="company-main-info">
+          <div class="company-header">
+            <div class="company-icon">🚀</div>
+            <div>
+              <h4 class="company-name">{{ companyInfo.name }}</h4>
+              <p class="company-industry">{{ companyInfo.industry }}</p>
+            </div>
+          </div>
+
+          <div class="company-details-grid">
+            <div class="company-detail-item">
+              <span class="detail-icon">🌐</span>
+              <div>
+                <label class="detail-label">Website</label>
+                <a [href]="companyInfo.website" target="_blank" class="detail-link">
+                  {{ companyInfo.website }}
+                </a>
+              </div>
+            </div>
+
+            <div class="company-detail-item">
+              <span class="detail-icon">📍</span>
+              <div>
+                <label class="detail-label">Headquarters</label>
+                <p class="detail-value">{{ companyInfo.headquarters }}</p>
+              </div>
+            </div>
+
+            <div class="company-detail-item">
+              <span class="detail-icon">👥</span>
+              <div>
+                <label class="detail-label">Company Size</label>
+                <p class="detail-value">{{ companyInfo.companySize }}</p>
+              </div>
+            </div>
+
+            <div class="company-detail-item">
+              <span class="detail-icon">📅</span>
+              <div>
+                <label class="detail-label">Founded</label>
+                <p class="detail-value">{{ companyInfo.founded }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Benefits -->
+          <div class="benefits-section">
+            <label class="detail-label">Benefits</label>
+            <div class="benefits-tags">
+              <span class="benefit-tag" *ngFor="let benefit of companyInfo.benefits">
+                {{ benefit }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- About Company -->
+        <div class="company-about">
+          <h4 class="about-title">About Our Company</h4>
+          <p class="about-text">{{ companyInfo.about }}</p>
+        </div>
+
+        <!-- Company Culture -->
+        <div class="company-culture">
+          <h4 class="about-title">Company Culture</h4>
+          <p class="about-text">{{ companyInfo.culture }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recruitment Statistics Tab -->
+    <div class="tab-pane" *ngIf="activeTab === 'stats'">
+      <div class="info-section">
+        <div class="section-header">
+          <span class="section-icon">📊</span>
+          <h3 class="section-title">Recruitment Statistics</h3>
+        </div>
+
+        <!-- Main Stats Cards -->
+        <div class="stats-cards-grid">
+          <div class="stat-card stat-card-green">
+            <div class="stat-number">{{ recruitmentStats.totalHires }}</div>
+            <div class="stat-label">Total Hires</div>
+          </div>
+
+          <div class="stat-card stat-card-blue">
+            <div class="stat-number">{{ recruitmentStats.activeJobs }}</div>
+            <div class="stat-label">Active Jobs</div>
+          </div>
+
+          <div class="stat-card stat-card-orange">
+            <div class="stat-number">{{ recruitmentStats.monthlyApplications }}</div>
+            <div class="stat-label">Monthly Applications</div>
+          </div>
+
+          <div class="stat-card stat-card-purple">
+            <div class="stat-number">{{ recruitmentStats.successRate }}%</div>
+            <div class="stat-label">Success Rate</div>
+          </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="performance-section">
+          <h4 class="subsection-title">Performance Metrics</h4>
+          <div class="metrics-grid">
+            <div class="metric-item">
+              <label class="metric-label">Average Time to Hire</label>
+              <p class="metric-value">{{ recruitmentStats.avgTimeToHire }} days</p>
+            </div>
+
+            <div class="metric-item">
+              <label class="metric-label">Candidate Satisfaction</label>
+              <p class="metric-value highlight-rating">{{ recruitmentStats.candidateSatisfaction }}/5</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- This Month Section -->
+        <div class="this-month-section">
+          <h4 class="subsection-title">This Month</h4>
+          <div class="monthly-stats">
+            <div class="monthly-stat-item">
+              <label class="monthly-label">New Hires</label>
+              <p class="monthly-value">{{ recruitmentStats.newHires }}</p>
+            </div>
+
+            <div class="monthly-stat-item">
+              <label class="monthly-label">Interview Scheduled</label>
+              <p class="monthly-value">{{ recruitmentStats.interviewsScheduled }}</p>
+            </div>
+
+            <div class="monthly-stat-item">
+              <label class="monthly-label">Offers Extended</label>
+              <p class="monthly-value">{{ recruitmentStats.offersExtended }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

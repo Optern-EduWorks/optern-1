@@ -1,0 +1,43 @@
+<div class="signin-container">
+  <div class="signin-card">
+    <div class="logo">
+      <div class="logo-icon">O</div>
+    </div>
+    
+    <h1 class="title">Welcome back</h1>
+    <p class="subtitle">Recruiter Portal</p>
+    
+    <form (submit)="onSubmit($event)">
+      <div class="form-group">
+        <label for="email">Email or Username</label>
+        <input 
+          type="text" 
+          id="email" 
+          class="form-input"
+          placeholder="Enter your email"
+        />
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          class="form-input"
+          placeholder="Enter your password"
+        />
+      </div>
+      
+      <button type="submit" class="signin-button">
+        Sign In
+      </button>
+    </form>
+    
+    <div class="footer-links">
+      <p class="signup-link">
+        Don't have an account? <a href="#" (click)="goToSignUp($event)">Sign Up</a>
+      </p>
+      <a href="#" class="home-link">← Back to home</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+.recruiter-shell-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.sidebar-wrapper {
+  flex: 0 0 240px;
+  overflow: hidden;
+}
+
+.recruiter-content {
+  flex: 1 1 auto;
+  height: 100vh;
+  overflow-y: auto;
+  background: #f8fafc;
+}
+
+@media (max-width: 768px) {
+  .recruiter-shell-container {
+    flex-direction: column;
+  }
+  
+  .sidebar-wrapper {
+    flex: 0 0 auto;
+  }
+}
