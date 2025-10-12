@@ -12,7 +12,7 @@ export class LandingPage {
 
   // Candidate Portal - Login
   goToCandidateSignIn() {
-    this.router.navigate(['/candidate/sign-in']);
+    this.router.navigate(['/candidate/login']);
   }
 
   // Candidate Portal - Demo (Direct to Dashboard)

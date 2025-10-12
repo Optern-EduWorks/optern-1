@@ -3,7 +3,11 @@
     <app-sidebar></app-sidebar>
   </div>
   <div class="candidate-content">
-    
+    <header class="candidate-header" style="display:flex;justify-content:flex-end;align-items:center;padding:8px 16px">
+      <div *ngIf="username" style="margin-right:12px">Signed in as {{ username }}</div>
+      <button *ngIf="username" (click)="logout()">Logout</button>
+    </header>
+
     <router-outlet></router-outlet>
   </div>
 </div>

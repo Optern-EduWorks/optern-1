@@ -13,6 +13,11 @@ export const routes: Routes = [
     path: 'candidate',
     children: [
       { 
+        path: 'login',
+        // Eager fallback route to ensure sign-in is always reachable
+        loadComponent: () => import('./candidate/auth/candidate-sign-in/candidate-sign-in-legacy').then(m => m.CandidateSignInLegacy)
+      },
+      {
         path: 'sign-in', 
         loadComponent: () => import('./candidate/auth/candidate-sign-in/candidate-sign-in').then(m => m.CandidateSignIn) 
       },

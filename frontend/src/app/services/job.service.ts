@@ -1,0 +1,64 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+export interface Job {
+  jobID: number;
+  title: string;
+  company: string;
+  location: string;
+  salary: string;
+  remote: boolean;
+  type: string;
+  applicants: number;
+  skills: string[];
+  description: string;
+  rating: number;
+  posted: string;
+  logo: string;
+  priority: string;
+}
+
+@Injectable({ providedIn: 'root' })
+export class JobService {
+  // Use relative path so proxy (or backend hosting) works
+  private baseUrl = '/api/Jobs';
+
+  constructor(private http: HttpClient) {}
+
+  private mapServerToUi(server: any): Job {
+    const skillsArray = server.skills
+      ? server.skills.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0)
+      : [];
+
+    const posted = server.postedDate || server.PostedDate || server.posted || server.Posted
+      ? new Date(server.postedDate ?? server.PostedDate ?? server.posted ?? server.Posted).toLocaleDateString()
+      : null;
+
+    return {
+      jobID: server.jobID ?? server.JobID ?? 0,
+      title: server.title ?? server.Title ?? 'Untitled',
+      company: server.company?.name ?? server.Company?.Name ?? server.company ?? 'Unknown Company',
+      location: server.location ?? server.Location ?? 'Remote',
+      salary: server.salary ?? server.SalaryRange ?? 'N/A',
+      remote: server.remote ?? server.RemoteAllowed ?? false,
+      type: server.type ?? server.EmploymentType ?? 'Full-time',
+      applicants: server.applicants ?? Math.floor(Math.random() * 120),
+      skills: skillsArray.length ? skillsArray : ['General'],
+      description: server.description ?? server.Description ?? 'No description provided.',
+      rating: server.rating ?? Math.round((4 + Math.random()) * 10) / 10,
+      posted: posted ?? new Date().toLocaleDateString(),
+      logo: server.logo ?? 'https://i.imgur.com/2JV8V4A.png',
+      priority: server.priority ?? server.category ?? server.Category ?? 'medium priority'
+    } as Job;
+  }
+
+  getAll(): Observable<Job[]> {
+    return this.http.get<any[]>(this.baseUrl).pipe(map(list => list.map(item => this.mapServerToUi(item))));
+  }
+
+  get(id: number) {
+    return this.http.get<any>(`${this.baseUrl}/${id}`).pipe(map(item => this.mapServerToUi(item)));
+  }
+}

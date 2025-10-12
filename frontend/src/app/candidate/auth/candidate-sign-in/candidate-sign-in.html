@@ -15,6 +15,7 @@
           placeholder="Enter your email"
           autocomplete="username"
           required
+          [(ngModel)]="model.email"
         />
       </div>
       <div class="form-group">
@@ -26,9 +27,11 @@
           placeholder="Enter your password"
           autocomplete="current-password"
           required
+          [(ngModel)]="model.password"
         />
       </div>
       <button class="login-button" type="submit">Sign In</button>
+      <!-- test helper removed for normal operation -->
     </form>
     <div class="signup-link">
   Don't have an account? <a href="#" (click)="navigateToSignUp(); $event.preventDefault()">Sign up</a>

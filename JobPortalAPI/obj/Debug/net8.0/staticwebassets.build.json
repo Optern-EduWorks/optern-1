@@ -1,11 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "s/Ruf30WhE8NL9PIW3+YsemY9WRD/KySPe37/K1H4OU=",
-  "Source": "db_apis",
-  "BasePath": "_content/db_apis",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
-}
+{"Version":1,"Hash":"0yOWnbLG1ld3RX210xqjmsGnEasz9/TSmINXgKjtN/4=","Source":"db_apis","BasePath":"_content/db_apis","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}
