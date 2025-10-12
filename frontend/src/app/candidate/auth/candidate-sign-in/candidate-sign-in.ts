@@ -21,9 +21,14 @@ export class CandidateSignIn {
   onSubmit(event: Event) {
     event.preventDefault();
     this.error = null;
+    // ensure any previous user is cleared before new login attempt
+    this.auth.logout();
     this.auth.login(this.model.email, this.model.password).subscribe({
       next: () => this.router.navigate(['/candidate/dashboard']),
-      error: (err) => this.error = err?.error?.message ?? 'Login failed'
+      error: (err) => {
+        if (err?.status === 0) this.error = 'Unable to contact server. Please try again later.';
+        else this.error = err?.error?.message ?? 'Login failed';
+      }
     });
   }
 
