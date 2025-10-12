@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 
 interface RegisterForm {
@@ -20,7 +21,7 @@ interface RegisterForm {
   selector: 'app-candidate-sign-up',
   templateUrl: './candidate-sign-up.html',
   styleUrls: ['./candidate-sign-up.css'],
-  imports: [FormsModule]
+  imports: [FormsModule, CommonModule]
 })
 export class CandidateSignUp {
   model: RegisterForm = {
@@ -69,26 +70,27 @@ export class CandidateSignUp {
     this.loading = true;
     this.auth.register(payload).subscribe({
       next: () => {
-        // After successful registration, auto-login the newly registered user
-        this.auth.login(this.model.email, this.model.password).subscribe({
-          next: () => {
-            this.loading = false;
-            void this.router.navigate(['/candidate/dashboard']);
-          },
-          error: (err) => {
-            this.loading = false;
-            if (err?.status === 0) this.error = 'Unable to contact server. Registration succeeded but auto-login failed.';
-            else this.error = err?.error?.message ?? 'Registration succeeded but auto-login failed. Please sign in.';
-            // ensure the user is not left authenticated as a previous user
-            this.auth.logout();
-            void this.router.navigate(['/candidate/sign-in']);
-          }
-        });
+        this.loading = false;
+        // Registration succeeded. Redirect user to sign-in so they can login.
+        void this.router.navigate(['/candidate/sign-in'], { queryParams: { registered: '1', email: this.model.email } });
       },
       error: (err) => {
         this.loading = false;
-        if (err?.status === 0) this.error = 'Unable to contact server. Please try again later.';
-        else this.error = err?.error?.message ?? 'Registration failed';
+        if (err?.status === 0) {
+          this.error = 'Unable to contact server. Please try again later.';
+          return;
+        }
+
+        const serverErr = err?.error;
+        if (serverErr) {
+          if (typeof serverErr === 'string') this.error = serverErr;
+          else if (typeof serverErr.message === 'string') this.error = serverErr.message;
+          else this.error = JSON.stringify(serverErr);
+        } else if (err?.message) {
+          this.error = err.message;
+        } else {
+          this.error = 'Registration failed';
+        }
       }
     });
   }
