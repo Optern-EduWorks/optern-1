@@ -18,6 +18,13 @@ export interface Job {
   posted: string;
   logo: string;
   priority: string;
+  // optional fields used by recruiter UI
+  status?: string;
+  icon?: string;
+  workMode?: string;
+  tags?: { label: string; color?: string }[];
+  requirements?: string[];
+  benefits?: string[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -51,6 +58,14 @@ export class JobService {
       posted: posted ?? new Date().toLocaleDateString(),
       logo: server.logo ?? 'https://i.imgur.com/2JV8V4A.png',
       priority: server.priority ?? server.category ?? server.Category ?? 'medium priority'
+      ,
+      // populate optional recruiter UI fields
+      status: server.status ?? server.Status ?? 'active',
+      icon: (server.title ?? server.Title ?? 'U').toString().charAt(0).toUpperCase(),
+      workMode: server.workMode ?? server.WorkMode ?? server.workType ?? 'Remote',
+  tags: skillsArray.map((s: string) => ({ label: s, color: 'blue' })),
+      requirements: server.requirements ?? (server.Requirements ? server.Requirements.split(',') : []) ?? [],
+      benefits: server.benefits ?? (server.Benefits ? server.Benefits.split(',') : []) ?? []
     } as Job;
   }
 
@@ -60,5 +75,17 @@ export class JobService {
 
   get(id: number) {
     return this.http.get<any>(`${this.baseUrl}/${id}`).pipe(map(item => this.mapServerToUi(item)));
+  }
+
+  create(payload: any) {
+    return this.http.post<any>(this.baseUrl, payload).pipe(map(item => this.mapServerToUi(item)));
+  }
+
+  update(id: number, payload: any) {
+    return this.http.put(`${this.baseUrl}/${id}`, payload);
+  }
+
+  delete(id: number) {
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }

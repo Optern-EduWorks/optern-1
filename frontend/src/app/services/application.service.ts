@@ -25,4 +25,12 @@ export class ApplicationService {
   create(payload: any) {
     return this.http.post(this.baseUrl, payload);
   }
+
+  update(id: number, payload: any) {
+    return this.http.put(`${this.baseUrl}/${id}`, payload);
+  }
+
+  delete(id: number) {
+    return this.http.delete(`${this.baseUrl}/${id}`);
+  }
 }

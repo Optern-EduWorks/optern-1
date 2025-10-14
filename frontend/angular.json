@@ -55,12 +55,16 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "optern-student:build:production"
             },
             "development": {
-              "buildTarget": "optern-student:build:development"
+              "buildTarget": "optern-student:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

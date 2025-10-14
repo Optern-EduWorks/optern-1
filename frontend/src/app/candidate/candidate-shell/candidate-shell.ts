@@ -1,23 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../sidebar/sidebar';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-candidate-shell',
   standalone: true,
-  imports: [SidebarComponent, RouterModule],
+  imports: [SidebarComponent, RouterModule, CommonModule],
   templateUrl: './candidate-shell.html',
   styleUrls: ['./candidate-shell.css']
 })
 export class CandidateShellComponent {
   constructor(private auth: AuthService, private router: Router) {}
-
-  get username(): string | null {
-    const user = this.auth.getCurrentUser();
-    if (!user) return null;
-    return user.username || user.email || null;
-  }
 
   logout() {
     this.auth.logout();

@@ -30,18 +30,29 @@ export class AuthService {
   login(email: string, password: string) {
     // Backend expects PascalCase property names
     const payload = { Email: email, Password: password };
-    return this.http.post<any>('/api/Auth/login', payload).pipe(
-      tap(serverUser => {
-        if (!serverUser) return;
-        // Map server user properties to frontend User shape
-        const user: User = {
-          userId: serverUser.userId ?? serverUser.UserId ?? serverUser.UserID ?? serverUser.Id ?? 0,
-          role: serverUser.role ?? serverUser.Role ?? '',
-          username: serverUser.username ?? serverUser.Username ?? '',
-          email: serverUser.email ?? serverUser.Email ?? ''
-        };
-        this.currentUserSubject.next(user);
-        try { localStorage.setItem('optern_user', JSON.stringify(user)); } catch {}
+    return this.http.post<any>('/api/Auth/login', payload, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).pipe(
+      tap({
+        next: (serverUser) => {
+          if (!serverUser) return;
+          // Backend now returns PascalCase (UserId, Role, Username, Email)
+          // Map to our frontend User interface
+          const user: User = {
+            userId: serverUser.UserId || serverUser.userId || 0,
+            role: serverUser.Role || serverUser.role || '',
+            username: serverUser.Username || serverUser.username || '',
+            email: serverUser.Email || serverUser.email || ''
+          };
+          this.currentUserSubject.next(user);
+          try { localStorage.setItem('optern_user', JSON.stringify(user)); } catch {}
+        },
+        error: (error) => {
+          // Log error for debugging but don't expose internal details
+          console.error('Login error:', error);
+        }
       })
     );
   }

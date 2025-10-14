@@ -5,7 +5,7 @@
     </div>
     <h2>Welcome back</h2>
     <p class="portal-text">Candidate Portal</p>
-    <form (submit)="onSubmit($event)">
+  <form (ngSubmit)="onSubmit($event)" onsubmit="return false;" novalidate>
       <div class="form-group">
         <label for="email">Email or Username</label>
         <input
@@ -30,7 +30,7 @@
           [(ngModel)]="model.password"
         />
       </div>
-      <button class="login-button" type="submit">Sign In</button>
+  <button class="login-button" type="submit">Sign In</button>
       <div *ngIf="error" class="error" style="margin-top:12px">{{ error }}</div>
       <div *ngIf="successMessage" class="success" style="margin-top:12px">{{ successMessage }}</div>
       <!-- test helper removed for normal operation -->
