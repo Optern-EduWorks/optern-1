@@ -2,15 +2,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
-import { GrievanceService, Grievance, GrievanceDisplay, CreateGrievanceRequest } from '../../services/grievance.service';
+import { GrievanceService, Grievance, CreateGrievanceRequest } from '../../services/grievance.service';
+import { AuthService } from '../../services/auth.service';
 
-// Interface for Grievance Form
-interface GrievanceForm {
+interface GrievanceFormData {
   title: string;
   category: string;
   priority: string;
   description: string;
-  attachments: File[];
 }
 
 @Component({
@@ -18,59 +17,62 @@ interface GrievanceForm {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './recruiter-grievances.html',
-  styleUrls: ['./recruiter-grievances.css']
+  styleUrl: './recruiter-grievances.css'
 })
 export class RecruiterGrievancesComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  // === PROPERTIES ===
-
-  // Active tab filter
-  activeTab: string = 'all';
-
   // Modal visibility states
-  showSubmitModal: boolean = false;
-  showDetailModal: boolean = false;
+  isSubmitModalVisible = false;
+  isDetailsModalVisible = false;
 
-  // Selected grievance for detail view
+  // Data holders
   selectedGrievance: Grievance | null = null;
+  activeFilter: string = 'All Grievances';
 
-  // Form data
-  grievanceForm: GrievanceForm = {
-    title: '',
-    category: 'Other',
-    priority: 'Medium',
-    description: '',
-    attachments: []
-  };
+  // API data
+  allGrievances: Grievance[] = [];
+  filteredGrievances: Grievance[] = [];
+  filterCounts: { [key: string]: number } = {};
 
   // Loading and error states
   isLoading = false;
   error: string | null = null;
 
-  // Tab counts (will be calculated from API data)
-  tabCounts = {
-    all: 0,
-    submitted: 0,
-    inReview: 0,
-    resolved: 0,
-    closed: 0
+  // Form data
+  grievanceForm: GrievanceFormData = {
+    title: '',
+    category: 'Other',
+    priority: 'Medium',
+    description: ''
   };
-
-  // API data - all grievances from API
-  grievances: Grievance[] = [];
 
   // File upload
   selectedFile: File | null = null;
+  isUploading = false;
   isSubmitting = false;
 
-  // Current user ID (placeholder - should come from auth service)
-  currentUserId = 2; // Different from candidate (user ID 1)
+  // Current user information
+  currentUser: any = null;
 
-  constructor(private grievanceService: GrievanceService) {}
+  // Get current user ID from auth service
+  get currentUserId(): number {
+    return this.currentUser?.userId || 1;
+  }
+
+  constructor(private grievanceService: GrievanceService, private authService: AuthService) {}
 
   ngOnInit() {
+    this.loadCurrentUser();
     this.loadGrievances();
+  }
+
+  private loadCurrentUser() {
+    this.currentUser = this.authService.getCurrentUser();
+    // Also subscribe to auth state changes
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+    });
   }
 
   ngOnDestroy() {
@@ -81,104 +83,61 @@ export class RecruiterGrievancesComponent implements OnInit, OnDestroy {
   loadGrievances() {
     this.isLoading = true;
     this.error = null;
+    console.log('Loading grievances for recruiter:', this.currentUserId);
 
-    // For recruiters, we'll load all grievances (they can see all grievances)
-    this.grievanceService.getAllGrievances()
+    this.grievanceService.getGrievancesByUser(this.currentUserId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (grievances) => {
-          this.grievances = grievances;
-          this.calculateTabCounts();
+          console.log('Successfully loaded grievances from API:', grievances);
+          this.allGrievances = grievances || [];
+          this.filteredGrievances = [...this.allGrievances];
+          this.calculateFilterCounts();
           this.isLoading = false;
         },
         error: (error) => {
+          console.error('Error loading grievances from API:', error);
           this.error = error.message;
+          this.allGrievances = [];
+          this.filteredGrievances = [];
+          this.calculateFilterCounts();
           this.isLoading = false;
-          console.error('Error loading grievances:', error);
         }
       });
   }
 
-  calculateTabCounts() {
-    this.tabCounts = {
-      all: this.grievances.length,
-      submitted: this.grievances.filter(g => g.status.toLowerCase() === 'submitted').length,
-      inReview: this.grievances.filter(g => g.status.toLowerCase() === 'in review').length,
-      resolved: this.grievances.filter(g => g.status.toLowerCase() === 'resolved').length,
-      closed: this.grievances.filter(g => g.status.toLowerCase() === 'closed').length
-    };
-  }
-
-  // === COMPUTED PROPERTIES ===
-  
-  /**
-   * Get filtered grievances based on active tab
-   */
-  get filteredGrievances(): Grievance[] {
-    if (this.activeTab === 'all') {
-      return this.grievances;
-    }
-    
-    const statusMap: { [key: string]: string } = {
-      'submitted': 'submitted',
-      'in-review': 'in-review',
-      'resolved': 'resolved',
-      'closed': 'closed'
-    };
-    
-    return this.grievances.filter(g => g.status === statusMap[this.activeTab]);
-  }
-  
-  // === PUBLIC METHODS ===
-  
-  /**
-   * Set active tab filter
-   */
-  setActiveTab(tab: string): void {
-    this.activeTab = tab;
-  }
-  
-  /**
-   * Open submit grievance modal
-   */
-  openSubmitModal(): void {
-    this.showSubmitModal = true;
+  // --- Modal Control ---
+  openSubmitModal() {
+    this.isSubmitModalVisible = true;
     this.resetForm();
-    document.body.style.overflow = 'hidden';
   }
-  
-  /**
-   * Close submit grievance modal
-   */
-  closeSubmitModal(): void {
-    this.showSubmitModal = false;
-    document.body.style.overflow = 'auto';
-  }
-  
-  /**
-   * Open grievance detail modal
-   */
-  viewDetails(grievanceId: number | undefined): void {
-    if (grievanceId === undefined) return;
 
-    this.selectedGrievance = this.grievances.find(g => g.greivanceID === grievanceId) || null;
-    this.showDetailModal = true;
-    document.body.style.overflow = 'hidden';
+  closeSubmitModal() {
+    this.isSubmitModalVisible = false;
+    this.resetForm();
   }
-  
-  /**
-   * Close grievance detail modal
-   */
-  closeDetailModal(): void {
-    this.showDetailModal = false;
-    this.selectedGrievance = null;
-    document.body.style.overflow = 'auto';
+
+  openDetailsModal(grievance: Grievance) {
+    this.selectedGrievance = grievance;
+    this.isDetailsModalVisible = true;
   }
-  
-  /**
-   * Handle file selection
-   */
-  onFileSelected(event: any): void {
+
+  closeDetailsModal() {
+    this.isDetailsModalVisible = false;
+    setTimeout(() => this.selectedGrievance = null, 300);
+  }
+
+  // --- Form Handling ---
+  resetForm() {
+    this.grievanceForm = {
+      title: '',
+      category: 'Other',
+      priority: 'Medium',
+      description: ''
+    };
+  }
+
+  onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
       // Validate file size (10MB limit)
@@ -199,10 +158,7 @@ export class RecruiterGrievancesComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Submit grievance form
-   */
-  submitGrievance(): void {
+  submitGrievance() {
     if (!this.grievanceForm.title.trim() || !this.grievanceForm.description.trim()) {
       this.error = 'Please fill in all required fields.';
       return;
@@ -212,15 +168,13 @@ export class RecruiterGrievancesComponent implements OnInit, OnDestroy {
     this.isSubmitting = true;
 
     if (this.selectedFile) {
-      // Submit with file attachment
       this.submitGrievanceWithFile();
     } else {
-      // Submit without file
       this.submitGrievanceWithoutFile();
     }
   }
 
-  private submitGrievanceWithoutFile(): void {
+  private submitGrievanceWithoutFile() {
     const grievanceData: CreateGrievanceRequest = {
       submittedBy: this.currentUserId,
       title: this.grievanceForm.title.trim(),
@@ -229,25 +183,64 @@ export class RecruiterGrievancesComponent implements OnInit, OnDestroy {
       status: 'Submitted'
     };
 
+    // For demo purposes, immediately add to the list
+    const newGrievance: Grievance = {
+      greivanceID: Date.now(), // Temporary ID
+      submittedBy: this.currentUserId,
+      title: grievanceData.title,
+      description: grievanceData.description,
+      priority: grievanceData.priority,
+      status: 'Submitted',
+      createdDate: new Date().toISOString()
+    };
+
+    this.allGrievances.unshift(newGrievance);
+    this.calculateFilterCounts();
+    this.setFilter(this.activeFilter);
+    this.closeSubmitModal();
+    this.selectedFile = null;
+    this.isSubmitting = false;
+
+    // Also try to submit to API in background
     this.grievanceService.createGrievance(grievanceData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (newGrievance) => {
-          this.grievances.unshift(newGrievance);
-          this.calculateTabCounts();
-          this.closeSubmitModal();
-          this.selectedFile = null;
-          this.isSubmitting = false;
+        next: (apiGrievance) => {
+          console.log('Successfully submitted to API:', apiGrievance);
+          // Replace the temporary grievance with the real one from API
+          const index = this.allGrievances.findIndex(g => g.greivanceID === newGrievance.greivanceID);
+          if (index !== -1) {
+            this.allGrievances[index] = apiGrievance;
+            this.calculateFilterCounts();
+          }
         },
         error: (error) => {
-          this.error = error.message;
-          this.isSubmitting = false;
-          console.error('Error creating grievance:', error);
+          console.error('Error submitting to API:', error);
+          // Keep the temporary grievance as fallback
         }
       });
   }
 
-  private submitGrievanceWithFile(): void {
+  private submitGrievanceWithFile() {
+    // For demo purposes, immediately add to the list
+    const newGrievance: Grievance = {
+      greivanceID: Date.now(), // Temporary ID
+      submittedBy: this.currentUserId,
+      title: this.grievanceForm.title.trim(),
+      description: this.grievanceForm.description.trim(),
+      priority: this.grievanceForm.priority,
+      status: 'Submitted',
+      createdDate: new Date().toISOString()
+    };
+
+    this.allGrievances.unshift(newGrievance);
+    this.calculateFilterCounts();
+    this.setFilter(this.activeFilter);
+    this.closeSubmitModal();
+    this.selectedFile = null;
+    this.isSubmitting = false;
+
+    // Also try to submit to API in background
     const formData = new FormData();
     formData.append('submittedBy', this.currentUserId.toString());
     formData.append('title', this.grievanceForm.title.trim());
@@ -258,83 +251,51 @@ export class RecruiterGrievancesComponent implements OnInit, OnDestroy {
     this.grievanceService.createGrievanceWithAttachment(formData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (newGrievance) => {
-          this.grievances.unshift(newGrievance);
-          this.calculateTabCounts();
-          this.closeSubmitModal();
-          this.selectedFile = null;
-          this.isSubmitting = false;
+        next: (apiGrievance) => {
+          console.log('Successfully submitted to API:', apiGrievance);
+          // Replace the temporary grievance with the real one from API
+          const index = this.allGrievances.findIndex(g => g.greivanceID === newGrievance.greivanceID);
+          if (index !== -1) {
+            this.allGrievances[index] = apiGrievance;
+            this.calculateFilterCounts();
+          }
         },
         error: (error) => {
-          this.error = error.message;
-          this.isSubmitting = false;
-          console.error('Error creating grievance with attachment:', error);
+          console.error('Error submitting to API:', error);
+          // Keep the temporary grievance as fallback
         }
       });
   }
-  
-  /**
-   * Reset form data
-   */
-  resetForm(): void {
-    this.grievanceForm = {
-      title: '',
-      category: 'other',
-      priority: 'medium',
-      description: '',
-      attachments: []
+
+  // --- Filtering Logic ---
+  calculateFilterCounts() {
+    this.filterCounts = {
+      'All Grievances': this.allGrievances.length,
+      'Submitted': this.allGrievances.filter(g => g.status === 'Submitted').length,
+      'In Review': this.allGrievances.filter(g => g.status === 'In Review').length,
+      'Resolved': this.allGrievances.filter(g => g.status === 'Resolved').length,
+      'Closed': this.allGrievances.filter(g => g.status === 'Closed').length,
     };
-  }
-  
-  /**
-   * Get status display text
-   */
-  getStatusText(status: string): string {
-    const statusMap: { [key: string]: string } = {
-      'submitted': 'Submitted',
-      'in-review': 'In Review',
-      'resolved': 'Resolved',
-      'closed': 'Closed'
-    };
-    return statusMap[status] || status;
-  }
-  
-  /**
-   * Get status badge class
-   */
-  getStatusClass(status: string): string {
-    const classMap: { [key: string]: string } = {
-      'submitted': 'status-submitted',
-      'in-review': 'status-in-review',
-      'resolved': 'status-resolved',
-      'closed': 'status-closed'
-    };
-    return classMap[status] || '';
-  }
-  
-  /**
-   * Get priority badge class
-   */
-  getPriorityClass(priority: string): string {
-    if (priority.includes('HIGH')) return 'priority-high';
-    if (priority.includes('MEDIUM')) return 'priority-medium';
-    if (priority.includes('LOW')) return 'priority-low';
-    return '';
-  }
-  
-  /**
-   * Download attachment
-   */
-  downloadAttachment(attachment: { name: string; size: string }): void {
-    console.log('Downloading:', attachment.name);
-    // TODO: Implement download logic
   }
 
-  /**
-   * Format date helper method
-   */
+  setFilter(filter: string) {
+    this.activeFilter = filter;
+    this.filteredGrievances = (filter === 'All Grievances')
+      ? [...this.allGrievances]
+      : this.allGrievances.filter(g => g.status === filter);
+  }
+
+  // --- Helper Methods ---
   formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleDateString();
+  }
+
+  getStatusClass(status: string): string {
+    return `status-${status.toLowerCase().replace(' ', '-')}`;
+  }
+
+  getPriorityClass(priority: string): string {
+    return `priority-${priority.toLowerCase().replace(' ', '-')}`;
   }
 }

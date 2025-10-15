@@ -11,67 +11,84 @@
       <div class="form-row">
         <div class="form-group">
           <label for="firstName">First Name</label>
-          <input 
-            type="text" 
-            id="firstName" 
+          <input
+            type="text"
+            id="firstName"
             class="form-input"
+            [(ngModel)]="model.firstName"
+            name="firstName"
+            required
           />
         </div>
-        
+
         <div class="form-group">
           <label for="lastName">Last Name</label>
-          <input 
-            type="text" 
-            id="lastName" 
+          <input
+            type="text"
+            id="lastName"
             class="form-input"
+            [(ngModel)]="model.lastName"
+            name="lastName"
+            required
           />
         </div>
       </div>
-      
+
       <div class="form-group">
         <label for="email">Email</label>
-        <input 
-          type="email" 
-          id="email" 
+        <input
+          type="email"
+          id="email"
           class="form-input"
+          [(ngModel)]="model.email"
+          name="email"
+          required
         />
       </div>
-      
+
       <div class="form-row">
         <div class="form-group">
           <label for="password">Password</label>
-          <input 
-            type="password" 
-            id="password" 
+          <input
+            type="password"
+            id="password"
             class="form-input"
+            [(ngModel)]="model.password"
+            name="password"
+            required
           />
         </div>
-        
+
         <div class="form-group">
           <label for="confirmPassword">Confirm Password</label>
-          <input 
-            type="password" 
-            id="confirmPassword" 
+          <input
+            type="password"
+            id="confirmPassword"
             class="form-input"
+            [(ngModel)]="model.confirmPassword"
+            name="confirmPassword"
+            required
           />
         </div>
       </div>
-      
+
       <div class="form-group">
         <label for="role">I am a</label>
-        <select id="role" class="form-select">
+        <select id="role" class="form-select" [(ngModel)]="model.role" name="role">
           <option value="recruiter">Recruiter</option>
           <option value="student">Student</option>
           <option value="professional">Professional</option>
         </select>
       </div>
-      
+
       <div class="form-group">
         <label for="company">Company Name</label>
-        <input 
-          type="text" 
-          id="company" 
+        <input
+          type="text"
+          id="company"
           class="form-input"
+          [(ngModel)]="model.companyName"
+          name="companyName"
         />
       </div>
       

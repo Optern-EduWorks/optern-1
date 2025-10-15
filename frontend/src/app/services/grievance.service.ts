@@ -12,6 +12,9 @@ export interface Grievance {
   createdDate: string;
   priority: string;
   submitter?: any;
+  attachmentFileName?: string;
+  attachmentFilePath?: string;
+  attachmentFileSize?: number;
 }
 
 // Extended interface for frontend use with computed properties
@@ -60,14 +63,21 @@ export class GrievanceService {
 
   // Create new grievance
   createGrievance(grievance: CreateGrievanceRequest): Observable<Grievance> {
+    console.log('Creating grievance:', grievance);
     const newGrievance = {
       ...grievance,
       status: grievance.status || 'Submitted',
       createdDate: grievance.createdDate || new Date().toISOString()
     };
 
-    return this.http.post<Grievance>(this.apiUrl, newGrievance)
+    return this.http.post<Grievance>(this.apiUrl, newGrievance, {
+      timeout: 30000 // 30 second timeout
+    })
       .pipe(
+        map(response => {
+          console.log('Grievance created successfully:', response);
+          return response;
+        }),
         catchError(this.handleError)
       );
   }
@@ -85,8 +95,16 @@ export class GrievanceService {
 
   // Create grievance with file attachment
   createGrievanceWithAttachment(formData: FormData): Observable<Grievance> {
-    return this.http.post<Grievance>(`${this.apiUrl}/create-with-attachment`, formData)
+    console.log('Creating grievance with attachment...');
+    return this.http.post<Grievance>(`${this.apiUrl}/create-with-attachment`, formData, {
+      timeout: 60000, // 60 second timeout for file uploads
+      reportProgress: true
+    })
       .pipe(
+        map(response => {
+          console.log('Grievance with attachment created successfully:', response);
+          return response;
+        }),
         catchError(this.handleError)
       );
   }

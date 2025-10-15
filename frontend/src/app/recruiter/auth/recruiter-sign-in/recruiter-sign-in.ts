@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
@@ -16,8 +16,17 @@ interface LoginForm { email: string; password: string }
 export class RecruiterSignIn {
   model: LoginForm = { email: '', password: '' };
   error: string | null = null;
+  successMessage: string | null = null;
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(private router: Router, private auth: AuthService, private route: ActivatedRoute) {
+    // check for registration redirect
+    const reg = this.route.snapshot.queryParamMap.get('registered');
+    const email = this.route.snapshot.queryParamMap.get('email');
+    if (reg) {
+      this.successMessage = 'Account created successfully. Please sign in.';
+      if (email) this.model.email = email;
+    }
+  }
 
   onSubmit(event: Event) {
     event.preventDefault();
@@ -50,6 +59,20 @@ export class RecruiterSignIn {
         }
       }
     });
+  }
+
+  loginWithCredentials(email: string, password: string) {
+    this.model.email = email;
+    this.model.password = password;
+    this.onSubmit(new Event('submit'));
+  }
+
+  navigateToSignUp() {
+    this.router.navigate(['/recruiter/sign-up']);
+  }
+
+  navigateToHome() {
+    this.router.navigate(['/']);
   }
 
   goToSignUp(event: Event) {

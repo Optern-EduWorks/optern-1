@@ -1,6 +1,7 @@
 using JobPortalAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
+using Microsoft.Data.Sqlite;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,7 @@ builder.Services.AddControllers()
     });
 
 builder.Services.AddDbContext<JobPortalContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
 // CORS: read allowed origins from configuration (appsettings.json) so it's configurable

@@ -1,58 +1,33 @@
 <div class="grievances-container">
   <!-- Page Header -->
-  <div class="page-header">
+  <header class="page-header">
     <div class="header-content">
-      <h1 class="page-title"><span class="highlight">Grievances</span> & Support</h1>
-      <p class="page-description">Submit and track your concerns. We're here to help resolve any issues.</p>
+        <h1><i class="bi bi-shield-exclamation"></i> Grievances & Support</h1>
+        <p>Submit and track your concerns. We're here to help resolve any issues.</p>
     </div>
-    <button class="submit-grievance-btn" (click)="openSubmitModal()">
-      <span class="plus-icon">+</span> Submit Grievance
-    </button>
-  </div>
+    <div class="header-actions">
+      <!-- Button to open the submission modal -->
+      <button class="submit-grievance-btn" (click)="openSubmitModal()">
+        <i class="bi bi-plus-lg"></i> Submit Grievance
+      </button>
+    </div>
+  </header>
 
-  <!-- Tabs Navigation -->
-  <div class="tabs-navigation">
-    <button 
-      class="tab-btn" 
-      [class.active]="activeTab === 'all'"
-      (click)="setActiveTab('all')">
-      All Grievances
-      <span class="tab-count">{{ tabCounts.all }}</span>
-    </button>
-    <button 
-      class="tab-btn" 
-      [class.active]="activeTab === 'submitted'"
-      (click)="setActiveTab('submitted')">
-      Submitted
-      <span class="tab-count">{{ tabCounts.submitted }}</span>
-    </button>
-    <button 
-      class="tab-btn" 
-      [class.active]="activeTab === 'in-review'"
-      (click)="setActiveTab('in-review')">
-      In Review
-      <span class="tab-count">{{ tabCounts.inReview }}</span>
-    </button>
-    <button 
-      class="tab-btn" 
-      [class.active]="activeTab === 'resolved'"
-      (click)="setActiveTab('resolved')">
-      Resolved
-      <span class="tab-count">{{ tabCounts.resolved }}</span>
-    </button>
-    <button 
-      class="tab-btn" 
-      [class.active]="activeTab === 'closed'"
-      (click)="setActiveTab('closed')">
-      Closed
-      <span class="tab-count">{{ tabCounts.closed }}</span>
-    </button>
+  <!-- Filter Controls -->
+  <div class="controls-bar">
+    <div class="status-filters">
+      <button *ngFor="let filter of ['All Grievances', 'Submitted', 'In Review', 'Resolved', 'Closed']"
+              [class.active]="activeFilter === filter"
+              (click)="setFilter(filter)">
+        {{ filter }} <span class="filter-count">{{ filterCounts[filter] || 0 }}</span>
+      </button>
+    </div>
   </div>
 
   <!-- Loading State -->
   <div *ngIf="isLoading" class="loading-state">
     <i class="bi bi-hourglass-split"></i>
-    <p>Loading grievances...</p>
+    <p>Loading your grievances...</p>
   </div>
 
   <!-- Error State -->
@@ -66,186 +41,146 @@
   <div *ngIf="!isLoading && !error && filteredGrievances.length === 0" class="empty-state">
     <i class="bi bi-shield-exclamation"></i>
     <h3>No grievances found</h3>
-    <p>No grievances have been submitted yet.</p>
+    <p>You haven't submitted any grievances yet. Click the button above to submit your first grievance.</p>
   </div>
 
   <!-- Grievances List -->
-  <div class="grievances-list" *ngIf="!isLoading && !error && filteredGrievances.length > 0">
-    <div class="grievance-card" *ngFor="let grievance of filteredGrievances">
-      <div class="grievance-header">
-        <div class="grievance-title-section">
-          <h3 class="grievance-title">{{ grievance.title }}</h3>
-          <span class="priority-badge" [ngClass]="getPriorityClass(grievance.priority)">
-            {{ grievance.priority }}
-          </span>
+  <div class="grievance-list" *ngIf="!isLoading && !error && filteredGrievances.length > 0">
+    <div class="grievance-card" *ngFor="let g of filteredGrievances">
+      <div class="card-main">
+        <div class="card-header">
+          <h3 class="grievance-title">{{ g.title }}</h3>
+          <div class="grievance-tags">
+            <span class="priority-tag" [ngClass]="getPriorityClass(g.priority)">{{ g.priority }}</span>
+            <span class="status-tag" [ngClass]="getStatusClass(g.status)">{{ g.status }}</span>
+          </div>
         </div>
-        <div class="grievance-actions">
-          <span class="status-badge" [ngClass]="getStatusClass(grievance.status)">
-            <span class="status-icon" *ngIf="grievance.status === 'in-review'">⚠</span>
-            <span class="status-icon" *ngIf="grievance.status === 'resolved'">✓</span>
-            <span class="status-icon" *ngIf="grievance.status === 'closed'">○</span>
-            {{ getStatusText(grievance.status) }}
-          </span>
-          <button class="view-details-btn" (click)="viewDetails(grievance.greivanceID)">
-            <span class="eye-icon">👁</span> View Details
+        <div class="grievance-meta">
+          <span>Submitted: {{ formatDate(g.createdDate) }}</span> &bull;
+          <span>By: User #{{ g.submittedBy }}</span>
+        </div>
+        <p class="grievance-description">{{ g.description }}</p>
+      </div>
+      <div class="card-actions">
+        <button class="view-details-btn" (click)="openDetailsModal(g)">View Details</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================================= -->
+<!--                            MODALS START HERE                             -->
+<!-- ======================================================================= -->
+
+<!-- Modal 1: Submit a Grievance -->
+<div class="modal-overlay" *ngIf="isSubmitModalVisible" (click)="closeSubmitModal()">
+  <div class="modal-content submit-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">Submit a Grievance</h2>
+      <button class="modal-close-btn" (click)="closeSubmitModal()"><i class="bi bi-x"></i></button>
+    </div>
+    <p class="modal-subtitle">Describe your concern and we'll help resolve it.</p>
+    <form class="grievance-form" (ngSubmit)="submitGrievance()">
+      <div class="form-group">
+        <label for="title">Title *</label>
+        <input type="text" id="title" [(ngModel)]="grievanceForm.title" name="title"
+               placeholder="Brief summary of your issue">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" [(ngModel)]="grievanceForm.category" name="category">
+            <option value="Other">Other</option>
+            <option value="Application Related">Application Related</option>
+            <option value="Technical Issue">Technical Issue</option>
+            <option value="Discrimination">Discrimination</option>
+            <option value="Company Related">Company Related</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="priority">Priority</label>
+          <select id="priority" [(ngModel)]="grievanceForm.priority" name="priority">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description">Description *</label>
+        <textarea id="description" [(ngModel)]="grievanceForm.description" name="description"
+                  rows="4" placeholder="Please provide detailed information about your issue..."></textarea>
+      </div>
+      <div class="form-group">
+        <label for="file-upload">Attachments (Optional)</label>
+        <div class="file-upload-container">
+          <input
+            type="file"
+            id="file-upload"
+            class="file-input"
+            (change)="onFileSelected($event)"
+            accept=".png,.jpg,.jpeg,.pdf,.doc,.docx"
+            style="display: none;">
+          <label for="file-upload" class="file-drop-area" [class.file-selected]="selectedFile">
+            <div class="upload-content">
+              <i class="bi bi-cloud-arrow-up" *ngIf="!selectedFile"></i>
+              <i class="bi bi-file-earmark-check" *ngIf="selectedFile"></i>
+              <div class="upload-text">
+                <span *ngIf="!selectedFile">Click to upload or drag and drop</span>
+                <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
+              </div>
+              <small class="upload-hint" *ngIf="!selectedFile">PNG, JPG, PDF, DOC up to 10MB each</small>
+              <small class="file-size" *ngIf="selectedFile">({{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB)</small>
+            </div>
+          </label>
+        </div>
+        <div *ngIf="selectedFile" class="selected-file-actions">
+          <button type="button" class="remove-file-btn" (click)="selectedFile = null" title="Remove file">
+            <i class="bi bi-x"></i> Remove
           </button>
         </div>
       </div>
-
-      <div class="grievance-meta">
-        <span class="meta-item">Submitted: {{ formatDate(grievance.createdDate) }}</span>
-        <span class="meta-separator">•</span>
-        <span class="meta-item">By: User #{{ grievance.submittedBy }}</span>
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="closeSubmitModal()" [disabled]="isSubmitting">Cancel</button>
+        <button type="submit" class="submit-btn" [disabled]="!grievanceForm.title.trim() || !grievanceForm.description.trim() || isSubmitting">
+          <span class="loading-spinner" *ngIf="isSubmitting"></span>
+          {{ isSubmitting ? 'Submitting...' : 'Submit Grievance' }}
+        </button>
       </div>
-
-      <p class="grievance-description">{{ grievance.description }}</p>
-
-      <div class="grievance-footer">
-        <!-- Note: Attachments and responses are not in the current backend model -->
-      </div>
-    </div>
+    </form>
   </div>
 </div>
 
-<!-- Submit Grievance Modal -->
-<div class="modal-overlay" *ngIf="showSubmitModal" (click)="closeSubmitModal()">
-  <div class="modal-content submit-modal" (click)="$event.stopPropagation()">
-    <div class="modal-header">
-      <div>
-        <h2>Submit a Grievance</h2>
-        <p class="modal-subtitle">Describe your concern and we'll help resolve it.</p>
+<!-- Modal 2: View Grievance Details -->
+<div class="modal-overlay" *ngIf="isDetailsModalVisible && selectedGrievance" (click)="closeDetailsModal()">
+  <div class="modal-content details-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title">{{ selectedGrievance.title }}</h2>
+          <p class="modal-subtitle">Grievance #{{ selectedGrievance.greivanceID }}</p>
+        </div>
+        <button class="modal-close-btn" (click)="closeDetailsModal()"><i class="bi bi-x"></i></button>
       </div>
-      <button class="close-btn" (click)="closeSubmitModal()">×</button>
-    </div>
-
-    <div class="modal-body">
-      <form class="grievance-form">
-        <!-- Title Field -->
-        <div class="form-group full-width">
-          <label class="form-label">Title <span class="required">*</span></label>
-          <input 
-            type="text" 
-            class="form-input" 
-            placeholder="Brief summary of your issue"
-            [(ngModel)]="grievanceForm.title"
-            name="title">
-        </div>
-
-        <!-- Category and Priority -->
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Category <span class="required">*</span></label>
-            <select class="form-select" [(ngModel)]="grievanceForm.category" name="category">
-              <option value="technical">Technical Issue</option>
-              <option value="application">Application Related</option>
-              <option value="company">Company Related</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Priority <span class="required">*</span></label>
-            <select class="form-select" [(ngModel)]="grievanceForm.priority" name="priority">
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Description Field -->
-        <div class="form-group full-width">
-          <label class="form-label">Description <span class="required">*</span></label>
-          <textarea 
-            class="form-textarea" 
-            rows="5" 
-            placeholder="Please provide detailed information about your issue..."
-            [(ngModel)]="grievanceForm.description"
-            name="description"></textarea>
-        </div>
-
-        <!-- File Upload -->
-        <div class="form-group full-width">
-          <label class="form-label" for="file-upload">Attachments (Optional)</label>
-          <div class="file-upload-container">
-            <input
-              type="file"
-              id="file-upload"
-              class="file-input"
-              (change)="onFileSelected($event)"
-              accept=".png,.jpg,.jpeg,.pdf,.doc,.docx"
-              style="display: none;">
-            <label for="file-upload" class="file-drop-area" [class.file-selected]="selectedFile">
-              <div class="upload-content">
-                <i class="bi bi-cloud-arrow-up" *ngIf="!selectedFile"></i>
-                <i class="bi bi-file-earmark-check" *ngIf="selectedFile"></i>
-                <div class="upload-text">
-                  <span *ngIf="!selectedFile">Click to upload or drag and drop</span>
-                  <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
-                </div>
-                <small class="upload-hint" *ngIf="!selectedFile">PNG, JPG, PDF, DOC up to 10MB each</small>
-                <small class="file-size" *ngIf="selectedFile">({{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB)</small>
-              </div>
-            </label>
-          </div>
-          <div *ngIf="selectedFile" class="selected-file-actions">
-            <button type="button" class="remove-file-btn" (click)="selectedFile = null" title="Remove file">
-              <i class="bi bi-x"></i> Remove
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <div class="modal-footer">
-      <button class="cancel-btn" (click)="closeSubmitModal()" [disabled]="isSubmitting">Cancel</button>
-      <button class="submit-btn" (click)="submitGrievance()" [disabled]="!grievanceForm.title.trim() || !grievanceForm.description.trim() || isSubmitting">
-        <span class="send-icon" *ngIf="!isSubmitting">📤</span>
-        <span class="loading-spinner" *ngIf="isSubmitting"></span>
-        {{ isSubmitting ? 'Submitting...' : 'Submit Grievance' }}
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Grievance Detail Modal -->
-<div class="modal-overlay" *ngIf="showDetailModal && selectedGrievance" (click)="closeDetailModal()">
-  <div class="modal-content detail-modal" (click)="$event.stopPropagation()">
-    <button class="close-btn" (click)="closeDetailModal()">×</button>
-
-    <div class="detail-header">
-      <h2 class="detail-title">{{ selectedGrievance.title }}</h2>
-      <p class="detail-id">Grievance #{{ selectedGrievance.greivanceID }}</p>
-    </div>
-
-    <div class="detail-status-bar">
-      <span class="status-badge-large" [ngClass]="getStatusClass(selectedGrievance.status)">
-        {{ getStatusText(selectedGrievance.status) }}
-      </span>
-      <div class="detail-dates">
-        <p class="detail-date">Submitted: {{ formatDate(selectedGrievance.createdDate) }}</p>
-        <p class="detail-date">Submitted By: User #{{ selectedGrievance.submittedBy }}</p>
-      </div>
-    </div>
-
-    <div class="detail-meta">
-      <div class="meta-row">
-        <span class="meta-label">Priority:</span>
-        <span class="priority-badge-small" [ngClass]="getPriorityClass(selectedGrievance.priority)">
-          {{ selectedGrievance.priority }}
+      <div class="modal-meta-bar">
+        <span class="status-tag" [ngClass]="'status-' + selectedGrievance.status.toLowerCase().replace(' ', '-')">
+            <i class="bi" [ngClass]="{
+                'bi-arrow-in-right-circle': selectedGrievance.status === 'Submitted',
+                'bi-hourglass-split': selectedGrievance.status === 'In Review',
+                'bi-check2-circle': selectedGrievance.status === 'Resolved'
+            }"></i> {{ selectedGrievance.status }}
         </span>
+        <span class="date-info">Submitted: {{ formatDate(selectedGrievance.createdDate) }}</span>
+        <span class="date-info">Submitted By: User #{{ selectedGrievance.submittedBy }}</span>
       </div>
-    </div>
-
-    <div class="detail-section">
-      <h3 class="section-title">Description</h3>
-      <p class="section-content">{{ selectedGrievance.description }}</p>
-    </div>
-
-    <!-- Note: Attachments and responses are not in the current backend model -->
-
-    <div class="detail-footer">
-      <button class="close-detail-btn" (click)="closeDetailModal()">Close</button>
-    </div>
+      <div class="details-section">
+        <div class="detail-item">
+          <span>Priority</span>
+          <strong class="priority-tag" [ngClass]="getPriorityClass(selectedGrievance.priority)">{{ selectedGrievance.priority }}</strong>
+        </div>
+      </div>
+      <div class="details-section">
+        <h3>Description</h3>
+        <p>{{ selectedGrievance.description }}</p>
+      </div>
   </div>
 </div>

@@ -15,22 +15,22 @@ namespace db_apis.Migrations
                 name: "CandidateProfiles",
                 columns: table => new
                 {
-                    CandidateID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LinkedInProfile = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ResumeURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    GraduationYear = table.Column<int>(type: "int", nullable: false),
-                    College = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Course = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CandidateID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    FullName = table.Column<string>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: false),
+                    LinkedInProfile = table.Column<string>(type: "TEXT", nullable: false),
+                    Address = table.Column<string>(type: "TEXT", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Gender = table.Column<string>(type: "TEXT", nullable: false),
+                    Status = table.Column<string>(type: "TEXT", nullable: false),
+                    ResumeURL = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    GraduationYear = table.Column<int>(type: "INTEGER", nullable: false),
+                    College = table.Column<string>(type: "TEXT", nullable: false),
+                    Course = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,9 +41,9 @@ namespace db_apis.Migrations
                 name: "IndustryLookups",
                 columns: table => new
                 {
-                    IndustryID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IndustryName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    IndustryID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    IndustryName = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,9 +54,9 @@ namespace db_apis.Migrations
                 name: "InterviewStatusLookups",
                 columns: table => new
                 {
-                    InterviewStatusID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    InterviewStatusName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    InterviewStatusID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    InterviewStatusName = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,9 +67,9 @@ namespace db_apis.Migrations
                 name: "JobTypeLookups",
                 columns: table => new
                 {
-                    JobTypeID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    JobTypeName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    JobTypeID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    JobTypeName = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -80,9 +80,9 @@ namespace db_apis.Migrations
                 name: "LocationTypeLookups",
                 columns: table => new
                 {
-                    LocationTypeID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LocationTypeName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    LocationTypeID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    LocationTypeName = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,9 +93,9 @@ namespace db_apis.Migrations
                 name: "StatusLookups",
                 columns: table => new
                 {
-                    StatusID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StatusName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    StatusID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    StatusName = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,17 +106,17 @@ namespace db_apis.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    VerificationStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Role = table.Column<string>(type: "TEXT", nullable: false),
+                    Username = table.Column<string>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
+                    Status = table.Column<string>(type: "TEXT", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    VerificationStatus = table.Column<string>(type: "TEXT", nullable: false),
+                    Password = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,15 +127,15 @@ namespace db_apis.Migrations
                 name: "CandidateCertifications",
                 columns: table => new
                 {
-                    CandidateCertificationID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CandidateID = table.Column<int>(type: "int", nullable: false),
-                    CertificationID = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Organization = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Obtained = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Expiry = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CredentialUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CandidateCertificationID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CandidateID = table.Column<int>(type: "INTEGER", nullable: false),
+                    CertificationID = table.Column<int>(type: "INTEGER", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Organization = table.Column<string>(type: "TEXT", nullable: false),
+                    Obtained = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Expiry = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    CredentialUrl = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -152,14 +152,14 @@ namespace db_apis.Migrations
                 name: "CandidateEducations",
                 columns: table => new
                 {
-                    EducationID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CandidateID = table.Column<int>(type: "int", nullable: false),
-                    Institution = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Degree = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GraduationYear = table.Column<int>(type: "int", nullable: false),
-                    Grade = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Branch = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    EducationID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CandidateID = table.Column<int>(type: "INTEGER", nullable: false),
+                    Institution = table.Column<string>(type: "TEXT", nullable: false),
+                    Degree = table.Column<string>(type: "TEXT", nullable: false),
+                    GraduationYear = table.Column<int>(type: "INTEGER", nullable: false),
+                    Grade = table.Column<string>(type: "TEXT", nullable: false),
+                    Branch = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -176,15 +176,15 @@ namespace db_apis.Migrations
                 name: "CandidateExperiences",
                 columns: table => new
                 {
-                    ExperienceID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CandidateID = table.Column<int>(type: "int", nullable: false),
-                    JobTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Company = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Responsibilities = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsCurrent = table.Column<bool>(type: "bit", nullable: false)
+                    ExperienceID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CandidateID = table.Column<int>(type: "INTEGER", nullable: false),
+                    JobTitle = table.Column<string>(type: "TEXT", nullable: false),
+                    Company = table.Column<string>(type: "TEXT", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Responsibilities = table.Column<string>(type: "TEXT", nullable: false),
+                    IsCurrent = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -201,13 +201,13 @@ namespace db_apis.Migrations
                 name: "CandidateProjects",
                 columns: table => new
                 {
-                    ProjectID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CandidateID = table.Column<int>(type: "int", nullable: false),
-                    ProjectName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Technologies = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProjectUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ProjectID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CandidateID = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProjectName = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    Technologies = table.Column<string>(type: "TEXT", nullable: false),
+                    ProjectUrl = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -224,12 +224,12 @@ namespace db_apis.Migrations
                 name: "CandidateSkills",
                 columns: table => new
                 {
-                    SkillID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CandidateID = table.Column<int>(type: "int", nullable: false),
-                    SkillName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProficiencyLevel = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SkillType = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    SkillID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CandidateID = table.Column<int>(type: "INTEGER", nullable: false),
+                    SkillName = table.Column<string>(type: "TEXT", nullable: false),
+                    ProficiencyLevel = table.Column<string>(type: "TEXT", nullable: false),
+                    SkillType = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -246,15 +246,15 @@ namespace db_apis.Migrations
                 name: "Companies",
                 columns: table => new
                 {
-                    CompanyID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Website = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IndustryID = table.Column<int>(type: "int", nullable: false)
+                    CompanyID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Website = table.Column<string>(type: "TEXT", nullable: false),
+                    Size = table.Column<string>(type: "TEXT", nullable: false),
+                    Address = table.Column<string>(type: "TEXT", nullable: false),
+                    Phone = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    IndustryID = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -271,14 +271,14 @@ namespace db_apis.Migrations
                 name: "ActivityLogs",
                 columns: table => new
                 {
-                    ActivityID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: true),
-                    ActivityType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EntityType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EntityID = table.Column<int>(type: "int", nullable: true)
+                    ActivityID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserID = table.Column<int>(type: "INTEGER", nullable: true),
+                    ActivityType = table.Column<string>(type: "TEXT", nullable: false),
+                    EntityType = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    EntityID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -294,16 +294,16 @@ namespace db_apis.Migrations
                 name: "Announcements",
                 columns: table => new
                 {
-                    AnnouncementID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Audience = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsPinned = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorUserId = table.Column<int>(type: "int", nullable: false)
+                    AnnouncementID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    Type = table.Column<string>(type: "TEXT", nullable: false),
+                    Audience = table.Column<string>(type: "TEXT", nullable: false),
+                    IsPinned = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreatedBy = table.Column<int>(type: "INTEGER", nullable: false),
+                    ExpiryDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorUserId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -312,49 +312,50 @@ namespace db_apis.Migrations
                         name: "FK_Announcements_Users_CreatorUserId",
                         column: x => x.CreatorUserId,
                         principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Greivances",
+                name: "Grievances",
                 columns: table => new
                 {
-                    GreivanceID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SubmittedBy = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Priority = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SubmitterUserId = table.Column<int>(type: "int", nullable: false)
+                    GreivanceID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    SubmittedBy = table.Column<int>(type: "INTEGER", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    Status = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Priority = table.Column<string>(type: "TEXT", nullable: false),
+                    AttachmentFileName = table.Column<string>(type: "TEXT", nullable: true),
+                    AttachmentFilePath = table.Column<string>(type: "TEXT", nullable: true),
+                    AttachmentFileSize = table.Column<long>(type: "INTEGER", nullable: true),
+                    SubmitterUserId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Greivances", x => x.GreivanceID);
+                    table.PrimaryKey("PK_Grievances", x => x.GreivanceID);
                     table.ForeignKey(
-                        name: "FK_Greivances_Users_SubmitterUserId",
+                        name: "FK_Grievances_Users_SubmitterUserId",
                         column: x => x.SubmitterUserId,
                         principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Recruiters",
                 columns: table => new
                 {
-                    RecruiterID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CompanyID = table.Column<int>(type: "int", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    JobTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    RecruiterID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CompanyID = table.Column<int>(type: "INTEGER", nullable: false),
+                    FullName = table.Column<string>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
+                    JobTitle = table.Column<string>(type: "TEXT", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: false),
+                    Bio = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -371,20 +372,20 @@ namespace db_apis.Migrations
                 name: "Jobs",
                 columns: table => new
                 {
-                    JobID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CompanyID = table.Column<int>(type: "int", nullable: false),
-                    RecruiterID = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SalaryRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RemoteAllowed = table.Column<bool>(type: "bit", nullable: false),
-                    EmploymentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClosingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Skills = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    JobID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CompanyID = table.Column<int>(type: "INTEGER", nullable: false),
+                    RecruiterID = table.Column<int>(type: "INTEGER", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    Location = table.Column<string>(type: "TEXT", nullable: false),
+                    SalaryRange = table.Column<string>(type: "TEXT", nullable: false),
+                    RemoteAllowed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    EmploymentType = table.Column<string>(type: "TEXT", nullable: false),
+                    PostedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ClosingDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Skills = table.Column<string>(type: "TEXT", nullable: false),
+                    Category = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -407,15 +408,15 @@ namespace db_apis.Migrations
                 name: "Applications",
                 columns: table => new
                 {
-                    ApplicationID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    JobID = table.Column<int>(type: "int", nullable: false),
-                    CandidateID = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AppliedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CoverLetter = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ResumeUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    InterviewStatus = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ApplicationID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    JobID = table.Column<int>(type: "INTEGER", nullable: false),
+                    CandidateID = table.Column<int>(type: "INTEGER", nullable: false),
+                    Status = table.Column<string>(type: "TEXT", nullable: false),
+                    AppliedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CoverLetter = table.Column<string>(type: "TEXT", nullable: false),
+                    ResumeUrl = table.Column<string>(type: "TEXT", nullable: false),
+                    InterviewStatus = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -485,8 +486,8 @@ namespace db_apis.Migrations
                 column: "IndustryID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Greivances_SubmitterUserId",
-                table: "Greivances",
+                name: "IX_Grievances_SubmitterUserId",
+                table: "Grievances",
                 column: "SubmitterUserId");
 
             migrationBuilder.CreateIndex(
@@ -533,7 +534,7 @@ namespace db_apis.Migrations
                 name: "CandidateSkills");
 
             migrationBuilder.DropTable(
-                name: "Greivances");
+                name: "Grievances");
 
             migrationBuilder.DropTable(
                 name: "InterviewStatusLookups");
