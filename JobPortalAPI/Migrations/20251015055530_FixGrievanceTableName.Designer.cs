@@ -4,6 +4,7 @@ using JobPortalAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace db_apis.Migrations
 {
     [DbContext(typeof(JobPortalContext))]
-    partial class JobPortalContextModelSnapshot : ModelSnapshot
+    [Migration("20251015055530_FixGrievanceTableName")]
+    partial class FixGrievanceTableName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -435,15 +438,6 @@ namespace db_apis.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GreivanceID"));
-
-                    b.Property<string>("AttachmentFileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AttachmentFilePath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("AttachmentFileSize")
-                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");

@@ -72,10 +72,11 @@
     <div class="user-info">
       <img src="assets/user-profile.jpg" alt="User Avatar" class="user-avatar" />
       <div>
-        <div class="user-name">John Student</div>
-        <div class="user-university">University of Technology</div>
+        <div class="user-name">{{ currentUser?.username || 'Guest User' }}</div>
+        <div class="user-university">{{ currentUser?.email || 'Not logged in' }}</div>
         <div class="user-status">
-          <span class="status-dot"></span> Candidate
+          <span class="status-dot" [class]="currentUser?.role?.toLowerCase() || 'guest'"></span>
+          {{ currentUser?.role || 'Guest' }}
         </div>
       </div>
     </div>

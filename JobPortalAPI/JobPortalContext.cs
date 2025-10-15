@@ -29,7 +29,7 @@ namespace JobPortalAPI.Data
         public DbSet<CandidateProject> CandidateProjects { get; set; }
         public DbSet<CandidateCertification> CandidateCertifications { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
-        public DbSet<Greivance> Greivances { get; set; }
+        public DbSet<Grievance> Grievances { get; set; }
         public DbSet<ActivityLog> ActivityLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

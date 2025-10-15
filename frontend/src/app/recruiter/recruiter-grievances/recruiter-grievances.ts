@@ -1,20 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-// Interface for Grievance data structure
-interface Grievance {
-  id: number;
-  title: string;
-  category: string;
-  priority: 'HIGH PRIORITY' | 'MEDIUM PRIORITY' | 'LOW PRIORITY';
-  status: 'submitted' | 'in-review' | 'resolved' | 'closed';
-  submittedDate: string;
-  updatedDate: string;
-  description: string;
-  attachments: Array<{ name: string; size: string }>;
-  responses: Array<{ text: string; type: 'support' | 'user' }>;
-}
+import { Subject, takeUntil } from 'rxjs';
+import { GrievanceService, Grievance, GrievanceDisplay, CreateGrievanceRequest } from '../../services/grievance.service';
 
 // Interface for Grievance Form
 interface GrievanceForm {
@@ -32,107 +20,95 @@ interface GrievanceForm {
   templateUrl: './recruiter-grievances.html',
   styleUrls: ['./recruiter-grievances.css']
 })
-export class RecruiterGrievancesComponent {
-  
+export class RecruiterGrievancesComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   // === PROPERTIES ===
-  
+
   // Active tab filter
   activeTab: string = 'all';
-  
+
   // Modal visibility states
   showSubmitModal: boolean = false;
   showDetailModal: boolean = false;
-  
+
   // Selected grievance for detail view
   selectedGrievance: Grievance | null = null;
-  
+
   // Form data
   grievanceForm: GrievanceForm = {
     title: '',
-    category: 'other',
-    priority: 'medium',
+    category: 'Other',
+    priority: 'Medium',
     description: '',
     attachments: []
   };
-  
-  // Tab counts
+
+  // Loading and error states
+  isLoading = false;
+  error: string | null = null;
+
+  // Tab counts (will be calculated from API data)
   tabCounts = {
-    all: 4,
-    submitted: 1,
-    inReview: 1,
-    resolved: 1,
-    closed: 1
+    all: 0,
+    submitted: 0,
+    inReview: 0,
+    resolved: 0,
+    closed: 0
   };
-  
-  // Grievances data
-  grievances: Grievance[] = [
-    {
-      id: 1,
-      title: 'Candidate Profile Not Loading',
-      category: 'Technical Issue',
-      priority: 'MEDIUM PRIORITY',
-      status: 'in-review',
-      submittedDate: '1/15/2024',
-      updatedDate: '1/16/2024',
-      description: 'I am unable to view candidate profiles on the platform. The page shows a loading spinner but never loads the actual profile information.',
-      attachments: [
-        { name: 'screenshot_error.png', size: '245 KB' }
-      ],
-      responses: [
-        {
-          text: 'We are investigating this issue with our technical team. This appears to be affecting a small number of recruiters.',
-          type: 'support'
+
+  // API data - all grievances from API
+  grievances: Grievance[] = [];
+
+  // File upload
+  selectedFile: File | null = null;
+  isSubmitting = false;
+
+  // Current user ID (placeholder - should come from auth service)
+  currentUserId = 2; // Different from candidate (user ID 1)
+
+  constructor(private grievanceService: GrievanceService) {}
+
+  ngOnInit() {
+    this.loadGrievances();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  loadGrievances() {
+    this.isLoading = true;
+    this.error = null;
+
+    // For recruiters, we'll load all grievances (they can see all grievances)
+    this.grievanceService.getAllGrievances()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (grievances) => {
+          this.grievances = grievances;
+          this.calculateTabCounts();
+          this.isLoading = false;
+        },
+        error: (error) => {
+          this.error = error.message;
+          this.isLoading = false;
+          console.error('Error loading grievances:', error);
         }
-      ]
-    },
-    {
-      id: 2,
-      title: 'Posted Job Not Appearing',
-      category: 'Application Related',
-      priority: 'HIGH PRIORITY',
-      status: 'resolved',
-      submittedDate: '1/10/2024',
-      updatedDate: '1/12/2024',
-      description: 'I posted a new job opportunity yesterday but it is not showing up in the opportunities list for candidates to see.',
-      attachments: [],
-      responses: [
-        {
-          text: 'This issue has been resolved. Your job posting had pending approval which has now been completed. It is now live and visible to candidates.',
-          type: 'support'
-        }
-      ]
-    },
-    {
-      id: 3,
-      title: 'Payment Issue with Premium Features',
-      category: 'Company Related',
-      priority: 'HIGH PRIORITY',
-      status: 'closed',
-      submittedDate: '1/5/2024',
-      updatedDate: '1/8/2024',
-      description: 'I upgraded to premium recruiter account but I am still not able to access advanced search filters and candidate contact information.',
-      attachments: [],
-      responses: [
-        {
-          text: 'Your premium subscription has been activated successfully. All premium features are now available in your account.',
-          type: 'support'
-        }
-      ]
-    },
-    {
-      id: 4,
-      title: 'Unable to Export Candidate Data',
-      category: 'Technical Issue',
-      priority: 'LOW PRIORITY',
-      status: 'submitted',
-      submittedDate: '1/20/2024',
-      updatedDate: '1/20/2024',
-      description: 'The export to CSV function is not working when I try to download candidate shortlist data.',
-      attachments: [],
-      responses: []
-    }
-  ];
-  
+      });
+  }
+
+  calculateTabCounts() {
+    this.tabCounts = {
+      all: this.grievances.length,
+      submitted: this.grievances.filter(g => g.status.toLowerCase() === 'submitted').length,
+      inReview: this.grievances.filter(g => g.status.toLowerCase() === 'in review').length,
+      resolved: this.grievances.filter(g => g.status.toLowerCase() === 'resolved').length,
+      closed: this.grievances.filter(g => g.status.toLowerCase() === 'closed').length
+    };
+  }
+
   // === COMPUTED PROPERTIES ===
   
   /**
@@ -182,8 +158,10 @@ export class RecruiterGrievancesComponent {
   /**
    * Open grievance detail modal
    */
-  viewDetails(grievanceId: number): void {
-    this.selectedGrievance = this.grievances.find(g => g.id === grievanceId) || null;
+  viewDetails(grievanceId: number | undefined): void {
+    if (grievanceId === undefined) return;
+
+    this.selectedGrievance = this.grievances.find(g => g.greivanceID === grievanceId) || null;
     this.showDetailModal = true;
     document.body.style.overflow = 'hidden';
   }
@@ -198,23 +176,101 @@ export class RecruiterGrievancesComponent {
   }
   
   /**
-   * Handle file upload
+   * Handle file selection
    */
-  onFileSelect(event: any): void {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      this.grievanceForm.attachments = Array.from(files);
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      // Validate file size (10MB limit)
+      if (file.size > 10 * 1024 * 1024) {
+        this.error = 'File size cannot exceed 10MB.';
+        return;
+      }
+
+      // Validate file type
+      const allowedTypes = ['image/png', 'image/jpeg', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      if (!allowedTypes.includes(file.type)) {
+        this.error = 'Invalid file type. Allowed types: PNG, JPG, PDF, DOC, DOCX.';
+        return;
+      }
+
+      this.selectedFile = file;
+      this.error = null;
     }
   }
-  
+
   /**
    * Submit grievance form
    */
   submitGrievance(): void {
-    console.log('Submitting grievance:', this.grievanceForm);
-    // TODO: Implement API call to submit grievance
-    this.closeSubmitModal();
-    // Show success message or refresh list
+    if (!this.grievanceForm.title.trim() || !this.grievanceForm.description.trim()) {
+      this.error = 'Please fill in all required fields.';
+      return;
+    }
+
+    this.error = null;
+    this.isSubmitting = true;
+
+    if (this.selectedFile) {
+      // Submit with file attachment
+      this.submitGrievanceWithFile();
+    } else {
+      // Submit without file
+      this.submitGrievanceWithoutFile();
+    }
+  }
+
+  private submitGrievanceWithoutFile(): void {
+    const grievanceData: CreateGrievanceRequest = {
+      submittedBy: this.currentUserId,
+      title: this.grievanceForm.title.trim(),
+      description: this.grievanceForm.description.trim(),
+      priority: this.grievanceForm.priority,
+      status: 'Submitted'
+    };
+
+    this.grievanceService.createGrievance(grievanceData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (newGrievance) => {
+          this.grievances.unshift(newGrievance);
+          this.calculateTabCounts();
+          this.closeSubmitModal();
+          this.selectedFile = null;
+          this.isSubmitting = false;
+        },
+        error: (error) => {
+          this.error = error.message;
+          this.isSubmitting = false;
+          console.error('Error creating grievance:', error);
+        }
+      });
+  }
+
+  private submitGrievanceWithFile(): void {
+    const formData = new FormData();
+    formData.append('submittedBy', this.currentUserId.toString());
+    formData.append('title', this.grievanceForm.title.trim());
+    formData.append('description', this.grievanceForm.description.trim());
+    formData.append('priority', this.grievanceForm.priority);
+    formData.append('attachment', this.selectedFile!);
+
+    this.grievanceService.createGrievanceWithAttachment(formData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (newGrievance) => {
+          this.grievances.unshift(newGrievance);
+          this.calculateTabCounts();
+          this.closeSubmitModal();
+          this.selectedFile = null;
+          this.isSubmitting = false;
+        },
+        error: (error) => {
+          this.error = error.message;
+          this.isSubmitting = false;
+          console.error('Error creating grievance with attachment:', error);
+        }
+      });
   }
   
   /**
@@ -272,5 +328,13 @@ export class RecruiterGrievancesComponent {
   downloadAttachment(attachment: { name: string; size: string }): void {
     console.log('Downloading:', attachment.name);
     // TODO: Implement download logic
+  }
+
+  /**
+   * Format date helper method
+   */
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
   }
 }
