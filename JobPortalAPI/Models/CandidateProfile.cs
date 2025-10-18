@@ -21,5 +21,10 @@ namespace JobPortalAPI.Models
         public int GraduationYear { get; set; }
         public string College { get; set; } = string.Empty;
         public string Course { get; set; } = string.Empty;
+        public string CurrentSemester { get; set; } = string.Empty;
+        public bool EmailNotifications { get; set; } = true;
+        public bool JobApplicationUpdates { get; set; } = true;
+        public bool InterviewReminders { get; set; } = true;
+        public bool MarketingCommunications { get; set; } = false;
     }
 }

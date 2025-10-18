@@ -162,3 +162,5 @@ D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.genr
 D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\ref\db_apis.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.staticwebassets.runtime.json
 D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\compressed\2xaxa9hk1a-rgljdwlr61.gz
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\BCrypt.Net-Next.dll
