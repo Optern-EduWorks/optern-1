@@ -45,7 +45,7 @@ export class RecruiterOpportunitiesComponent {
   }
 
   private loadJobs() {
-    this.jobService.getAll().subscribe({ next: (data) => this.jobs = data, error: (err) => console.warn('Failed to load jobs', err) });
+    this.jobService.getByRecruiter().subscribe({ next: (data) => this.jobs = data, error: (err) => console.warn('Failed to load jobs', err) });
   }
 
   // Simple counts
@@ -75,7 +75,7 @@ export class RecruiterOpportunitiesComponent {
   postJob() {
     const payload: any = {
       Title: this.newJob.title,
-      Company: this.newJob.company,
+      Company: { Name: this.newJob.company }, // Pass company as object with Name
       Location: this.newJob.location,
       Description: this.newJob.description,
       Skills: (this.newJob.skills || []).join(','),
@@ -85,6 +85,8 @@ export class RecruiterOpportunitiesComponent {
     this.jobService.create(payload).subscribe({
       next: (created) => {
         this.jobs.unshift(created);
+        // Refresh jobs to ensure consistency across all components
+        this.loadJobs();
         this.newJob = { title: '', company: '', location: '', description: '', skills: [], salary: '', type: 'Full-time' };
         this.closePostJobModal();
       },

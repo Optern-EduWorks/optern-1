@@ -18,6 +18,10 @@ export class ApplicationService {
     return this.http.get<Application[]>(this.baseUrl);
   }
 
+  getByRecruiter(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${this.baseUrl}/by-recruiter`);
+  }
+
   get(id: number) {
     return this.http.get<Application>(`${this.baseUrl}/${id}`);
   }

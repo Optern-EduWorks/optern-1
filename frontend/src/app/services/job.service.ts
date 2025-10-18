@@ -39,8 +39,8 @@ export class JobService {
       ? server.skills.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0)
       : [];
 
-    const posted = server.postedDate || server.PostedDate || server.posted || server.Posted
-      ? new Date(server.postedDate ?? server.PostedDate ?? server.posted ?? server.Posted).toLocaleDateString()
+    const posted = server.PostedDate || server.postedDate || server.Posted || server.posted
+      ? new Date(server.PostedDate ?? server.postedDate ?? server.Posted ?? server.posted).toLocaleDateString()
       : null;
 
     return {
@@ -70,7 +70,18 @@ export class JobService {
   }
 
   getAll(): Observable<Job[]> {
-    return this.http.get<any[]>(this.baseUrl).pipe(map(list => list.map(item => this.mapServerToUi(item))));
+    return this.http.get<any[]>(this.baseUrl).pipe(
+      map(list => list
+        .filter(job => new Date(job.closingDate || job.ClosingDate) >= new Date()) // Filter active jobs
+        .map(item => this.mapServerToUi(item))
+      )
+    );
+  }
+
+  getByRecruiter(): Observable<Job[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/by-recruiter`).pipe(
+      map(list => list.map(item => this.mapServerToUi(item)))
+    );
   }
 
   get(id: number) {

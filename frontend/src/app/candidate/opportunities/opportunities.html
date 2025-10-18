@@ -20,6 +20,10 @@
         <button [class.active]="viewMode === 'list'" (click)="setView('list')"><i class="bi bi-list-ul"></i></button>
         <button [class.active]="viewMode === 'grid'" (click)="setView('grid')"><i class="bi bi-grid-fill"></i></button>
       </div>
+      <button class="refresh-btn" (click)="refreshJobs()" title="Refresh job listings">
+        <i class="bi bi-arrow-clockwise"></i>
+        <span>Refresh</span>
+      </button>
       <button class="filters-main-btn">
         <i class="bi bi-funnel"></i>
         <span>Filters</span>

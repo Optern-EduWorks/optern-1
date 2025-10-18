@@ -36,6 +36,12 @@ namespace JobPortalAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Company>()
+                .HasOne(c => c.Industry)
+                .WithMany()
+                .HasForeignKey(c => c.IndustryID)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Job>()
                 .HasOne(j => j.Recruiter)
                 .WithMany(r => r.Jobs)

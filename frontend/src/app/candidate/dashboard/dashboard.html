@@ -2,7 +2,7 @@
     <!-- Header Section -->
     <header class="dashboard-header">
         <div>
-            <h2>Welcome back, John Student! 👋</h2>
+            <h2>Welcome back, {{ userName }}! 👋</h2>
             <p>Here's what's happening with your job search today.</p>
         </div>
         <div class="status-indicator">
@@ -12,48 +12,58 @@
     </header>
 
     <!-- Stats Cards Section -->
-    <div class="stats-grid">
+    <div class="stats-grid" *ngIf="!isLoading">
         <div class="stat-card blue">
             <div class="card-content">
                 <i class="bi bi-broadcast card-icon"></i>
-                <span class="card-value">120</span>
+                <span class="card-value">{{ stats.totalOpportunities || 0 }}</span>
                 <span class="card-label">Total Opportunities</span>
             </div>
             <div class="card-progress">
-                <div class="progress-bar" style="width: 12%;"></div>
-                <span class="progress-label">12%</span>
+                <div class="progress-bar" [style.width.%]="(stats.totalOpportunities || 0) * 10"></div>
+                <span class="progress-label">{{ (stats.totalOpportunities || 0) * 10 }}%</span>
             </div>
         </div>
         <div class="stat-card green">
             <div class="card-content">
                 <i class="bi bi-check2-circle card-icon"></i>
-                <span class="card-value">30</span>
+                <span class="card-value">{{ stats.appliedJobs || 0 }}</span>
                 <span class="card-label">Applied Jobs</span>
             </div>
             <div class="card-progress">
-                <div class="progress-bar" style="width: 8%;"></div>
-                <span class="progress-label">8%</span>
+                <div class="progress-bar" [style.width.%]="(stats.appliedJobs || 0) * 8"></div>
+                <span class="progress-label">{{ (stats.appliedJobs || 0) * 8 }}%</span>
             </div>
         </div>
         <div class="stat-card purple">
             <div class="card-content">
                 <i class="bi bi-bookmark-check card-icon"></i>
-                <span class="card-value">15</span>
+                <span class="card-value">{{ stats.approvedApplications || 0 }}</span>
                 <span class="card-label">Approved</span>
             </div>
             <div class="card-progress">
-                <div class="progress-bar" style="width: 25%;"></div>
-                <span class="progress-label">25%</span>
+                <div class="progress-bar" [style.width.%]="(stats.approvedApplications || 0) * 25"></div>
+                <span class="progress-label">{{ (stats.approvedApplications || 0) * 25 }}%</span>
             </div>
         </div>
         <div class="stat-card orange">
             <div class="card-content">
                 <i class="bi bi-clock-history card-icon"></i>
-                <span class="card-value">10</span>
+                <span class="card-value">{{ stats.inReviewApplications || 0 }}</span>
                 <span class="card-label">In Review</span>
             </div>
             <div class="card-progress">
                 <!-- No progress bar for this one in the design -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="stats-grid" *ngIf="isLoading">
+        <div class="stat-card blue">
+            <div class="card-content">
+                <div class="loading-spinner"></div>
+                <span class="card-label">Loading...</span>
             </div>
         </div>
     </div>
@@ -64,40 +74,23 @@
         <div class="content-card">
             <div class="card-header">
                 <h3>Recent Activities</h3>
-                <a href="#" class="view-all-link">View All</a>
             </div>
             <ul class="activity-list">
-                <li class="activity-item">
-                    <div class="activity-icon blue"><i class="bi bi-file-earmark-code"></i></div>
-                    <div class="activity-details">
-                        <p class="activity-title">Software Engineer at Tech Corp</p>
-                        <p class="activity-time">2 hours ago</p>
+                <li class="activity-item" *ngFor="let activity of activities">
+                    <div class="activity-content">
+                        <div class="activity-title">{{ activity.title }}</div>
+                        <div class="activity-description">{{ activity.description }}</div>
+                        <div class="activity-meta">
+                            <span class="activity-time">{{ activity.timeAgo }}</span>
+                        </div>
                     </div>
-                    <span class="status-badge blue-badge">submitted</span>
+                    <span class="status-badge" [ngClass]="activity.status.toLowerCase().replace(' ', '-') + '-badge'">{{ activity.status }}</span>
                 </li>
-                <li class="activity-item">
-                    <div class="activity-icon yellow"><i class="bi bi-calendar-event"></i></div>
-                    <div class="activity-details">
-                        <p class="activity-title">Data Analyst at Data Inc</p>
-                        <p class="activity-time">1 day ago</p>
+                <li class="activity-item" *ngIf="activities.length === 0 && !isLoading">
+                    <div class="activity-content">
+                        <div class="activity-title">No recent activities</div>
+                        <div class="activity-description">Start applying to jobs to see your activity here</div>
                     </div>
-                    <span class="status-badge yellow-badge">scheduled</span>
-                </li>
-                <li class="activity-item">
-                    <div class="activity-icon green"><i class="bi bi-check-circle"></i></div>
-                    <div class="activity-details">
-                        <p class="activity-title">UI/UX Designer at Design Studio</p>
-                        <p class="activity-time">2 days ago</p>
-                    </div>
-                    <span class="status-badge green-badge">accepted</span>
-                </li>
-                <li class="activity-item">
-                    <div class="activity-icon purple"><i class="bi bi-eye"></i></div>
-                    <div class="activity-details">
-                        <p class="activity-title">Product Manager at StartupXYZ</p>
-                        <p class="activity-time">3 days ago</p>
-                    </div>
-                    <span class="status-badge purple-badge">viewed</span>
                 </li>
             </ul>
         </div>
@@ -106,37 +99,27 @@
         <div class="content-card">
             <div class="card-header">
                 <h3>Announcements</h3>
-                <a href="#" class="view-all-link">View All</a>
             </div>
             <ul class="announcement-list">
-                <li class="announcement-item">
-                    <div class="announcement-details">
-                        <p class="announcement-title">New Job Opportunities Added</p>
-                        <p class="announcement-subtitle">Fresh jobs from top tech companies</p>
-                        <p class="announcement-time">2 days ago</p>
+                <li class="announcement-item" *ngFor="let announcement of announcements">
+                    <div class="announcement-content">
+                        <div class="announcement-title">{{ announcement.title }}</div>
+                        <div class="announcement-subtitle">{{ announcement.subtitle }}</div>
+                        <div class="announcement-meta">
+                            <span class="announcement-time">{{ announcement.timeAgo }}</span>
+                        </div>
                     </div>
-                    <span class="status-badge info-badge">info</span>
+                    <span class="status-badge" [ngClass]="announcement.type + '-badge'">{{ announcement.type }}</span>
                 </li>
-                <li class="announcement-item">
-                    <div class="announcement-details">
-                        <p class="announcement-title">Career Fair Registration Open</p>
-                        <p class="announcement-subtitle">1 week left to register</p>
-                        <p class="announcement-time">1 week ago</p>
+                <li class="announcement-item" *ngIf="announcements.length === 0 && !isLoading">
+                    <div class="announcement-content">
+                        <div class="announcement-title">No announcements</div>
+                        <div class="announcement-subtitle">Check back later for updates</div>
                     </div>
-                    <span class="status-badge event-badge">event</span>
-                </li>
-                <li class="announcement-item">
-                    <div class="announcement-details">
-                        <p class="announcement-title">Resume Workshop Available</p>
-                        <p class="announcement-subtitle">Improve your resume with expert help</p>
-                        <p class="announcement-time">2 weeks ago</p>
-                    </div>
-                    <span class="status-badge workshop-badge">workshop</span>
                 </li>
             </ul>
         </div>
     </div>
-    <!-- ADD THIS CODE AFTER THE </div class="main-content-grid"> -->
 
     <!-- Quick Actions Section -->
     <div class="content-card quick-actions-card">
@@ -145,28 +128,28 @@
         </div>
         <p class="quick-actions-subtitle">Access key features of your candidate portal</p>
         <div class="actions-grid">
-            <div class="action-item">
+            <div class="action-item" routerLink="/candidate/resume-builder">
                 <div class="action-icon blue"><i class="bi bi-file-earmark-richtext"></i></div>
                 <div class="action-details">
                     <p class="action-title">Build Resume</p>
                     <p class="action-description">Create and customize your professional resume</p>
                 </div>
             </div>
-            <div class="action-item">
+            <div class="action-item" routerLink="/candidate/opportunities">
                 <div class="action-icon green"><i class="bi bi-search"></i></div>
                 <div class="action-details">
                     <p class="action-title">Find Jobs</p>
                     <p class="action-description">Browse and apply to latest job opportunities</p>
                 </div>
             </div>
-            <div class="action-item">
+            <div class="action-item" routerLink="/candidate/applications">
                 <div class="action-icon orange"><i class="bi bi-send-check"></i></div>
                 <div class="action-details">
                     <p class="action-title">My Applications</p>
                     <p class="action-description">Track the status of your job applications</p>
                 </div>
             </div>
-            <div class="action-item">
+            <div class="action-item" routerLink="/candidate/grievances">
                 <div class="action-icon purple"><i class="bi bi-headset"></i></div>
                 <div class="action-details">
                     <p class="action-title">Get Support</p>
@@ -181,9 +164,7 @@
         <div class="achievement-icon">🏆</div>
         <div class="achievement-details">
             <p class="achievement-title">Achievement Unlocked!</p>
-            <p class="achievement-description">You've applied to 30+ jobs this month. Keep up the great work! 🎉</p>
+            <p class="achievement-description">You've applied to {{ stats.appliedJobs || 0 }} jobs this month. Keep up the great work! 🎉</p>
         </div>
     </div>
-
-
 </div>

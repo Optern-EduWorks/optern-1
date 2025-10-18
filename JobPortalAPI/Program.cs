@@ -13,6 +13,11 @@ builder.Services.AddControllers()
     {
         // Configure JSON serialization for better frontend compatibility
         options.JsonSerializerOptions.PropertyNamingPolicy = null; // Keep PascalCase from models
+    })
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        // Disable automatic model state validation to handle it manually
+        options.SuppressModelStateInvalidFilter = true;
     });
 
 // Add SignalR services

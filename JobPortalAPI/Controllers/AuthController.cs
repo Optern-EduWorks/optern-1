@@ -40,17 +40,50 @@ namespace JobPortalAPI.Controllers
                     return BadRequest(new { message = "Email and password are required" });
                 }
 
+                Console.WriteLine($"Searching for user with email: {req.Email}");
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
+
                 if (user == null)
                 {
                     Console.WriteLine($"Login failed: No user found with email {req.Email}");
+                    Console.WriteLine($"Available users in database:");
+                    var allUsers = await _context.Users.ToListAsync();
+                    foreach (var u in allUsers)
+                    {
+                        Console.WriteLine($"  - {u.Email} (ID: {u.UserId}, Role: {u.Role})");
+                    }
                     return Unauthorized(new { message = "Invalid email or password" });
                 }
 
-                // Verify password using BCrypt
-                if (!BCrypt.Net.BCrypt.Verify(req.Password, user.Password))
+                Console.WriteLine($"User found: {user.Email}, Role: {user.Role}, Password length: {user.Password?.Length ?? 0}");
+                Console.WriteLine($"Password starts with: '{user.Password?.Substring(0, Math.Min(5, user.Password?.Length ?? 0))}'");
+
+                // Check if password is already hashed (BCrypt hashes start with $2a$, $2b$, or $2y$)
+                bool isPasswordHashed = user.Password?.StartsWith("$2") == true;
+
+                bool isPasswordValid;
+                if (isPasswordHashed)
+                {
+                    // Verify hashed password
+                    isPasswordValid = BCrypt.Net.BCrypt.Verify(req.Password, user.Password);
+                }
+                else
+                {
+                    // Password is stored as plain text (temporary fix for bad updates)
+                    isPasswordValid = req.Password == user.Password;
+                    if (isPasswordValid)
+                    {
+                        // Hash the password and update in database
+                        user.Password = BCrypt.Net.BCrypt.HashPassword(req.Password);
+                        await _context.SaveChangesAsync();
+                        Console.WriteLine($"Password hashed and updated for user: {user.Email}");
+                    }
+                }
+
+                if (!isPasswordValid)
                 {
                     Console.WriteLine($"Login failed: Invalid password for email {req.Email}");
+                    Console.WriteLine($"Provided password length: {req.Password.Length}");
                     return Unauthorized(new { message = "Invalid email or password" });
                 }
 
@@ -179,26 +212,35 @@ namespace JobPortalAPI.Controllers
 
         private string GenerateJwtToken(User user)
         {
-            var claims = new[]
+            try
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("UserId", user.UserId.ToString()),
-                new Claim("Email", user.Email),
-                new Claim("Role", user.Role)
-            };
+                var claims = new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim("UserId", user.UserId.ToString()),
+                    new Claim("Email", user.Email),
+                    new Claim("Role", user.Role ?? "user")
+                };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSuperSecretKeyHere12345678901234567890"));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSuperSecretKeyHere12345678901234567890"));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(
-                issuer: "JobPortalAPI",
-                audience: "JobPortalFrontend",
-                claims: claims,
-                expires: DateTime.Now.AddHours(24),
-                signingCredentials: creds);
+                var token = new JwtSecurityToken(
+                    issuer: "JobPortalAPI",
+                    audience: "JobPortalFrontend",
+                    claims: claims,
+                    expires: DateTime.Now.AddHours(24),
+                    signingCredentials: creds);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                return new JwtSecurityTokenHandler().WriteToken(token);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"JWT Token Generation Error: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                throw; // Re-throw to be caught by the outer try-catch
+            }
         }
     }
 }

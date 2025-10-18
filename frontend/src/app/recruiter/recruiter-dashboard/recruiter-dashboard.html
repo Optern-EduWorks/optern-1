@@ -9,52 +9,63 @@
     </div>
   </header>
 
-  <div class="stats-grid">
+  <div class="stats-grid" *ngIf="!isLoading">
     <div class="stat-card green">
       <div class="stat-icon">💼</div>
       <div class="stat-content">
-        <div class="stat-number">12</div>
+        <div class="stat-number">{{ stats.activeJobs || 0 }}</div>
         <div class="stat-label">Active Jobs</div>
         <div class="stat-progress">
-          <div class="progress-bar" style="width: 15%"></div>
+          <div class="progress-bar" [style.width.%]="(stats.activeJobs || 0) * 15"></div>
         </div>
-        <div class="stat-change">📈 15%</div>
+        <div class="stat-change">📈 {{ (stats.activeJobs || 0) * 15 }}%</div>
       </div>
     </div>
 
     <div class="stat-card blue">
       <div class="stat-icon">📄</div>
       <div class="stat-content">
-        <div class="stat-number">247</div>
+        <div class="stat-number">{{ stats.totalApplications || 0 }}</div>
         <div class="stat-label">Total Applications</div>
         <div class="stat-progress">
-          <div class="progress-bar" style="width: 28%"></div>
+          <div class="progress-bar" [style.width.%]="(stats.totalApplications || 0) * 2.8"></div>
         </div>
-        <div class="stat-change">📈 28%</div>
+        <div class="stat-change">📈 {{ (stats.totalApplications || 0) * 2.8 }}%</div>
       </div>
     </div>
 
     <div class="stat-card teal">
       <div class="stat-icon">✅</div>
       <div class="stat-content">
-        <div class="stat-number">8</div>
+        <div class="stat-number">{{ stats.hiresThisMonth || 0 }}</div>
         <div class="stat-label">Hires This Month</div>
         <div class="stat-progress">
-          <div class="progress-bar" style="width: 12%"></div>
+          <div class="progress-bar" [style.width.%]="(stats.hiresThisMonth || 0) * 12"></div>
         </div>
-        <div class="stat-change">📈 12%</div>
+        <div class="stat-change">📈 {{ (stats.hiresThisMonth || 0) * 12 }}%</div>
       </div>
     </div>
 
     <div class="stat-card purple">
       <div class="stat-icon">📅</div>
       <div class="stat-content">
-        <div class="stat-number">15</div>
+        <div class="stat-number">{{ stats.scheduledInterviews || 0 }}</div>
         <div class="stat-label">Interviews Scheduled</div>
         <div class="stat-progress">
-          <div class="progress-bar" style="width: 20%"></div>
+          <div class="progress-bar" [style.width.%]="(stats.scheduledInterviews || 0) * 20"></div>
         </div>
-        <div class="stat-change">📈 20%</div>
+        <div class="stat-change">📈 {{ (stats.scheduledInterviews || 0) * 20 }}%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="stats-grid" *ngIf="isLoading">
+    <div class="stat-card green">
+      <div class="stat-icon">💼</div>
+      <div class="stat-content">
+        <div class="loading-spinner"></div>
+        <div class="stat-label">Loading...</div>
       </div>
     </div>
   </div>
@@ -73,81 +84,24 @@
         </div>
       </div>
       <div class="chart-container">
-        <div class="chart">
-          <div class="chart-bar" style="height: 65%">
-            <div class="bar-segment applications" style="height: 70%"></div>
-            <div class="bar-segment interviews" style="height: 30%"></div>
-          </div>
-          <div class="chart-bar" style="height: 45%">
-            <div class="bar-segment applications" style="height: 65%"></div>
-            <div class="bar-segment interviews" style="height: 35%"></div>
-          </div>
-          <div class="chart-bar" style="height: 80%">
-            <div class="bar-segment applications" style="height: 75%"></div>
-            <div class="bar-segment interviews" style="height: 25%"></div>
-          </div>
-          <div class="chart-bar" style="height: 55%">
-            <div class="bar-segment applications" style="height: 60%"></div>
-            <div class="bar-segment interviews" style="height: 40%"></div>
-          </div>
-          <div class="chart-bar" style="height: 70%">
-            <div class="bar-segment applications" style="height: 65%"></div>
-            <div class="bar-segment interviews" style="height: 35%"></div>
-          </div>
-          <div class="chart-bar" style="height: 50%">
-            <div class="bar-segment applications" style="height: 55%"></div>
-            <div class="bar-segment interviews" style="height: 45%"></div>
-          </div>
-          <div class="chart-bar" style="height: 40%">
-            <div class="bar-segment applications" style="height: 50%"></div>
-            <div class="bar-segment interviews" style="height: 50%"></div>
-          </div>
-        </div>
-        <div class="chart-labels">
-          <span>Mon</span>
-          <span>Tue</span>
-          <span>Wed</span>
-          <span>Thu</span>
-          <span>Fri</span>
-          <span>Sat</span>
-          <span>Sun</span>
-        </div>
+        <canvas id="recruitmentChart" width="400" height="200"></canvas>
       </div>
-    </div>
-
-    <div class="card recent-activity-card">
-      <h2 class="card-title">Recent Activity</h2>
       <div class="activity-list">
-        <div class="activity-item blue-bg">
-          <div class="activity-icon blue">📄</div>
+        <div class="activity-item" *ngFor="let activity of activities">
+          <div class="activity-icon">{{ activity.icon }}</div>
           <div class="activity-content">
-            <div class="activity-title">New Application for Senior Frontend Developer</div>
+            <div class="activity-title">{{ activity.title }}</div>
             <div class="activity-meta">
-              <span class="activity-person">👤 Sarah Johnson</span>
-              <span class="activity-time">• 5 minutes ago</span>
+              <span class="activity-person">{{ activity.description }}</span>
+              <span class="activity-time">• {{ activity.timeAgo }}</span>
             </div>
           </div>
         </div>
-
-        <div class="activity-item purple-bg">
-          <div class="activity-icon purple">📅</div>
+        <div class="activity-item" *ngIf="activities.length === 0 && !isLoading">
           <div class="activity-content">
-            <div class="activity-title">Interview scheduled with Mike Chen</div>
+            <div class="activity-title">No recent activities</div>
             <div class="activity-meta">
-              <span class="activity-person">👤 Mike Chen</span>
-              <span class="activity-time">• 1 hour ago</span>
-              <span class="activity-date">• 2024-01-25 2:00 PM</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="activity-item green-bg">
-          <div class="activity-icon green">✅</div>
-          <div class="activity-content">
-            <div class="activity-title">Candidate hired for Backend Engineer position</div>
-            <div class="activity-meta">
-              <span class="activity-person">👤 Emily Davis</span>
-              <span class="activity-time">• 2 hours ago</span>
+              <span class="activity-person">Activity will appear here when candidates apply</span>
             </div>
           </div>
         </div>
@@ -158,51 +112,29 @@
   <div class="card jobs-card">
     <div class="card-header">
       <h2 class="card-title">Top Performing Jobs</h2>
-      <a href="#" class="view-all-link">👁️ View All</a>
+      <a href="#" class="view-all-link" routerLink="/recruiter/opportunities">👁️ View All</a>
     </div>
     <div class="jobs-list">
-      <div class="job-item">
+      <div class="job-item" *ngFor="let job of topJobs">
         <div class="job-info">
-          <div class="job-title">Senior Frontend Developer</div>
+          <div class="job-title">{{ job.title }}</div>
           <div class="job-details">
-            <span class="job-location">📍 San Francisco, CA</span>
-            <span class="job-type green">full-time</span>
-            <span class="job-posted">🕐 Posted 1/10/2024</span>
+            <span class="job-location">📍 Remote</span>
+            <span class="job-type green">{{ job.type }}</span>
+            <span class="job-posted">🕐 Posted {{ job.postedDate }}</span>
           </div>
         </div>
         <div class="job-applications">
-          <div class="applications-count">45</div>
+          <div class="applications-count">{{ job.applicationCount }}</div>
           <div class="applications-label">applications</div>
         </div>
       </div>
-
-      <div class="job-item">
+      <div class="job-item" *ngIf="topJobs.length === 0 && !isLoading">
         <div class="job-info">
-          <div class="job-title">Data Science Intern</div>
+          <div class="job-title">No jobs posted yet</div>
           <div class="job-details">
-            <span class="job-location">📍 New York, NY</span>
-            <span class="job-type teal">internship</span>
-            <span class="job-posted">🕐 Posted 1/12/2024</span>
+            <span class="job-location">Post your first job to see performance metrics</span>
           </div>
-        </div>
-        <div class="job-applications">
-          <div class="applications-count">32</div>
-          <div class="applications-label">applications</div>
-        </div>
-      </div>
-
-      <div class="job-item">
-        <div class="job-info">
-          <div class="job-title">Backend Engineer</div>
-          <div class="job-details">
-            <span class="job-location">📍 Austin, TX</span>
-            <span class="job-type green">full-time</span>
-            <span class="job-posted">🕐 Posted 1/8/2024</span>
-          </div>
-        </div>
-        <div class="job-applications">
-          <div class="applications-count">28</div>
-          <div class="applications-label">applications</div>
         </div>
       </div>
     </div>
@@ -213,6 +145,6 @@
       <div class="cta-title">Ready to hire top talent? 🚀</div>
       <div class="cta-subtitle">Post a new job opportunity and connect with qualified candidates.</div>
     </div>
-    <button class="cta-button">+ Post New Job</button>
+    <button class="cta-button" routerLink="/recruiter/opportunities">+ Post New Job</button>
   </div>
 </div>

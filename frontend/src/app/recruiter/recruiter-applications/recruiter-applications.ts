@@ -45,7 +45,7 @@ export class ApplicationsManagementComponent {
   }
 
   private loadApplications() {
-    this.applicationService.getAll().subscribe({
+    this.applicationService.getByRecruiter().subscribe({
       next: (data) => this.applications = data || [],
       error: (err) => {
         console.warn('Failed to load applications', err);

@@ -31,11 +31,19 @@ export class Opportunities {
   private authService = inject(AuthService);
 
   constructor() {
+    this.loadJobs();
+  }
+
+  loadJobs() {
     // Attempt to load jobs from backend; errors are safe during development
     this.jobService.getAll().subscribe({
       next: (data) => (this.jobs = data),
       error: (err) => console.warn('Could not load jobs from API (backend may be offline):', err)
     });
+  }
+
+  refreshJobs() {
+    this.loadJobs();
   }
 
   apply(job: Job) {

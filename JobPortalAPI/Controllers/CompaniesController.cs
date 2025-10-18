@@ -4,7 +4,6 @@ using JobPortalAPI.Data;
 using JobPortalAPI.Models;
 
 [Route("api/[controller]")]
-[ApiController]
 public class CompaniesController : ControllerBase
 {
     private readonly JobPortalContext _context;
@@ -22,11 +21,35 @@ public class CompaniesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Company>> Create(Company company)
+    public async Task<ActionResult<Company>> Create(CompanyCreateDto companyDto)
     {
+        // Ensure Industry exists
+        var industry = await _context.IndustryLookups.FindAsync(companyDto.IndustryID);
+        if (industry == null)
+        {
+            return BadRequest("Invalid IndustryID");
+        }
+
+        var company = new Company
+        {
+            Name = companyDto.Name,
+            Website = companyDto.Website,
+            Size = companyDto.Size,
+            Address = companyDto.Address,
+            Phone = companyDto.Phone,
+            CreatedDate = companyDto.CreatedDate,
+            IndustryID = companyDto.IndustryID
+        };
+
         _context.Companies.Add(company);
         await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(Get), new { id = company.CompanyID }, company);
+
+        // Load the company with Industry for response
+        var createdCompany = await _context.Companies
+            .Include(c => c.Industry)
+            .FirstOrDefaultAsync(c => c.CompanyID == company.CompanyID);
+
+        return CreatedAtAction(nameof(Get), new { id = company.CompanyID }, createdCompany);
     }
 
     [HttpPut("{id}")]
