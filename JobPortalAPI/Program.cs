@@ -15,6 +15,9 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNamingPolicy = null; // Keep PascalCase from models
     });
 
+// Add SignalR services
+builder.Services.AddSignalR();
+
 builder.Services.AddDbContext<JobPortalContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
@@ -69,6 +72,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Map SignalR hub
+app.MapHub<JobPortalAPI.Hubs.DashboardHub>("/dashboardHub");
 
 // Fallback for SPA routes (serves index.html) - useful when hosting frontend from backend
 // Only serve index.html for non-API routes to avoid interfering with API error responses

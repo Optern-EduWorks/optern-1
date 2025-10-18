@@ -164,3 +164,5 @@ D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.stat
 D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\compressed\2xaxa9hk1a-rgljdwlr61.gz
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\BCrypt.Net-Next.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Newtonsoft.Json.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Net.WebSockets.WebSocketProtocol.dll
