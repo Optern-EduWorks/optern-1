@@ -148,10 +148,26 @@ export class Profile implements OnInit {
         if (data && data.candidateID && data.candidateID > 0) {
           this.profile = data;
           console.log('Using existing profile:', this.profile);
+          // Always update basic fields with user signup details to ensure consistency
+          const currentUser = this.authService.getCurrentUser();
+          if (currentUser) {
+            // Override profile fields with signup data
+            this.profile.fullName = currentUser.username || this.profile.fullName;
+            this.profile.email = currentUser.email || this.profile.email;
+            this.profile.phoneNumber = currentUser.phoneNumber || this.profile.phoneNumber;
+          }
+          console.log('Profile after signup data override:', this.profile);
         } else {
-          // No existing profile, use default
+          // No existing profile, pre-populate with user signup details
+          const currentUser = this.authService.getCurrentUser();
+          console.log('No profile found, pre-populating with user data:', currentUser);
           this.profile = this.getDefaultProfile();
-          console.log('Using default profile:', this.profile);
+          if (currentUser) {
+            this.profile.fullName = currentUser.username || '';
+            this.profile.email = currentUser.email || '';
+            this.profile.phoneNumber = currentUser.phoneNumber || '';
+          }
+          console.log('Using pre-populated profile:', this.profile);
         }
         this.editProfile = { ...this.profile };
         // Update notification settings from profile
@@ -167,8 +183,14 @@ export class Profile implements OnInit {
         console.error('Error loading profile:', error);
         this.errorMessage = `Failed to load profile data: ${error.message || 'Please try again.'}`;
         this.isLoading = false;
-        // Use default profile on error
+        // Use default profile on error, but try to pre-populate with user data
         this.profile = this.getDefaultProfile();
+        const currentUser = this.authService.getCurrentUser();
+        if (currentUser) {
+          this.profile.fullName = currentUser.username || '';
+          this.profile.email = currentUser.email || '';
+          this.profile.phoneNumber = currentUser.phoneNumber || '';
+        }
         this.editProfile = { ...this.profile };
       }
     });
