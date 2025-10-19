@@ -1,5 +1,6 @@
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\appsettings.Development.json
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\appsettings.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.staticwebassets.runtime.json
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.staticwebassets.endpoints.json
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.exe
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.deps.json
@@ -8,7 +9,9 @@ D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.pdb
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Azure.Core.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Azure.Identity.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\BCrypt.Net-Next.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Humanizer.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.CodeAnalysis.dll
@@ -36,6 +39,7 @@ D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.Op
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.SqlServer.Server.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.Win32.SystemEvents.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Mono.TextTemplating.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Newtonsoft.Json.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\SQLitePCLRaw.batteries_v2.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\SQLitePCLRaw.core.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\SQLitePCLRaw.provider.e_sqlite3.dll
@@ -49,6 +53,7 @@ D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Confi
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Drawing.Common.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Memory.Data.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Net.WebSockets.WebSocketProtocol.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Runtime.Caching.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Security.Cryptography.ProtectedData.dll
 D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Security.Permissions.dll
@@ -150,6 +155,7 @@ D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\rjimswa.dswa
 D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
 D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\scopedcss\bundle\db_apis.styles.css
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\compressed\2xaxa9hk1a-rgljdwlr61.gz
 D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\staticwebassets.build.json
 D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\staticwebassets.build.json.cache
 D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\staticwebassets.development.json
@@ -160,9 +166,3 @@ D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\refint\db_ap
 D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.pdb
 D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.genruntimeconfig.cache
 D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\ref\db_apis.dll
-D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.staticwebassets.runtime.json
-D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\compressed\2xaxa9hk1a-rgljdwlr61.gz
-D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\BCrypt.Net-Next.dll
-D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Newtonsoft.Json.dll
-D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Net.WebSockets.WebSocketProtocol.dll

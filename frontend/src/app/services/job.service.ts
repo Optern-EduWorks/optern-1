@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 export interface Job {
   jobID: number;
@@ -31,57 +31,158 @@ export interface Job {
 export class JobService {
   // Use relative path so proxy (or backend hosting) works
   private baseUrl = '/api/Jobs';
+  
+  // BehaviorSubjects to store the latest jobs data
+  private jobsSubject = new BehaviorSubject<Job[]>([]);
+  private recruiterJobsSubject = new BehaviorSubject<Job[]>([]);
+  
+  // Observable streams that components can subscribe to
+  public jobs$ = this.jobsSubject.asObservable();
+  public recruiterJobs$ = this.recruiterJobsSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  // Refresh interval in milliseconds (e.g., every 30 seconds)
+  private readonly refreshInterval = 30000;
+
+  constructor(private http: HttpClient) {
+    // Start periodic refresh for jobs
+    this.startPeriodicRefresh();
+  }
+
+  private startPeriodicRefresh() {
+    console.log('Starting periodic refresh');
+    // Initial load
+    this.refreshAllJobs();
+    this.refreshRecruiterJobs();
+
+    // Set up periodic refresh
+    setInterval(() => {
+      console.log('Running periodic refresh');
+      this.refreshAllJobs();
+      this.refreshRecruiterJobs();
+    }, this.refreshInterval);
+  }
+
+  private refreshAllJobs() {
+    console.log('Refreshing all jobs');
+    this.getAllFromServer().subscribe({
+      next: jobs => {
+        console.log('Received all jobs:', jobs);
+        this.jobsSubject.next(jobs);
+      },
+      error: error => {
+        console.error('Error fetching all jobs:', error);
+      }
+    });
+  }
+
+  private refreshRecruiterJobs() {
+    console.log('Refreshing recruiter jobs');
+    this.getByRecruiterFromServer().subscribe({
+      next: jobs => {
+        console.log('Received recruiter jobs:', jobs);
+        this.recruiterJobsSubject.next(jobs);
+      },
+      error: error => {
+        console.error('Error fetching recruiter jobs:', error);
+      }
+    });
+  }
 
   private mapServerToUi(server: any): Job {
+    console.log('Mapping server data to UI:', server);
+
     const skillsArray = server.skills
       ? server.skills.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0)
       : [];
 
     const posted = server.PostedDate || server.postedDate || server.Posted || server.posted
       ? new Date(server.PostedDate ?? server.postedDate ?? server.Posted ?? server.posted).toLocaleDateString()
-      : null;
+      : new Date().toLocaleDateString();
 
-    return {
+    // Map workMode based on RemoteAllowed field
+    const workMode = server.RemoteAllowed === true ? 'Remote' : 'Onsite';
+
+    const mappedJob = {
       jobID: server.jobID ?? server.JobID ?? 0,
       title: server.title ?? server.Title ?? 'Untitled',
       company: server.company?.name ?? server.Company?.Name ?? server.company ?? 'Unknown Company',
-      location: server.location ?? server.Location ?? 'Remote',
-      salary: server.salary ?? server.SalaryRange ?? 'N/A',
+      location: server.location ?? server.Location ?? 'Not specified',
+      salary: server.salary ?? server.SalaryRange ?? 'Competitive',
       remote: server.remote ?? server.RemoteAllowed ?? false,
       type: server.type ?? server.EmploymentType ?? 'Full-time',
-      applicants: server.applicants ?? Math.floor(Math.random() * 120),
+      applicants: server.applicants ?? 0,
       skills: skillsArray.length ? skillsArray : ['General'],
       description: server.description ?? server.Description ?? 'No description provided.',
-      rating: server.rating ?? Math.round((4 + Math.random()) * 10) / 10,
-      posted: posted ?? new Date().toLocaleDateString(),
+      rating: server.rating ?? 4.5,
+      posted: posted,
       logo: server.logo ?? 'https://i.imgur.com/2JV8V4A.png',
-      priority: server.priority ?? server.category ?? server.Category ?? 'medium priority'
-      ,
+      priority: server.priority ?? server.category ?? server.Category ?? 'medium priority',
       // populate optional recruiter UI fields
       status: server.status ?? server.Status ?? 'active',
       icon: (server.title ?? server.Title ?? 'U').toString().charAt(0).toUpperCase(),
-      workMode: server.workMode ?? server.WorkMode ?? server.workType ?? 'Remote',
-  tags: skillsArray.map((s: string) => ({ label: s, color: 'blue' })),
+      workMode: workMode,
+      tags: skillsArray.map((s: string) => ({ label: s, color: 'blue' })),
       requirements: server.requirements ?? (server.Requirements ? server.Requirements.split(',') : []) ?? [],
       benefits: server.benefits ?? (server.Benefits ? server.Benefits.split(',') : []) ?? []
     } as Job;
+
+    console.log('Mapped job:', mappedJob);
+    return mappedJob;
   }
 
-  getAll(): Observable<Job[]> {
+  // Server fetch methods
+  private getAllFromServer(): Observable<Job[]> {
+    console.log('Fetching all jobs from server');
     return this.http.get<any[]>(this.baseUrl).pipe(
-      map(list => list
-        .filter(job => new Date(job.closingDate || job.ClosingDate) >= new Date()) // Filter active jobs
-        .map(item => this.mapServerToUi(item))
-      )
+      map(list => {
+        console.log('Raw server response (all jobs):', list);
+        return list
+          .filter(job => {
+            const closingDate = new Date(job.closingDate || job.ClosingDate);
+            const isActive = closingDate >= new Date();
+            if (!isActive) {
+              console.log('Filtering out expired job:', job);
+            }
+            return isActive;
+          })
+          .map(item => {
+            const mappedJob = this.mapServerToUi(item);
+            console.log('Mapped job:', mappedJob);
+            return mappedJob;
+          });
+      })
     );
+  }
+
+  private getByRecruiterFromServer(): Observable<Job[]> {
+    console.log('Fetching recruiter jobs from server');
+    return this.http.get<any>(`${this.baseUrl}/by-recruiter`).pipe(
+      map(response => {
+        console.log('Raw server response (recruiter jobs):', response);
+        // Handle the API response structure: { success: true, jobs: [...], count: number }
+        const jobsArray = response.jobs || [];
+        return jobsArray.map((item: any) => {
+          const mappedJob = this.mapServerToUi(item);
+          console.log('Mapped recruiter job:', mappedJob);
+          return mappedJob;
+        });
+      })
+    );
+  }
+
+  // Public methods that components should use
+  getAll(): Observable<Job[]> {
+    // Trigger a refresh
+    this.refreshAllJobs();
+    // Return the observable stream
+    return this.jobs$;
   }
 
   getByRecruiter(): Observable<Job[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/by-recruiter`).pipe(
-      map(list => list.map(item => this.mapServerToUi(item)))
-    );
+    // Trigger a refresh
+    this.refreshRecruiterJobs();
+    // Return the observable stream
+    return this.recruiterJobs$;
   }
 
   get(id: number) {
@@ -89,14 +190,33 @@ export class JobService {
   }
 
   create(payload: any) {
-    return this.http.post<any>(this.baseUrl, payload).pipe(map(item => this.mapServerToUi(item)));
+    return this.http.post<any>(this.baseUrl, payload).pipe(
+      map(item => this.mapServerToUi(item)),
+      tap(() => {
+        // Refresh both job lists after creation
+        this.refreshAllJobs();
+        this.refreshRecruiterJobs();
+      })
+    );
   }
 
   update(id: number, payload: any) {
-    return this.http.put(`${this.baseUrl}/${id}`, payload);
+    return this.http.put(`${this.baseUrl}/${id}`, payload).pipe(
+      tap(() => {
+        // Refresh both job lists after update
+        this.refreshAllJobs();
+        this.refreshRecruiterJobs();
+      })
+    );
   }
 
   delete(id: number) {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+    return this.http.delete(`${this.baseUrl}/${id}`).pipe(
+      tap(() => {
+        // Refresh both job lists after deletion
+        this.refreshAllJobs();
+        this.refreshRecruiterJobs();
+      })
+    );
   }
 }

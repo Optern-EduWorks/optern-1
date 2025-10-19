@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using JobPortalAPI.Data;
 using JobPortalAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -13,6 +14,47 @@ public class RecruitersController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Recruiter>>> GetAll() =>
         await _context.Recruiters.ToListAsync();
+
+    [HttpGet("me")]
+    [Authorize]
+    public async Task<ActionResult<Recruiter>> GetMyProfile()
+    {
+        Console.WriteLine($"RecruitersController - GetMyProfile called");
+        Console.WriteLine($"Request path: {HttpContext.Request.Path}");
+        Console.WriteLine($"Request method: {HttpContext.Request.Method}");
+        Console.WriteLine($"Request headers: {string.Join(", ", HttpContext.Request.Headers.Select(h => $"{h.Key}={h.Value}").ToList())}");
+        
+        var emailClaim = User.FindFirst("Email");
+        if (emailClaim == null)
+        {
+            return Unauthorized(new { message = "Invalid authentication token" });
+        }
+
+        var recruiter = await _context.Recruiters.FirstOrDefaultAsync(r => r.Email == emailClaim.Value);
+        if (recruiter == null)
+        {
+            // Auto-create profile for authenticated recruiters
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == emailClaim.Value && u.Role == "recruiter");
+            if (user == null)
+            {
+                return Unauthorized(new { message = "User is not a recruiter" });
+            }
+
+            recruiter = new Recruiter
+            {
+                FullName = user.Username,
+                Email = user.Email,
+                JobTitle = "Recruiter",
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
+            };
+
+            _context.Recruiters.Add(recruiter);
+            await _context.SaveChangesAsync();
+        }
+
+        return recruiter;
+    }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Recruiter>> Get(int id)

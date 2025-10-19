@@ -23,7 +23,7 @@ export class Opportunities {
     this.viewMode = mode;
   }
 
-  // Jobs loaded from backend. If backend is not available, this will remain empty.
+  // Jobs loaded from backend with auto-refresh
   jobs: Job[] = [];
 
   private jobService = inject(JobService);
@@ -31,14 +31,34 @@ export class Opportunities {
   private authService = inject(AuthService);
 
   constructor() {
+    console.log('Initializing Opportunities component');
+    // Subscribe to the reactive jobs stream
+    this.jobService.jobs$.subscribe({
+      next: (data) => {
+        console.log('Received updated jobs in component:', data);
+        this.jobs = data;
+      },
+      error: (err) => {
+        console.error('Error in jobs subscription:', err);
+        console.warn('Could not load jobs from API:', err);
+      }
+    });
+    
+    // Initial load
     this.loadJobs();
   }
 
   loadJobs() {
-    // Attempt to load jobs from backend; errors are safe during development
+    console.log('Loading jobs in Opportunities component');
+    // This will trigger a refresh and update all subscribers
     this.jobService.getAll().subscribe({
-      next: (data) => (this.jobs = data),
-      error: (err) => console.warn('Could not load jobs from API (backend may be offline):', err)
+      next: () => {
+        console.log('Successfully triggered jobs refresh');
+      },
+      error: (err) => {
+        console.error('Error triggering jobs refresh:', err);
+        console.warn('Could not load jobs from API:', err);
+      }
     });
   }
 

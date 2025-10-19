@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { CandidateShellComponent } from './candidate/candidate-shell/candidate-shell';
 import { RecruiterShellComponent } from './recruiter/recruiter-shell/recruiter-shell';
+import { roleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
   { 
@@ -74,6 +75,7 @@ export const routes: Routes = [
       {
         path: '',
         component: RecruiterShellComponent,
+        canActivate: [() => roleGuard('recruiter')()],
         children: [
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
           { 

@@ -22,7 +22,7 @@ interface Job {
 @Component({
   selector: 'app-recruiter-opportunities',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './recruiter-opportunities.html',
   styleUrls: ['./recruiter-opportunities.css'],
 })
@@ -38,14 +38,51 @@ export class RecruiterOpportunitiesComponent {
   private jobService = inject(JobService);
 
   // Simple model for posting a job
-  newJob: Partial<UiJob> = { title: '', company: '', location: '', description: '', skills: [], salary: '', type: 'Full-time' };
+  newJob: {
+    title?: string;
+    company?: string;
+    location?: string;
+    description?: string;
+    skills?: string[];
+    salary?: string;
+    type?: string;
+    workMode?: string;
+    requirements?: string;
+    closingDate?: string;
+  } = { title: '', company: '', location: '', description: '', skills: [], salary: '', type: 'Full-time' };
 
   constructor() {
+    console.log('Initializing RecruiterOpportunities component');
+    // Subscribe to the reactive recruiter jobs stream
+    this.jobService.recruiterJobs$.subscribe({
+      next: (data) => {
+        console.log('Received updated recruiter jobs in component:', data);
+        console.log('Number of jobs received:', data?.length || 0);
+        this.jobs = data || [];
+      },
+      error: (err) => {
+        console.error('Error in recruiter jobs subscription:', err);
+        console.warn('Failed to load recruiter jobs:', err);
+        this.jobs = []; // Ensure jobs is always an array
+      }
+    });
+
+    // Initial load
     this.loadJobs();
   }
 
   private loadJobs() {
-    this.jobService.getByRecruiter().subscribe({ next: (data) => this.jobs = data, error: (err) => console.warn('Failed to load jobs', err) });
+    console.log('Loading recruiter jobs in RecruiterOpportunities component');
+    // This will trigger a refresh and update all subscribers
+    this.jobService.getByRecruiter().subscribe({
+      next: () => {
+        console.log('Successfully triggered recruiter jobs refresh');
+      },
+      error: (err) => {
+        console.error('Error triggering recruiter jobs refresh:', err);
+        console.warn('Failed to load recruiter jobs:', err);
+      }
+    });
   }
 
   // Simple counts
@@ -73,24 +110,48 @@ export class RecruiterOpportunitiesComponent {
   }
 
   postJob() {
+    if (!this.newJob.title || !this.newJob.location || !this.newJob.description || !this.newJob.salary) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    // Convert requirements string to array if provided
+    const requirementsArray = this.newJob.requirements ?
+      this.newJob.requirements.split(',').map((req: string) => req.trim()).filter((req: string) => req.length > 0) : [];
+
     const payload: any = {
       Title: this.newJob.title,
-      Company: { Name: this.newJob.company }, // Pass company as object with Name
       Location: this.newJob.location,
       Description: this.newJob.description,
-      Skills: (this.newJob.skills || []).join(','),
+      Skills: requirementsArray.join(','),
       SalaryRange: this.newJob.salary,
-      EmploymentType: this.newJob.type
+      EmploymentType: this.newJob.type || 'Full-time',
+      RemoteAllowed: this.newJob.workMode === 'Remote' ? true : false
     };
+
+    console.log('Creating job with payload:', payload);
+    console.log('Form data being sent:', this.newJob);
+
     this.jobService.create(payload).subscribe({
       next: (created) => {
+        console.log('Job created successfully:', created);
+        console.log('Raw response from server:', created);
+
+        // Add the created job to the list
         this.jobs.unshift(created);
-        // Refresh jobs to ensure consistency across all components
-        this.loadJobs();
+
+        // Reset form
         this.newJob = { title: '', company: '', location: '', description: '', skills: [], salary: '', type: 'Full-time' };
         this.closePostJobModal();
+
+        alert('Job posted successfully!');
       },
-      error: (err) => alert('Failed to post job: ' + (err?.error?.message ?? err))
+      error: (err) => {
+        console.error('Error creating job:', err);
+        console.error('Error response:', err.error);
+        const errorMessage = err?.error?.message || err?.message || 'Unknown error occurred';
+        alert('Failed to post job: ' + errorMessage);
+      }
     });
   }
 

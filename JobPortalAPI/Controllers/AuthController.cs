@@ -32,7 +32,10 @@ namespace JobPortalAPI.Controllers
         {
             try
             {
-                Console.WriteLine($"Login attempt for email: {req?.Email}");
+                Console.WriteLine($"AuthController - Login attempt for email: {req?.Email}");
+                Console.WriteLine($"Request path: {HttpContext.Request.Path}");
+                Console.WriteLine($"Request method: {HttpContext.Request.Method}");
+                Console.WriteLine($"Request headers: {string.Join(", ", HttpContext.Request.Headers.Select(h => $"{h.Key}={h.Value}"))}");
 
                 if (req == null || string.IsNullOrWhiteSpace(req.Email) || string.IsNullOrWhiteSpace(req.Password))
                 {
@@ -41,7 +44,27 @@ namespace JobPortalAPI.Controllers
                 }
 
                 Console.WriteLine($"Searching for user with email: {req.Email}");
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
+                // Get all users with this email and prioritize by role
+                var users = await _context.Users.Where(u => u.Email == req.Email).ToListAsync();
+                Console.WriteLine($"Found {users.Count} users with email {req.Email}");
+
+                // Prioritize recruiter users over student users
+                var recruiterUsers = users.Where(u => u.Role == "recruiter").ToList();
+                var studentUsers = users.Where(u => u.Role == "student").ToList();
+
+                Console.WriteLine($"Recruiter users: {recruiterUsers.Count}, Student users: {studentUsers.Count}");
+
+                User? user = null;
+                if (recruiterUsers.Any())
+                {
+                    user = recruiterUsers.First();
+                    Console.WriteLine($"Selected recruiter user: ID={user.UserId}, Role={user.Role}");
+                }
+                else if (studentUsers.Any())
+                {
+                    user = studentUsers.First();
+                    Console.WriteLine($"Selected student user: ID={user.UserId}, Role={user.Role}");
+                }
 
                 if (user == null)
                 {
@@ -95,6 +118,57 @@ namespace JobPortalAPI.Controllers
                 // Remove password before returning
                 user.Password = string.Empty;
 
+                // If user is a recruiter, ensure they have a recruiter profile
+                Recruiter? recruiter = null;
+                if (user.Role == "recruiter")
+                {
+                    recruiter = await _context.Recruiters.FirstOrDefaultAsync(r => r.Email == user.Email);
+                    if (recruiter == null)
+                    {
+                        // Get first available company or create one
+                        var company = await _context.Companies.FirstOrDefaultAsync();
+                        if (company == null)
+                        {
+                            // Create a default company
+                            // Get or create default industry
+                            var industry = await _context.Set<IndustryLookup>().FirstOrDefaultAsync();
+                            if (industry == null)
+                            {
+                                industry = new IndustryLookup { IndustryName = "Technology" };
+                                _context.Set<IndustryLookup>().Add(industry);
+                                await _context.SaveChangesAsync();
+                            }
+
+                            company = new Company
+                            {
+                                Name = "Default Company",
+                                Website = "https://example.com",
+                                Size = "1-10",
+                                Address = "123 Main St",
+                                Phone = "123-456-7890",
+                                CreatedDate = DateTime.Now,
+                                IndustryID = industry.IndustryID
+                            };
+                            _context.Companies.Add(company);
+                            await _context.SaveChangesAsync();
+                        }
+
+                        // Create recruiter profile
+                        recruiter = new Recruiter
+                        {
+                            FullName = user.Username,
+                            Email = user.Email,
+                            JobTitle = "Recruiter",
+                            CreatedDate = DateTime.Now,
+                            UpdatedDate = DateTime.Now,
+                            CompanyID = company.CompanyID
+                        };
+                        _context.Recruiters.Add(recruiter);
+                        await _context.SaveChangesAsync();
+                        Console.WriteLine($"Created recruiter profile for user: {user.Email}");
+                    }
+                }
+
                 // Return in a clear structure that frontend can easily parse
                 var response = new
                 {
@@ -104,7 +178,12 @@ namespace JobPortalAPI.Controllers
                     userId = user.UserId,
                     email = user.Email,
                     role = user.Role,
-                    token = token
+                    token = token,
+                    recruiterProfile = recruiter != null ? new {
+                        recruiterId = recruiter.RecruiterID,
+                        fullName = recruiter.FullName,
+                        email = recruiter.Email
+                    } : null
                 };
 
                 Console.WriteLine($"Returning response: {System.Text.Json.JsonSerializer.Serialize(response)}");
@@ -122,6 +201,47 @@ namespace JobPortalAPI.Controllers
         public IActionResult Test()
         {
             return Ok(new { message = "AuthController is working" });
+        }
+
+        [HttpGet("profile")]
+        [Microsoft.AspNetCore.Authorization.Authorize]
+        public async Task<IActionResult> GetUserProfile()
+        {
+            try
+            {
+                var emailClaim = User.FindFirst("Email");
+                if (emailClaim == null)
+                {
+                    return Unauthorized(new { message = "Invalid authentication token" });
+                }
+
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == emailClaim.Value);
+                if (user == null)
+                {
+                    return NotFound(new { message = "User not found" });
+                }
+
+                var recruiter = await _context.Recruiters.FirstOrDefaultAsync(r => r.Email == emailClaim.Value);
+                
+                return Ok(new { 
+                    user = new { 
+                        email = user.Email,
+                        role = user.Role,
+                        userId = user.UserId
+                    },
+                    recruiterProfile = recruiter != null ? new {
+                        recruiterId = recruiter.RecruiterID,
+                        fullName = recruiter.FullName,
+                        email = recruiter.Email
+                    } : null
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Get profile error: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                return StatusCode(500, new { message = "An error occurred while fetching profile" });
+            }
         }
 
         [HttpGet("users")]

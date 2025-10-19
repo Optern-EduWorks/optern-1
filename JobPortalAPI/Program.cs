@@ -8,17 +8,30 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+Console.WriteLine("Starting controller registration...");
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         // Configure JSON serialization for better frontend compatibility
         options.JsonSerializerOptions.PropertyNamingPolicy = null; // Keep PascalCase from models
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
     })
     .ConfigureApiBehaviorOptions(options =>
     {
         // Disable automatic model state validation to handle it manually
         options.SuppressModelStateInvalidFilter = true;
     });
+
+// Log the registered controllers
+var controllers = AppDomain.CurrentDomain.GetAssemblies()
+    .SelectMany(a => a.GetTypes())
+    .Where(t => t.IsSubclassOf(typeof(Microsoft.AspNetCore.Mvc.ControllerBase)));
+
+foreach (var controller in controllers)
+{
+    Console.WriteLine($"Found controller: {controller.Name}");
+}
 
 // Add SignalR services
 builder.Services.AddSignalR();
