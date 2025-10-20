@@ -1,12 +1,14 @@
-# TODO: Fix Visibility of Posted Opportunities for Recruiters and Candidates
+# Fix Job Opportunities Loading Issue
 
-## Backend Changes
-- [x] Add GetByRecruiter endpoint in JobsController to return all jobs for authenticated recruiter without closing date filter
+## Tasks
+- [x] Improve error handling in recruiter-opportunities.ts
+- [x] Enhance job.service.ts with better error handling and logging
+- [x] Update JobsController.cs with enhanced error responses
+- [x] Fix job posting flicker issue - immediate UI update on creation
+- [x] Fix job opportunities flicker on periodic refresh errors - prevent clearing jobs list on API errors
+- [ ] Test authentication flow
+- [ ] Verify recruiter profile creation
+- [ ] Check API responses in browser dev tools
 
-## Frontend Changes
-- [x] Add getByRecruiter method in JobService
-- [x] Update recruiter-opportunities component to use getByRecruiter instead of getAll
-
-## Testing
-- [ ] Verify recruiters can see all their posted jobs (active and expired)
-- [ ] Verify candidates still only see active jobs
+## Current Status
+Fixed job opportunities flicker by preventing the jobs list from being cleared when periodic refresh encounters errors. Jobs will now persist in the UI even if there are temporary API issues. Ready for testing.

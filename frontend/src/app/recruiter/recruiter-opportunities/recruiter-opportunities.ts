@@ -16,7 +16,6 @@ interface Job {
   posted: string;
   description?: string;
   requirements?: string[];
-  benefits?: string[];
 }
 
 @Component({
@@ -31,6 +30,8 @@ export class RecruiterOpportunitiesComponent {
   showDetailModal = false;
   showPostJobModal = false;
   filterActiveTab: string = 'All Jobs';
+  isLoading = true;
+  errorMessage: string | null = null;
 
   selectedJob?: UiJob | null = null;
 
@@ -59,16 +60,20 @@ export class RecruiterOpportunitiesComponent {
         console.log('Received updated recruiter jobs in component:', data);
         console.log('Number of jobs received:', data?.length || 0);
         this.jobs = data || [];
+        this.isLoading = false; // Set loading to false when data is received
+        this.errorMessage = null; // Clear any previous error
       },
       error: (err) => {
         console.error('Error in recruiter jobs subscription:', err);
         console.warn('Failed to load recruiter jobs:', err);
         this.jobs = []; // Ensure jobs is always an array
+        this.isLoading = false; // Set loading to false even on error
+        this.errorMessage = this.getErrorMessage(err);
       }
     });
 
     // Initial load
-    this.loadJobs();
+      this.loadJobs();
   }
 
   private loadJobs() {
@@ -81,8 +86,15 @@ export class RecruiterOpportunitiesComponent {
       error: (err) => {
         console.error('Error triggering recruiter jobs refresh:', err);
         console.warn('Failed to load recruiter jobs:', err);
+        this.isLoading = false; // Ensure loading is set to false on error
       }
     });
+  }
+
+  retryLoadJobs() {
+    console.log('Retrying to load recruiter jobs');
+    this.isLoading = true;
+    this.loadJobs();
   }
 
   // Simple counts
@@ -132,17 +144,23 @@ export class RecruiterOpportunitiesComponent {
     console.log('Creating job with payload:', payload);
     console.log('Form data being sent:', this.newJob);
 
+    // Set loading state for posting
+    this.isLoading = true;
+
     this.jobService.create(payload).subscribe({
       next: (created) => {
         console.log('Job created successfully:', created);
         console.log('Raw response from server:', created);
 
-        // Add the created job to the list
-        this.jobs.unshift(created);
+        // Job is already added to the list by the service, no need to manually add
+        // The service now immediately updates the BehaviorSubject to prevent flicker
 
         // Reset form
         this.newJob = { title: '', company: '', location: '', description: '', skills: [], salary: '', type: 'Full-time' };
         this.closePostJobModal();
+
+        // Reset loading state
+        this.isLoading = false;
 
         alert('Job posted successfully!');
       },
@@ -151,11 +169,32 @@ export class RecruiterOpportunitiesComponent {
         console.error('Error response:', err.error);
         const errorMessage = err?.error?.message || err?.message || 'Unknown error occurred';
         alert('Failed to post job: ' + errorMessage);
+        this.isLoading = false; // Reset loading state on error
       }
     });
   }
 
   setFilter(tab: string) {
     this.filterActiveTab = tab;
+  }
+
+  private getErrorMessage(err: any): string {
+    console.log('Parsing error for user display:', err);
+
+    if (err?.status === 401) {
+      return 'Authentication failed. Please log in again.';
+    } else if (err?.status === 403) {
+      return 'Access denied. You may not have permission to view jobs.';
+    } else if (err?.status === 404) {
+      return 'Recruiter profile not found. Please contact support.';
+    } else if (err?.status >= 500) {
+      return 'Server error. Please try again later.';
+    } else if (err?.error?.message) {
+      return err.error.message;
+    } else if (err?.message) {
+      return err.message;
+    } else {
+      return 'Failed to load job opportunities. This might be due to a network issue or authentication problem.';
+    }
   }
 }

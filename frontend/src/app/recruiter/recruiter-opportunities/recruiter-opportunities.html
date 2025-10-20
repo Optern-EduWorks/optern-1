@@ -128,8 +128,29 @@
     </div>
   </div>
 
+  <!-- Loading Message -->
+  <div class="loading-message" *ngIf="isLoading">
+    <div class="loading-content">
+      <i class="bi bi-hourglass-split"></i>
+      <h3>Loading Job Opportunities...</h3>
+      <p>Please wait while we fetch your job postings.</p>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div class="error-message" *ngIf="!isLoading && errorMessage">
+    <div class="error-content">
+      <i class="bi bi-exclamation-triangle"></i>
+      <h3>Failed to Load Job Opportunities</h3>
+      <p>{{ errorMessage }}</p>
+      <button class="retry-btn" (click)="retryLoadJobs()">
+        <i class="bi bi-arrow-clockwise"></i> Retry Loading
+      </button>
+    </div>
+  </div>
+
   <!-- No Jobs Message -->
-  <div class="no-jobs-message" *ngIf="jobs && jobs.length === 0">
+  <div class="no-jobs-message" *ngIf="!isLoading && jobs && jobs.length === 0">
     <div class="no-jobs-content">
       <i class="bi bi-briefcase"></i>
       <h3>No Job Opportunities Yet</h3>
@@ -162,12 +183,6 @@
           <h4>Requirements</h4>
           <div>
             <span class="requirement-tag" *ngFor="let req of selectedJob?.requirements">{{ req }}</span>
-          </div>
-        </div>
-        <div>
-          <h4>Benefits</h4>
-          <div>
-            <span class="benefit-tag" *ngFor="let ben of selectedJob?.benefits">{{ ben }}</span>
           </div>
         </div>
       </div>

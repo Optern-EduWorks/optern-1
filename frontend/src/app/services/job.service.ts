@@ -80,10 +80,32 @@ export class JobService {
     this.getByRecruiterFromServer().subscribe({
       next: jobs => {
         console.log('Received recruiter jobs:', jobs);
-        this.recruiterJobsSubject.next(jobs);
+        console.log('Number of recruiter jobs:', jobs?.length || 0);
+        this.recruiterJobsSubject.next(jobs || []);
       },
       error: error => {
         console.error('Error fetching recruiter jobs:', error);
+        console.error('Error details:', error.error || error.message);
+        console.error('Full error object:', error);
+        console.error('Error status:', error.status);
+        console.error('Error statusText:', error.statusText);
+
+        // Log authentication details for debugging
+        const raw = localStorage.getItem('optern_user');
+        if (raw) {
+          try {
+            const user = JSON.parse(raw);
+            console.log('User in localStorage:', { email: user.email, hasToken: !!user.token, role: user.role });
+          } catch (e) {
+            console.error('Error parsing user from localStorage:', e);
+          }
+        } else {
+          console.warn('No user data found in localStorage');
+        }
+
+        // Do NOT set empty array on error - keep current jobs to prevent flicker
+        // Only log the error and let the UI retain current state
+        console.warn('Keeping current jobs due to fetch error - not clearing the list');
       }
     });
   }
@@ -191,11 +213,23 @@ export class JobService {
 
   create(payload: any) {
     return this.http.post<any>(this.baseUrl, payload).pipe(
-      map(item => this.mapServerToUi(item)),
-      tap(() => {
-        // Refresh both job lists after creation
+      map(response => {
+        // Handle the backend response structure: { success: true, message: "...", job: jobDto, jobId: number }
+        const jobData = response.job || response;
+        return this.mapServerToUi(jobData);
+      }),
+      tap((createdJob) => {
+        // Immediately add to recruiter jobs to prevent flicker
+        const currentJobs = this.recruiterJobsSubject.value || [];
+        this.recruiterJobsSubject.next([createdJob, ...currentJobs]);
+
+        // Refresh after a short delay to allow server to process the job
+        setTimeout(() => {
+          this.refreshRecruiterJobs();
+        }, 2000); // 2 second delay
+
+        // Refresh all jobs immediately for other components
         this.refreshAllJobs();
-        this.refreshRecruiterJobs();
       })
     );
   }

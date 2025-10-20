@@ -68,7 +68,8 @@ public class JobsController : ControllerBase
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == emailClaim.Value && u.Role == "recruiter");
             if (user == null)
             {
-                return Unauthorized(new { message = "User is not a recruiter" });
+                Console.WriteLine($"User not found or not a recruiter: {emailClaim.Value}");
+                return Unauthorized(new { message = "User is not a recruiter", email = emailClaim.Value });
             }
 
             // Get first available company or create one
@@ -300,7 +301,7 @@ public class JobsController : ControllerBase
             {
                 Console.WriteLine($"Job verified in database: ID={savedJob.JobID}, Title={savedJob.Title}, RecruiterID={savedJob.RecruiterID}, CompanyID={savedJob.CompanyID}");
 
-                // Return DTO instead of entity to avoid circular references
+                // Return the actual job data instead of hardcoded values
                 var jobDto = new
                 {
                     jobID = savedJob.JobID,
@@ -310,19 +311,19 @@ public class JobsController : ControllerBase
                     salary = savedJob.SalaryRange,
                     remote = savedJob.RemoteAllowed,
                     type = savedJob.EmploymentType,
-                    applicants = 0,
+                    applicants = 0, // Keep as 0 since no applications yet
                     skills = savedJob.Skills ?? "",
                     description = savedJob.Description,
-                    rating = 4.5,
+                    rating = 4.5, // Default rating for new jobs
                     posted = savedJob.PostedDate.ToString("yyyy-MM-dd"),
-                    logo = "https://i.imgur.com/2JV8V4A.png",
-                    priority = "medium priority",
-                    status = "active",
+                    logo = "https://i.imgur.com/2JV8V4A.png", // Default logo
+                    priority = "medium priority", // Default priority
+                    status = "active", // New jobs are active by default
                     icon = savedJob.Title?.Substring(0, 1).ToUpper() ?? "J",
                     workMode = savedJob.RemoteAllowed ? "Remote" : "Onsite",
                     tags = string.IsNullOrEmpty(savedJob.Skills) ? new[] { new { label = "General", color = "blue" } } : savedJob.Skills.Split(',').Select(s => new { label = s.Trim(), color = "blue" }),
-                    requirements = new string[] { },
-                    benefits = new string[] { }
+                    requirements = string.IsNullOrEmpty(savedJob.Description) ? new string[] { } : new[] { savedJob.Description }, // Use description as requirements if available
+                    benefits = new string[] { } // Empty for now, can be enhanced later
                 };
 
                 Console.WriteLine($"Returning job DTO: {System.Text.Json.JsonSerializer.Serialize(jobDto)}");
@@ -346,6 +347,12 @@ public class JobsController : ControllerBase
             Console.WriteLine($"Stack trace: {ex.StackTrace}");
             return StatusCode(500, new { success = false, message = "Error creating job", error = ex.Message });
         }
+    }
+
+    [HttpGet("test")]
+    public IActionResult Test()
+    {
+        return Ok(new { message = "API is working", timestamp = DateTime.Now });
     }
 
     [HttpPut("{id}")]
