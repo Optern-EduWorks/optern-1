@@ -54,11 +54,11 @@ export class JobService {
     this.refreshAllJobs();
     this.refreshRecruiterJobs();
 
-    // Set up periodic refresh
+    // Set up periodic refresh - only refresh all jobs, not recruiter jobs to prevent flicker
     setInterval(() => {
       console.log('Running periodic refresh');
       this.refreshAllJobs();
-      this.refreshRecruiterJobs();
+      // Removed refreshRecruiterJobs() from periodic refresh to prevent clearing jobs list
     }, this.refreshInterval);
   }
 
@@ -111,8 +111,6 @@ export class JobService {
   }
 
   private mapServerToUi(server: any): Job {
-    console.log('Mapping server data to UI:', server);
-
     const skillsArray = server.skills
       ? server.skills.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0)
       : [];
@@ -148,7 +146,6 @@ export class JobService {
       benefits: server.benefits ?? (server.Benefits ? server.Benefits.split(',') : []) ?? []
     } as Job;
 
-    console.log('Mapped job:', mappedJob);
     return mappedJob;
   }
 
@@ -169,7 +166,6 @@ export class JobService {
           })
           .map(item => {
             const mappedJob = this.mapServerToUi(item);
-            console.log('Mapped job:', mappedJob);
             return mappedJob;
           });
       })
@@ -181,13 +177,29 @@ export class JobService {
     return this.http.get<any>(`${this.baseUrl}/by-recruiter`).pipe(
       map(response => {
         console.log('Raw server response (recruiter jobs):', response);
-        // Handle the API response structure: { success: true, jobs: [...], count: number }
-        const jobsArray = response.jobs || [];
+        console.log('Response type:', typeof response, 'isArray:', Array.isArray(response));
+        let jobsArray: any[] = [];
+        if (Array.isArray(response)) {
+          jobsArray = response;
+        } else if (response && typeof response === 'object') {
+          // Try different possible properties for the jobs array
+          jobsArray = response.data || response.jobs || response.result || [];
+          if (!Array.isArray(jobsArray)) {
+            console.warn('Jobs property is not an array:', jobsArray);
+            jobsArray = [];
+          }
+        } else {
+          console.warn('Unexpected response type for recruiter jobs:', typeof response, response);
+        }
         return jobsArray.map((item: any) => {
-          const mappedJob = this.mapServerToUi(item);
-          console.log('Mapped recruiter job:', mappedJob);
-          return mappedJob;
-        });
+          try {
+            const mappedJob = this.mapServerToUi(item);
+            return mappedJob;
+          } catch (e) {
+            console.error('Error mapping job:', item, e);
+            return null;
+          }
+        }).filter(job => job != null);
       })
     );
   }
@@ -207,6 +219,14 @@ export class JobService {
     return this.recruiterJobs$;
   }
 
+  loadRecruiterJobs(): Observable<Job[]> {
+    return this.getByRecruiterFromServer().pipe(
+      tap(jobs => {
+        this.recruiterJobsSubject.next(jobs || []);
+      })
+    );
+  }
+
   get(id: number) {
     return this.http.get<any>(`${this.baseUrl}/${id}`).pipe(map(item => this.mapServerToUi(item)));
   }
@@ -223,11 +243,6 @@ export class JobService {
         const currentJobs = this.recruiterJobsSubject.value || [];
         this.recruiterJobsSubject.next([createdJob, ...currentJobs]);
 
-        // Refresh after a short delay to allow server to process the job
-        setTimeout(() => {
-          this.refreshRecruiterJobs();
-        }, 2000); // 2 second delay
-
         // Refresh all jobs immediately for other components
         this.refreshAllJobs();
       })
@@ -239,7 +254,7 @@ export class JobService {
       tap(() => {
         // Refresh both job lists after update
         this.refreshAllJobs();
-        this.refreshRecruiterJobs();
+        // Removed refreshRecruiterJobs() to prevent clearing jobs list
       })
     );
   }
@@ -249,7 +264,7 @@ export class JobService {
       tap(() => {
         // Refresh both job lists after deletion
         this.refreshAllJobs();
-        this.refreshRecruiterJobs();
+        // Removed refreshRecruiterJobs() to prevent clearing jobs list
       })
     );
   }

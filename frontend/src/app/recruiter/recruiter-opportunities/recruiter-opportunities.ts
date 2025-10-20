@@ -32,6 +32,7 @@ export class RecruiterOpportunitiesComponent {
   filterActiveTab: string = 'All Jobs';
   isLoading = true;
   errorMessage: string | null = null;
+  isInitialLoad = true;
 
   selectedJob?: UiJob | null = null;
 
@@ -60,32 +61,38 @@ export class RecruiterOpportunitiesComponent {
         console.log('Received updated recruiter jobs in component:', data);
         console.log('Number of jobs received:', data?.length || 0);
         this.jobs = data || [];
-        this.isLoading = false; // Set loading to false when data is received
+        // Only set loading to false if this is not the initial load
+        if (!this.isInitialLoad) {
+          this.isLoading = false;
+        }
         this.errorMessage = null; // Clear any previous error
       },
       error: (err) => {
         console.error('Error in recruiter jobs subscription:', err);
         console.warn('Failed to load recruiter jobs:', err);
-        this.jobs = []; // Ensure jobs is always an array
+        // Do NOT set jobs to empty array on error - keep current jobs to prevent flicker
         this.isLoading = false; // Set loading to false even on error
         this.errorMessage = this.getErrorMessage(err);
       }
     });
 
-    // Initial load
-      this.loadJobs();
+    // Initial load - use the new loadRecruiterJobs method
+    this.loadJobs();
   }
 
   private loadJobs() {
     console.log('Loading recruiter jobs in RecruiterOpportunities component');
-    // This will trigger a refresh and update all subscribers
-    this.jobService.getByRecruiter().subscribe({
-      next: () => {
-        console.log('Successfully triggered recruiter jobs refresh');
+    // Use the new loadRecruiterJobs method that directly loads and updates the BehaviorSubject
+    this.jobService.loadRecruiterJobs().subscribe({
+      next: (jobs) => {
+        console.log('Successfully loaded recruiter jobs:', jobs);
+        this.isInitialLoad = false; // Mark initial load as complete
+        this.isLoading = false; // Set loading to false after initial load
       },
       error: (err) => {
-        console.error('Error triggering recruiter jobs refresh:', err);
+        console.error('Error loading recruiter jobs:', err);
         console.warn('Failed to load recruiter jobs:', err);
+        this.isInitialLoad = false; // Mark initial load as complete even on error
         this.isLoading = false; // Ensure loading is set to false on error
       }
     });
