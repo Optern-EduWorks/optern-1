@@ -41,9 +41,9 @@ builder.Services.AddDbContext<JobPortalContext>(options =>
 );
 
 // JWT Configuration
-var jwtKey = builder.Configuration["Jwt:Key"] ?? "YourSuperSecretKeyHere12345678901234567890";
-var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "JobPortalAPI";
-var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "JobPortalFrontend";
+var jwtKey = "YourSuperSecretKeyHere12345678901234567890";
+var jwtIssuer = "JobPortalAPI";
+var jwtAudience = "JobPortalFrontend";
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

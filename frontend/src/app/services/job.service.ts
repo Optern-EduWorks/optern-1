@@ -54,12 +54,17 @@ export class JobService {
     this.refreshAllJobs();
     this.refreshRecruiterJobs();
 
-    // Set up periodic refresh - only refresh all jobs, not recruiter jobs to prevent flicker
+    // Set up periodic refresh - refresh both but less frequently for recruiter jobs
     setInterval(() => {
       console.log('Running periodic refresh');
       this.refreshAllJobs();
-      // Removed refreshRecruiterJobs() from periodic refresh to prevent clearing jobs list
     }, this.refreshInterval);
+
+    // Separate interval for recruiter jobs (every 60 seconds)
+    setInterval(() => {
+      console.log('Running recruiter jobs periodic refresh');
+      this.refreshRecruiterJobs();
+    }, 60000);
   }
 
   private refreshAllJobs() {
@@ -111,9 +116,11 @@ export class JobService {
   }
 
   private mapServerToUi(server: any): Job {
-    const skillsArray = server.skills
-      ? server.skills.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0)
-      : [];
+    const skillsArray = Array.isArray(server.skills)
+      ? server.skills
+      : (server.skills
+        ? server.skills.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0)
+        : []);
 
     const posted = server.PostedDate || server.postedDate || server.Posted || server.posted
       ? new Date(server.PostedDate ?? server.postedDate ?? server.Posted ?? server.posted).toLocaleDateString()
@@ -182,18 +189,24 @@ export class JobService {
         if (Array.isArray(response)) {
           jobsArray = response;
         } else if (response && typeof response === 'object') {
-          // Try different possible properties for the jobs array
-          jobsArray = response.data || response.jobs || response.result || [];
-          if (!Array.isArray(jobsArray)) {
-            console.warn('Jobs property is not an array:', jobsArray);
+          // The backend returns { success: true, jobs: { "$id": "2", "$values": [...] }, count: number }
+          let jobsData = response.jobs || response.data || response.result || [];
+          if (jobsData && jobsData.$values && Array.isArray(jobsData.$values)) {
+            jobsArray = jobsData.$values;
+          } else if (Array.isArray(jobsData)) {
+            jobsArray = jobsData;
+          } else {
+            console.warn('Jobs property is not an array or $values structure:', jobsData);
             jobsArray = [];
           }
         } else {
           console.warn('Unexpected response type for recruiter jobs:', typeof response, response);
         }
+        console.log('Jobs array to map:', jobsArray);
         return jobsArray.map((item: any) => {
           try {
             const mappedJob = this.mapServerToUi(item);
+            console.log('Mapped job:', mappedJob);
             return mappedJob;
           } catch (e) {
             console.error('Error mapping job:', item, e);

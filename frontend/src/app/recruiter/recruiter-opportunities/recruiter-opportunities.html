@@ -33,9 +33,9 @@
   <div class="search-bar-section">
     <div class="search-wrapper">
       <i class="bi bi-search"></i>
-      <input type="text" placeholder="Search job titles or locations..." class="search-input" />
+      <input type="text" placeholder="Search job titles or locations..." class="search-input" [(ngModel)]="searchQuery" />
     </div>
-    <select class="type-filter">
+    <select class="type-filter" [(ngModel)]="selectedType">
       <option>All Types</option>
       <option>Full-time</option>
       <option>Part-time</option>
@@ -54,7 +54,7 @@
 
   <!-- Jobs Grid -->
   <div class="jobs-grid" *ngIf="viewMode === 'grid'">
-    <div class="job-card" *ngFor="let job of jobs">
+    <div class="job-card" *ngFor="let job of filteredJobs">
       <div class="job-card-header">
         <div class="job-icon">{{ job.icon || (job.title ? job.title.charAt(0).toUpperCase() : 'J') }}</div>
         <span
@@ -92,7 +92,7 @@
 
   <!-- Jobs List -->
   <div class="jobs-list" *ngIf="viewMode === 'list'">
-    <div class="job-list-item" *ngFor="let job of jobs">
+    <div class="job-list-item" *ngFor="let job of filteredJobs">
       <div class="job-icon-list">{{ job.icon || (job.title ? job.title.charAt(0).toUpperCase() : 'J') }}</div>
       <div class="job-list-content">
         <div class="job-list-header">
@@ -143,7 +143,7 @@
       <i class="bi bi-exclamation-triangle"></i>
       <h3>Failed to Load Job Opportunities</h3>
       <p>{{ errorMessage }}</p>
-      <button class="retry-btn" (click)="retryLoadJobs()">
+      <button class="retry-btn" (click)="loadJobsFromDatabase()">
         <i class="bi bi-arrow-clockwise"></i> Retry Loading
       </button>
     </div>
@@ -288,4 +288,6 @@
       </form>
     </div>
   </div>
+
+
 </div>

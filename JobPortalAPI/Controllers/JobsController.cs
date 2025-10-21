@@ -49,8 +49,9 @@ public class JobsController : ControllerBase
             return Unauthorized(new { message = "Invalid authentication token" });
         }
 
-        Console.WriteLine($"Looking for recruiter with email: {emailClaim.Value}");
-        var recruiter = await _context.Recruiters.FirstOrDefaultAsync(r => r.Email == emailClaim.Value);
+        var normalizedEmail = emailClaim.Value.Trim().ToLowerInvariant();
+        Console.WriteLine($"Looking for recruiter with email: {normalizedEmail}");
+        var recruiter = await _context.Recruiters.FirstOrDefaultAsync(r => r.Email.ToLower() == normalizedEmail);
         
         // Log all recruiters in database for debugging
         var allRecruiters = await _context.Recruiters.ToListAsync();
@@ -163,9 +164,10 @@ public class JobsController : ControllerBase
                 description = job.Description,
                 rating = 4.5, // Default rating
                 posted = job.PostedDate.ToString("yyyy-MM-dd"),
+                closingDate = job.ClosingDate.ToString("yyyy-MM-dd"),
                 logo = "https://i.imgur.com/2JV8V4A.png", // Default logo
                 priority = "medium priority",
-                status = "active",
+                status = job.ClosingDate < DateTime.Now ? "closed" : "active",
                 icon = job.Title?.Substring(0, 1).ToUpper() ?? "J",
                 workMode = job.RemoteAllowed ? "Remote" : "Onsite",
                 tags = string.IsNullOrEmpty(job.Skills) ? new[] { new { label = "General", color = "blue" } } : job.Skills.Split(',').Select(s => new { label = s.Trim(), color = "blue" }),
@@ -207,7 +209,8 @@ public class JobsController : ControllerBase
         }
 
         // Check if user is a recruiter
-        var recruiter = await _context.Recruiters.FirstOrDefaultAsync(r => r.Email == emailClaim.Value);
+        var normalizedEmail = emailClaim.Value.Trim().ToLowerInvariant();
+        var recruiter = await _context.Recruiters.FirstOrDefaultAsync(r => r.Email.ToLower() == normalizedEmail);
         
         // If not a recruiter, create a temporary recruiter profile
         if (recruiter == null)
