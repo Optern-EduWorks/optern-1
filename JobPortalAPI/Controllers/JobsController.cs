@@ -18,7 +18,7 @@ public class JobsController : ControllerBase
         Console.WriteLine("JobsController - GetAll called");
         Console.WriteLine($"Request path: {HttpContext.Request.Path}");
         Console.WriteLine($"Request method: {HttpContext.Request.Method}");
-        
+
         // Include company and recruiter details, show all jobs
         var jobs = await _context.Jobs
             .Include(j => j.Company)
@@ -42,7 +42,7 @@ public class JobsController : ControllerBase
         Console.WriteLine($"Request path: {HttpContext.Request.Path}");
         Console.WriteLine($"Request method: {HttpContext.Request.Method}");
         Console.WriteLine($"Request headers: {string.Join(", ", HttpContext.Request.Headers.Select(h => $"{h.Key}={h.Value}").ToList())}");
-        
+
         var emailClaim = User.FindFirst("Email");
         if (emailClaim == null)
         {
@@ -52,7 +52,7 @@ public class JobsController : ControllerBase
         var normalizedEmail = emailClaim.Value.Trim().ToLowerInvariant();
         Console.WriteLine($"Looking for recruiter with email: {normalizedEmail}");
         var recruiter = await _context.Recruiters.FirstOrDefaultAsync(r => r.Email.ToLower() == normalizedEmail);
-        
+
         // Log all recruiters in database for debugging
         var allRecruiters = await _context.Recruiters.ToListAsync();
         Console.WriteLine($"Total recruiters in database: {allRecruiters.Count}");
@@ -211,7 +211,7 @@ public class JobsController : ControllerBase
         // Check if user is a recruiter
         var normalizedEmail = emailClaim.Value.Trim().ToLowerInvariant();
         var recruiter = await _context.Recruiters.FirstOrDefaultAsync(r => r.Email.ToLower() == normalizedEmail);
-        
+
         // If not a recruiter, create a temporary recruiter profile
         if (recruiter == null)
         {
@@ -234,6 +234,7 @@ public class JobsController : ControllerBase
                     await _context.SaveChangesAsync();
                 }
 
+                // Create a default company
                 company = new Company
                 {
                     Name = "Default Company",
@@ -360,9 +361,11 @@ public class JobsController : ControllerBase
 
     [HttpPut("{id}")]
     [Authorize]
-    public async Task<IActionResult> Update(int id, Job job)
+    public async Task<IActionResult> Update(int id, [FromBody] System.Text.Json.JsonElement jobUpdate)
     {
-        if (id != job.JobID) return BadRequest();
+        Console.WriteLine($"JobsController - Update called for job ID: {id}");
+        Console.WriteLine($"Request path: {HttpContext.Request.Path}");
+        Console.WriteLine($"Request method: {HttpContext.Request.Method}");
 
         // Ensure only the recruiter who posted can update
         var emailClaim = User.FindFirst("Email");
@@ -371,18 +374,162 @@ public class JobsController : ControllerBase
             return Unauthorized(new { message = "Invalid authentication token" });
         }
 
-        var existingJob = await _context.Jobs.FindAsync(id);
-        if (existingJob == null) return NotFound();
+        var normalizedEmail = emailClaim.Value.Trim().ToLowerInvariant();
+        Console.WriteLine($"Looking for recruiter with normalized email: {normalizedEmail}");
 
-        var recruiter = await _context.Recruiters.FirstOrDefaultAsync(r => r.Email == emailClaim.Value);
-        if (recruiter == null || existingJob.RecruiterID != recruiter.RecruiterID)
+        var existingJob = await _context.Jobs.FindAsync(id);
+        if (existingJob == null)
+        {
+            return NotFound(new { message = "Job not found" });
+        }
+
+        var recruiter = await _context.Recruiters.FirstOrDefaultAsync(r => r.Email.ToLower() == normalizedEmail);
+
+        // If recruiter profile doesn't exist, try to auto-create it like in GetByRecruiter
+        if (recruiter == null)
+        {
+            Console.WriteLine("No recruiter profile found for update, creating one");
+            // Auto-create recruiter profile - prioritize recruiter role users
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == normalizedEmail && u.Role == "recruiter");
+            if (user == null)
+            {
+                // If no recruiter role user found, check if any user exists with this email
+                var usersWithEmail = await _context.Users.Where(u => u.Email.ToLower() == normalizedEmail).ToListAsync();
+                if (usersWithEmail.Any(u => u.Role == "recruiter"))
+                {
+                    user = usersWithEmail.First(u => u.Role == "recruiter");
+                }
+                else
+                {
+                    Console.WriteLine($"No recruiter user found for email: {normalizedEmail}. Available users:");
+                    foreach (var u in usersWithEmail)
+                    {
+                        Console.WriteLine($"UserId: {u.UserId}, Role: {u.Role}");
+                    }
+                    return Forbid();
+                }
+            }
+
+            // Get first available company or create one
+            var company = await _context.Companies.FirstOrDefaultAsync();
+            if (company == null)
+            {
+                // Get or create default industry
+                var industry = await _context.Set<IndustryLookup>().FirstOrDefaultAsync();
+                if (industry == null)
+                {
+                    industry = new IndustryLookup { IndustryName = "Technology" };
+                    _context.Set<IndustryLookup>().Add(industry);
+                    await _context.SaveChangesAsync();
+                }
+
+                // Create a default company
+                company = new Company
+                {
+                    Name = "Default Company",
+                    Website = "https://example.com",
+                    Size = "1-10",
+                    Address = "123 Main St",
+                    Phone = "123-456-7890",
+                    CreatedDate = DateTime.Now,
+                    IndustryID = industry.IndustryID
+                };
+                _context.Companies.Add(company);
+                await _context.SaveChangesAsync();
+            }
+
+            recruiter = new Recruiter
+            {
+                FullName = user.Username,
+                Email = user.Email,
+                JobTitle = "Recruiter",
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                CompanyID = company.CompanyID
+            };
+
+            _context.Recruiters.Add(recruiter);
+            await _context.SaveChangesAsync();
+        }
+
+        if (existingJob.RecruiterID != recruiter.RecruiterID)
         {
             return Forbid();
         }
 
-        _context.Entry(job).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-        return NoContent();
+        try
+        {
+            // Log the received data for debugging
+            Console.WriteLine($"Received update data: {System.Text.Json.JsonSerializer.Serialize(jobUpdate)}");
+
+            // Handle the dynamic object as JsonElement
+            var jsonElement = (System.Text.Json.JsonElement)jobUpdate;
+
+            // Update only the fields that are provided
+            if (jsonElement.TryGetProperty("Title", out var titleElement) && titleElement.ValueKind != System.Text.Json.JsonValueKind.Null)
+            {
+                existingJob.Title = titleElement.GetString();
+                Console.WriteLine($"Updating Title to: {existingJob.Title}");
+            }
+            if (jsonElement.TryGetProperty("Location", out var locationElement) && locationElement.ValueKind != System.Text.Json.JsonValueKind.Null)
+            {
+                existingJob.Location = locationElement.GetString();
+                Console.WriteLine($"Updating Location to: {existingJob.Location}");
+            }
+            if (jsonElement.TryGetProperty("Description", out var descriptionElement) && descriptionElement.ValueKind != System.Text.Json.JsonValueKind.Null)
+            {
+                existingJob.Description = descriptionElement.GetString();
+                Console.WriteLine($"Updating Description to: {existingJob.Description}");
+            }
+            if (jsonElement.TryGetProperty("SalaryRange", out var salaryElement) && salaryElement.ValueKind != System.Text.Json.JsonValueKind.Null)
+            {
+                existingJob.SalaryRange = salaryElement.GetString();
+                Console.WriteLine($"Updating SalaryRange to: {existingJob.SalaryRange}");
+            }
+            if (jsonElement.TryGetProperty("EmploymentType", out var employmentTypeElement) && employmentTypeElement.ValueKind != System.Text.Json.JsonValueKind.Null)
+            {
+                existingJob.EmploymentType = employmentTypeElement.GetString();
+                Console.WriteLine($"Updating EmploymentType to: {existingJob.EmploymentType}");
+            }
+            if (jsonElement.TryGetProperty("RemoteAllowed", out var remoteElement) && remoteElement.ValueKind != System.Text.Json.JsonValueKind.Null)
+            {
+                // Handle boolean conversion more safely
+                if (remoteElement.ValueKind == System.Text.Json.JsonValueKind.True)
+                {
+                    existingJob.RemoteAllowed = true;
+                }
+                else if (remoteElement.ValueKind == System.Text.Json.JsonValueKind.False)
+                {
+                    existingJob.RemoteAllowed = false;
+                }
+                else if (remoteElement.ValueKind == System.Text.Json.JsonValueKind.String)
+                {
+                    existingJob.RemoteAllowed = remoteElement.GetString().ToLower() == "true";
+                }
+                else
+                {
+                    existingJob.RemoteAllowed = remoteElement.GetBoolean();
+                }
+                Console.WriteLine($"Updating RemoteAllowed to: {existingJob.RemoteAllowed}");
+            }
+            if (jsonElement.TryGetProperty("Skills", out var skillsElement) && skillsElement.ValueKind != System.Text.Json.JsonValueKind.Null)
+            {
+                existingJob.Skills = skillsElement.GetString();
+                Console.WriteLine($"Updating Skills to: {existingJob.Skills}");
+            }
+
+            // Save changes
+            await _context.SaveChangesAsync();
+
+            Console.WriteLine($"Job {id} updated successfully");
+            return Ok(new { message = "Job updated successfully" });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating job {id}: {ex.Message}");
+            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            return StatusCode(500, new { message = "Error updating job", error = ex.Message });
+        }
     }
 
     [HttpDelete("{id}")]
@@ -399,8 +546,74 @@ public class JobsController : ControllerBase
             return Unauthorized(new { message = "Invalid authentication token" });
         }
 
-        var recruiter = await _context.Recruiters.FirstOrDefaultAsync(r => r.Email == emailClaim.Value);
-        if (recruiter == null || job.RecruiterID != recruiter.RecruiterID)
+        var normalizedEmail = emailClaim.Value.Trim().ToLowerInvariant();
+        var recruiter = await _context.Recruiters.FirstOrDefaultAsync(r => r.Email.ToLower() == normalizedEmail);
+
+        // If recruiter profile doesn't exist, try to auto-create it like in GetByRecruiter
+        if (recruiter == null)
+        {
+            Console.WriteLine("No recruiter profile found for delete, creating one");
+            // Auto-create recruiter profile
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == normalizedEmail && u.Role == "recruiter");
+            if (user == null)
+            {
+                // Try without role filter in case the user exists but role is different
+                user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == normalizedEmail);
+                if (user != null && user.Role != "recruiter")
+                {
+                    Console.WriteLine($"User {normalizedEmail} exists but is not a recruiter (role: {user.Role})");
+                    return Forbid();
+                }
+            }
+            if (user == null)
+            {
+                Console.WriteLine($"User not found or not a recruiter: {normalizedEmail}");
+                return Forbid();
+            }
+
+            // Get first available company or create one
+            var company = await _context.Companies.FirstOrDefaultAsync();
+            if (company == null)
+            {
+                // Get or create default industry
+                var industry = await _context.Set<IndustryLookup>().FirstOrDefaultAsync();
+                if (industry == null)
+                {
+                    industry = new IndustryLookup { IndustryName = "Technology" };
+                    _context.Set<IndustryLookup>().Add(industry);
+                    await _context.SaveChangesAsync();
+                }
+
+                // Create a default company
+                company = new Company
+                {
+                    Name = "Default Company",
+                    Website = "https://example.com",
+                    Size = "1-10",
+                    Address = "123 Main St",
+                    Phone = "123-456-7890",
+                    CreatedDate = DateTime.Now,
+                    IndustryID = industry.IndustryID
+                };
+                _context.Companies.Add(company);
+                await _context.SaveChangesAsync();
+            }
+
+            recruiter = new Recruiter
+            {
+                FullName = user.Username,
+                Email = user.Email,
+                JobTitle = "Recruiter",
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                CompanyID = company.CompanyID
+            };
+
+            _context.Recruiters.Add(recruiter);
+            await _context.SaveChangesAsync();
+        }
+
+        if (job.RecruiterID != recruiter.RecruiterID)
         {
             return Forbid();
         }

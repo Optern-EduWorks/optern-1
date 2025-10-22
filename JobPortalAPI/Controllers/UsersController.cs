@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using JobPortalAPI.Data;
 using JobPortalAPI.Models;
+using BCrypt.Net;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -24,8 +25,30 @@ public class UsersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<User>> CreateUser(User user)
     {
+        // Hash the password before saving
+        if (!string.IsNullOrEmpty(user.Password))
+        {
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        }
+        
+        // Set default values
+        user.CreatedAt = DateTime.Now;
+        user.UpdatedAt = DateTime.Now;
+        if (string.IsNullOrEmpty(user.Status))
+        {
+            user.Status = "Active";
+        }
+        if (string.IsNullOrEmpty(user.VerificationStatus))
+        {
+            user.VerificationStatus = "Pending";
+        }
+        
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
+        
+        // Remove password from response for security
+        user.Password = string.Empty;
+        
         return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
     }
 
@@ -46,5 +69,38 @@ public class UsersController : ControllerBase
         _context.Users.Remove(user);
         await _context.SaveChangesAsync();
         return NoContent();
+    }
+
+    [HttpPost("fix-passwords")]
+    public async Task<IActionResult> FixPlainTextPasswords()
+    {
+        try
+        {
+            // Find users with plain text passwords (not starting with $2)
+            var usersWithPlainTextPasswords = await _context.Users
+                .Where(u => !string.IsNullOrEmpty(u.Password) && !u.Password.StartsWith("$2"))
+                .ToListAsync();
+
+            Console.WriteLine($"Found {usersWithPlainTextPasswords.Count} users with plain text passwords");
+
+            foreach (var user in usersWithPlainTextPasswords)
+            {
+                Console.WriteLine($"Fixing password for user: {user.Email}");
+                // Hash the plain text password
+                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                user.UpdatedAt = DateTime.Now;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { 
+                message = "Passwords fixed successfully", 
+                fixedCount = usersWithPlainTextPasswords.Count 
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error fixing passwords", error = ex.Message });
+        }
     }
 }

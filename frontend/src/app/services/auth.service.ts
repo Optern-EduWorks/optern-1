@@ -65,11 +65,11 @@ export class AuthService {
           }
 
           // Backend returns PascalCase (UserId, Role, Username, Email)
-          // Map to our frontend User interface
+          // Map to our frontend User interface with better fallback handling
           const user: User = {
             userId: serverUser.UserId || serverUser.userId || 0,
             role: serverUser.Role || serverUser.role || '',
-            username: serverUser.Username || serverUser.username || '',
+            username: serverUser.Username || serverUser.username || serverUser.Email || serverUser.email || '',
             email: serverUser.Email || serverUser.email || '',
             token: response.token
           };

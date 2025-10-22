@@ -1,4 +1,27 @@
 <div class="profile-container">
+  <!-- Loading State -->
+  <div class="loading-message" *ngIf="isLoading">
+    <div class="loading-content">
+      <i class="bi bi-hourglass-split"></i>
+      <h3>Loading Profile...</h3>
+      <p>Please wait while we fetch your profile information.</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-message" *ngIf="!isLoading && errorMessage">
+    <div class="error-content">
+      <i class="bi bi-exclamation-triangle"></i>
+      <h3>Failed to Load Profile</h3>
+      <p>{{ errorMessage }}</p>
+      <button class="retry-btn" (click)="reloadProfile()">
+        <i class="bi bi-arrow-clockwise"></i> Retry Loading
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!isLoading && !errorMessage">
   <!-- Page Header -->
   <div class="page-header">
     <div class="header-content">
@@ -307,5 +330,6 @@
       </div>
     </div>
 
+  </div>
   </div>
 </div>

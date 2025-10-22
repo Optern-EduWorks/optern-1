@@ -14,7 +14,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   if (raw) {
     try {
       const user = JSON.parse(raw);
-      if (user.token) {
+      if (user && user.token) {
         console.log('Found auth token:', user.token);
         // Clone the request and add auth header
         const authReq = req.clone({
@@ -31,6 +31,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       }
     } catch (error) {
       console.error('Error parsing user data from localStorage:', error);
+      // Clear invalid data
+      localStorage.removeItem('optern_user');
     }
   } else {
     console.log('No user data found in localStorage');

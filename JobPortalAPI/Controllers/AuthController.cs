@@ -57,13 +57,33 @@ namespace JobPortalAPI.Controllers
                 User? user = null;
                 if (recruiterUsers.Any())
                 {
-                    user = recruiterUsers.First();
-                    Console.WriteLine($"Selected recruiter user: ID={user.UserId}, Role={user.Role}");
+                    // Prioritize recruiter users with non-empty passwords
+                    var validRecruiterUsers = recruiterUsers.Where(u => !string.IsNullOrEmpty(u.Password)).ToList();
+                    if (validRecruiterUsers.Any())
+                    {
+                        user = validRecruiterUsers.First();
+                        Console.WriteLine($"Selected recruiter user with valid password: ID={user.UserId}, Role={user.Role}");
+                    }
+                    else
+                    {
+                        user = recruiterUsers.First();
+                        Console.WriteLine($"Selected recruiter user (no valid password found): ID={user.UserId}, Role={user.Role}");
+                    }
                 }
                 else if (studentUsers.Any())
                 {
-                    user = studentUsers.First();
-                    Console.WriteLine($"Selected student user: ID={user.UserId}, Role={user.Role}");
+                    // Prioritize student users with non-empty passwords
+                    var validStudentUsers = studentUsers.Where(u => !string.IsNullOrEmpty(u.Password)).ToList();
+                    if (validStudentUsers.Any())
+                    {
+                        user = validStudentUsers.First();
+                        Console.WriteLine($"Selected student user with valid password: ID={user.UserId}, Role={user.Role}");
+                    }
+                    else
+                    {
+                        user = studentUsers.First();
+                        Console.WriteLine($"Selected student user (no valid password found): ID={user.UserId}, Role={user.Role}");
+                    }
                 }
 
                 if (user == null)
@@ -81,25 +101,49 @@ namespace JobPortalAPI.Controllers
                 Console.WriteLine($"User found: {user.Email}, Role: {user.Role}, Password length: {user.Password?.Length ?? 0}");
                 Console.WriteLine($"Password starts with: '{user.Password?.Substring(0, Math.Min(5, user.Password?.Length ?? 0))}'");
 
-                // Check if password is already hashed (BCrypt hashes start with $2a$, $2b$, or $2y$)
-                bool isPasswordHashed = user.Password?.StartsWith("$2") == true;
+                // Standardized password verification
+                bool isPasswordValid = false;
+                string passwordVerificationMethod = "";
 
-                bool isPasswordValid;
-                if (isPasswordHashed)
+                // Method 1: Try BCrypt verification (for properly hashed passwords)
+                if (!string.IsNullOrEmpty(user.Password) && user.Password.StartsWith("$2"))
                 {
-                    // Verify hashed password
-                    isPasswordValid = BCrypt.Net.BCrypt.Verify(req.Password, user.Password);
-                }
-                else
-                {
-                    // Password is stored as plain text (temporary fix for bad updates)
-                    isPasswordValid = req.Password == user.Password;
-                    if (isPasswordValid)
+                    try
                     {
-                        // Hash the password and update in database
+                        isPasswordValid = BCrypt.Net.BCrypt.Verify(req.Password, user.Password);
+                        passwordVerificationMethod = "BCrypt";
+                        Console.WriteLine($"BCrypt verification result: {isPasswordValid}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"BCrypt verification error: {ex.Message}");
+                    }
+                }
+
+                // Method 2: Try plain text comparison (for legacy users) - but hash immediately after
+                if (!isPasswordValid && !string.IsNullOrEmpty(user.Password) && !user.Password.StartsWith("$2"))
+                {
+                    isPasswordValid = req.Password == user.Password;
+                    passwordVerificationMethod = "PlainText";
+                    Console.WriteLine($"Plain text password comparison result: {isPasswordValid}");
+                }
+
+                Console.WriteLine($"Password verification method used: {passwordVerificationMethod}");
+
+                // If password is valid and not already hashed, hash it for future use
+                if (isPasswordValid && !user.Password.StartsWith("$2"))
+                {
+                    try
+                    {
                         user.Password = BCrypt.Net.BCrypt.HashPassword(req.Password);
+                        user.UpdatedAt = DateTime.Now;
                         await _context.SaveChangesAsync();
                         Console.WriteLine($"Password hashed and updated for user: {user.Email}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error hashing password: {ex.Message}");
+                        // Continue with login even if hashing fails
                     }
                 }
 
@@ -203,6 +247,74 @@ namespace JobPortalAPI.Controllers
             return Ok(new { message = "AuthController is working" });
         }
 
+        [HttpGet("debug-users")]
+        public async Task<IActionResult> DebugUsers()
+        {
+            try
+            {
+                var users = await _context.Users.ToListAsync();
+                var userInfo = users.Select(u => new
+                {
+                    userId = u.UserId,
+                    email = u.Email,
+                    role = u.Role,
+                    passwordLength = u.Password?.Length ?? 0,
+                    isHashed = !string.IsNullOrEmpty(u.Password) && u.Password.StartsWith("$2"),
+                    passwordStart = u.Password?.Substring(0, Math.Min(10, u.Password?.Length ?? 0)) ?? "null"
+                }).ToList();
+
+                return Ok(new { 
+                    message = "User debug info", 
+                    userCount = users.Count,
+                    users = userInfo 
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error getting user info", error = ex.Message });
+            }
+        }
+
+        [HttpPost("fix-specific-user")]
+        public async Task<IActionResult> FixSpecificUser([FromBody] FixUserRequest request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest(new { message = "Request body is required" });
+                }
+
+                string email = request.Email ?? string.Empty;
+                string password = request.Password ?? string.Empty;
+
+                Console.WriteLine($"Fixing user: {email}");
+
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+                if (user == null)
+                {
+                    return NotFound(new { message = "User not found" });
+                }
+
+                // Set the password to the provided value (plain text)
+                user.Password = password;
+                user.UpdatedAt = DateTime.Now;
+                await _context.SaveChangesAsync();
+
+                Console.WriteLine($"User {email} password set to: {password}");
+
+                return Ok(new { 
+                    message = "User password fixed", 
+                    email = email,
+                    passwordSet = true 
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error fixing user", error = ex.Message });
+            }
+        }
+
         [HttpGet("profile")]
         [Microsoft.AspNetCore.Authorization.Authorize]
         public async Task<IActionResult> GetUserProfile()
@@ -276,6 +388,12 @@ namespace JobPortalAPI.Controllers
             public string CurrentPassword { get; set; } = string.Empty;
             public string NewPassword { get; set; } = string.Empty;
             public int UserId { get; set; }
+        }
+
+        public class FixUserRequest
+        {
+            public string Email { get; set; } = string.Empty;
+            public string Password { get; set; } = string.Empty;
         }
 
         [HttpPost("change-password")]

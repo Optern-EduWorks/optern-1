@@ -29,6 +29,7 @@ export class RecruiterOpportunitiesComponent {
   viewMode: 'grid' | 'list' = 'grid';
   showDetailModal = false;
   showPostJobModal = false;
+  showEditJobModal = false;
   filterActiveTab: string = 'All Jobs';
   isLoading = true;
   errorMessage: string | null = null;
@@ -47,6 +48,21 @@ export class RecruiterOpportunitiesComponent {
 
   // Simple model for posting a job
   newJob: {
+    title?: string;
+    company?: string;
+    location?: string;
+    description?: string;
+    skills?: string[];
+    salary?: string;
+    type?: string;
+    workMode?: string;
+    requirements?: string;
+    closingDate?: string;
+  } = { title: '', company: '', location: '', description: '', skills: [], salary: '', type: 'Full-time' };
+
+  // Model for editing a job
+  editJob: {
+    jobID?: number;
     title?: string;
     company?: string;
     location?: string;
@@ -182,6 +198,87 @@ export class RecruiterOpportunitiesComponent {
     this.showPostJobModal = false;
   }
 
+  openEditJobModal(job: UiJob) {
+    this.selectedJob = job;
+    // Populate edit form with job data, ensuring all required fields have values
+    this.editJob = {
+      jobID: job.jobID,
+      title: job.title || 'Untitled',
+      company: job.company || '',
+      location: job.location || 'Location not specified',
+      description: job.description || 'Description not provided',
+      skills: job.skills || [],
+      salary: job.salary || 'Salary not specified',
+      type: job.type || 'Full-time',
+      workMode: job.workMode || 'Onsite',
+      requirements: job.requirements?.join(', ') || '',
+      closingDate: '' // Will need to be handled separately if we have closing date
+    };
+    this.showEditJobModal = true;
+  }
+
+  closeEditJobModal() {
+    this.showEditJobModal = false;
+    this.selectedJob = undefined;
+  }
+
+  editJobSubmit() {
+    if (!this.editJob.title || !this.editJob.location || !this.editJob.description || !this.editJob.salary) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    if (!this.editJob.jobID) {
+      alert('Job ID is missing');
+      return;
+    }
+
+    // Convert requirements string to array if provided
+    const requirementsArray = this.editJob.requirements ?
+      this.editJob.requirements.split(',').map((req: string) => req.trim()).filter((req: string) => req.length > 0) : [];
+
+    const payload: any = {
+      Title: this.editJob.title,
+      Location: this.editJob.location,
+      Description: this.editJob.description,
+      Skills: requirementsArray.join(','),
+      SalaryRange: this.editJob.salary,
+      EmploymentType: this.editJob.type || 'Full-time',
+      RemoteAllowed: this.editJob.workMode === 'Remote' ? true : false
+    };
+
+    console.log('Updating job with payload:', payload);
+    console.log('Form data being sent:', this.editJob);
+
+    // Set loading state for editing
+    this.isLoading = true;
+
+    this.jobService.update(this.editJob.jobID, payload).subscribe({
+      next: (updated) => {
+        console.log('Job updated successfully:', updated);
+
+        // The service should handle updating the BehaviorSubject
+        // Close modal and reset form
+        this.closeEditJobModal();
+
+        // Reset edit form
+        this.editJob = { title: '', company: '', location: '', description: '', skills: [], salary: '', type: 'Full-time' };
+
+        // Reset loading state
+        this.isLoading = false;
+
+        alert('Job updated successfully!');
+      },
+      error: (err) => {
+        console.error('Error updating job:', err);
+        console.error('Error response:', err.error);
+        const errorMessage = err?.error?.message || err?.message || 'Unknown error occurred';
+        alert('Failed to update job: ' + errorMessage);
+        this.isLoading = false; // Reset loading state on error
+      }
+    });
+  }
+
 
 
 
@@ -241,6 +338,36 @@ export class RecruiterOpportunitiesComponent {
 
   setFilter(tab: string) {
     this.filterActiveTab = tab;
+  }
+
+  deleteJob(job: UiJob) {
+    if (!job.jobID) {
+      alert('Job ID is missing');
+      return;
+    }
+
+    if (!confirm('Are you sure you want to delete this job? This action cannot be undone.')) {
+      return;
+    }
+
+    console.log('Deleting job with ID:', job.jobID);
+    this.isLoading = true;
+
+    this.jobService.delete(job.jobID).subscribe({
+      next: () => {
+        console.log('Job deleted successfully');
+        // The service should handle updating the BehaviorSubject
+        this.isLoading = false;
+        alert('Job deleted successfully!');
+      },
+      error: (err) => {
+        console.error('Error deleting job:', err);
+        console.error('Error response:', err.error);
+        const errorMessage = err?.error?.message || err?.message || 'Unknown error occurred';
+        alert('Failed to delete job: ' + errorMessage);
+        this.isLoading = false;
+      }
+    });
   }
 
   private getErrorMessage(err: any): string {

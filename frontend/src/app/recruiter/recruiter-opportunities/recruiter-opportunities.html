@@ -85,7 +85,10 @@
         <button class="btn-view" (click)="openDetailModal(job)">
           <i class="bi bi-eye"></i> View Details
         </button>
-        <button class="btn-edit">Edit</button>
+        <button class="btn-edit" (click)="openEditJobModal(job)">Edit</button>
+        <button class="btn-delete" (click)="deleteJob(job)">
+          <i class="bi bi-trash"></i> Delete
+        </button>
       </div>
     </div>
   </div>
@@ -123,7 +126,10 @@
         <button class="btn-view" (click)="openDetailModal(job)">
           <i class="bi bi-eye"></i> View Details
         </button>
-        <button class="btn-edit">Edit</button>
+        <button class="btn-edit" (click)="openEditJobModal(job)">Edit</button>
+        <button class="btn-delete" (click)="deleteJob(job)">
+          <i class="bi bi-trash"></i> Delete
+        </button>
       </div>
     </div>
   </div>
@@ -289,5 +295,101 @@
     </div>
   </div>
 
+  <!-- Edit Job Modal -->
+  <div class="modal-overlay" *ngIf="showEditJobModal" (click)="closeEditJobModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closeEditJobModal()"><i class="bi bi-x"></i></button>
+      <h2 class="modal-title">Edit Job Opportunity</h2>
+      <form class="job-form" (ngSubmit)="editJobSubmit()" #editJobForm="ngForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Job Title *</label>
+            <input type="text"
+                   placeholder="Senior Frontend Developer"
+                   class="form-input"
+                   [(ngModel)]="editJob.title"
+                   name="editTitle"
+                   required />
+          </div>
+          <div class="form-group">
+            <label>Location *</label>
+            <input type="text"
+                   placeholder="San Francisco, CA"
+                   class="form-input"
+                   [(ngModel)]="editJob.location"
+                   name="editLocation"
+                   required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Job Type *</label>
+            <select class="form-input"
+                    [(ngModel)]="editJob.type"
+                    name="editType"
+                    required>
+              <option value="Full-time">Full-time</option>
+              <option value="Part-time">Part-time</option>
+              <option value="Contract">Contract</option>
+              <option value="Internship">Internship</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Work Mode *</label>
+            <select class="form-input"
+                    [(ngModel)]="editJob.workMode"
+                    name="editWorkMode"
+                    required>
+              <option value="Hybrid">Hybrid</option>
+              <option value="Remote">Remote</option>
+              <option value="Onsite">Onsite</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Salary *</label>
+            <input type="text"
+                   placeholder="$80,000 - $120,000"
+                   class="form-input"
+                   [(ngModel)]="editJob.salary"
+                   name="editSalary"
+                   required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Job Description *</label>
+          <textarea
+            class="form-textarea"
+            rows="4"
+            placeholder="Provide a detailed description of the role, responsibilities, and what makes this opportunity exciting..."
+            [(ngModel)]="editJob.description"
+            name="editDescription"
+            required
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label>Requirements *</label>
+          <textarea
+            class="form-textarea"
+            rows="2"
+            placeholder="React, TypeScript, 3+ years experience, Team collaboration (comma separated)"
+            [(ngModel)]="editJob.requirements"
+            name="editRequirements"
+            required
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label>Application Deadline</label>
+          <input type="date"
+                 class="form-input"
+                 [(ngModel)]="editJob.closingDate"
+                 name="editClosingDate" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeEditJobModal()">Cancel</button>
+          <button type="submit" class="btn-submit" [disabled]="!editJobForm.valid">Update Job</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
 </div>

@@ -265,9 +265,30 @@ export class JobService {
   update(id: number, payload: any) {
     return this.http.put(`${this.baseUrl}/${id}`, payload).pipe(
       tap(() => {
-        // Refresh both job lists after update
+        // Refresh all jobs
         this.refreshAllJobs();
-        // Removed refreshRecruiterJobs() to prevent clearing jobs list
+
+        // Update the specific job in recruiter jobs immediately
+        const currentRecruiterJobs = this.recruiterJobsSubject.value || [];
+        const updatedJobs = currentRecruiterJobs.map(job => {
+          if (job.jobID === id) {
+            // Map the payload fields to the job object
+            return {
+              ...job,
+              title: payload.Title || job.title,
+              location: payload.Location || job.location,
+              description: payload.Description || job.description,
+              salary: payload.SalaryRange || job.salary,
+              type: payload.EmploymentType || job.type,
+              remote: payload.RemoteAllowed !== undefined ? payload.RemoteAllowed : job.remote,
+              workMode: payload.RemoteAllowed ? 'Remote' : 'Onsite',
+              skills: payload.Skills ? payload.Skills.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0) : job.skills,
+              tags: payload.Skills ? payload.Skills.split(',').map((s: string) => ({ label: s.trim(), color: 'blue' })).filter((tag: any) => tag.label.length > 0) : job.tags
+            };
+          }
+          return job;
+        });
+        this.recruiterJobsSubject.next(updatedJobs);
       })
     );
   }

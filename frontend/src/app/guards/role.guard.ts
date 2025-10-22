@@ -8,18 +8,23 @@ export function roleGuard(allowedRole: string) {
     const authService = inject(AuthService);
     const user = authService.getCurrentUser();
     
-    if (!user) {
+    if (!user || !user.userId || !user.token) {
+      console.log('Role guard: No valid user found, redirecting to login');
       authService.logout(); // Clear any invalid session
-      router.navigate(['/recruiter/sign-in']);
+      const loginRoute = allowedRole === 'recruiter' ? '/recruiter/sign-in' : '/candidate/sign-in';
+      router.navigate([loginRoute]);
       return false;
     }
 
     if (user.role !== allowedRole) {
+      console.log(`Role guard: User role '${user.role}' does not match required role '${allowedRole}'`);
       authService.logout(); // Force logout for wrong role
-      router.navigate(['/recruiter/sign-in']);
+      const loginRoute = allowedRole === 'recruiter' ? '/recruiter/sign-in' : '/candidate/sign-in';
+      router.navigate([loginRoute]);
       return false;
     }
 
+    console.log(`Role guard: Access granted for ${user.role} user`);
     return true;
   };
 }

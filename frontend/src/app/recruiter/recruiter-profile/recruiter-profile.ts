@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RecruiterService, RecruiterProfile } from '../../services/recruiter.service';
 
 // Interface for Personal Information
 interface PersonalInfo {
@@ -57,6 +58,12 @@ export class RecruiterProfileComponent {
   // Edit mode
   isEditMode: boolean = false;
   
+  // Loading state
+  isLoading: boolean = true;
+  
+  // Error state
+  errorMessage: string | null = null;
+  
   // User profile header
   userProfile = {
     initials: 'JR',
@@ -105,6 +112,94 @@ export class RecruiterProfileComponent {
     offersExtended: 8
   };
   
+  // Service injection
+  private recruiterService = inject(RecruiterService);
+  
+  // Real profile data
+  realProfile: RecruiterProfile | null = null;
+  
+  constructor() {
+    this.loadProfile();
+  }
+  
+  // === PRIVATE METHODS ===
+  
+  /**
+   * Load recruiter profile from API
+   */
+  private loadProfile() {
+    this.isLoading = true;
+    this.errorMessage = null;
+    
+    this.recruiterService.getProfile().subscribe({
+      next: (profile) => {
+        this.realProfile = profile;
+        this.updateLocalData(profile);
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load recruiter profile:', err);
+        this.errorMessage = 'Failed to load profile data';
+        this.isLoading = false;
+      }
+    });
+  }
+  
+  /**
+   * Update local data with real profile data
+   */
+  private updateLocalData(profile: RecruiterProfile) {
+    // Update user profile header
+    this.userProfile = {
+      initials: this.getInitials(profile.fullName),
+      fullName: profile.fullName,
+      title: profile.jobTitle,
+      company: profile.company?.name || 'Unknown Company',
+      email: profile.email,
+      memberSince: 'Since 2022' // This could be calculated from createdDate
+    };
+    
+    // Update personal info
+    const nameParts = profile.fullName.split(' ');
+    this.personalInfo = {
+      firstName: nameParts[0] || '',
+      lastName: nameParts.slice(1).join(' ') || '',
+      email: profile.email,
+      phone: profile.phoneNumber || '',
+      position: profile.jobTitle,
+      department: 'Human Resources', // Default value
+      joinDate: '3/15/2022', // This could be calculated from createdDate
+      employeeId: `TC-HR-${profile.recruiterID}` // Generate from recruiter ID
+    };
+    
+    // Update company info if available
+    if (profile.company) {
+      this.companyInfo = {
+        name: profile.company.name,
+        industry: profile.company.industry?.industryName || 'Technology',
+        website: profile.company.website || 'https://example.com',
+        headquarters: profile.company.address || 'Not specified',
+        companySize: profile.company.size || 'Not specified',
+        founded: '2015', // Default value
+        benefits: ['Health Insurance', 'Flexible Work', 'Stock Options', 'Professional Development'],
+        about: 'Leading technology company focused on innovative solutions for modern businesses.',
+        culture: 'Innovation-driven, collaborative, and inclusive workplace with focus on work-life balance.'
+      };
+    }
+  }
+  
+  /**
+   * Get initials from full name
+   */
+  private getInitials(fullName: string): string {
+    return fullName
+      .split(' ')
+      .map(name => name.charAt(0))
+      .join('')
+      .toUpperCase()
+      .substring(0, 2);
+  }
+  
   // === PUBLIC METHODS ===
   
   /**
@@ -126,10 +221,30 @@ export class RecruiterProfileComponent {
    * Save profile changes
    */
   saveProfile(): void {
-    console.log('Saving profile:', this.personalInfo);
-    // TODO: Implement API call to save profile
-    this.isEditMode = false;
-    // Show success message
+    if (!this.realProfile) {
+      console.error('No profile data available');
+      return;
+    }
+    
+    const updateData = {
+      fullName: `${this.personalInfo.firstName} ${this.personalInfo.lastName}`.trim(),
+      jobTitle: this.personalInfo.position,
+      phoneNumber: this.personalInfo.phone,
+      bio: this.personalInfo.department // Using department as bio for now
+    };
+    
+    this.recruiterService.updateProfile(updateData).subscribe({
+      next: () => {
+        console.log('Profile updated successfully');
+        this.isEditMode = false;
+        // Reload profile to get updated data
+        this.loadProfile();
+      },
+      error: (err) => {
+        console.error('Failed to update profile:', err);
+        this.errorMessage = 'Failed to update profile';
+      }
+    });
   }
   
   /**
@@ -146,5 +261,12 @@ export class RecruiterProfileComponent {
   getStatCardClass(index: number): string {
     const classes = ['stat-card-green', 'stat-card-blue', 'stat-card-orange', 'stat-card-purple'];
     return classes[index % classes.length];
+  }
+  
+  /**
+   * Reload profile data (public method for retry button)
+   */
+  public reloadProfile(): void {
+    this.loadProfile();
   }
 }
