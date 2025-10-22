@@ -7,6 +7,8 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using BCrypt.Net;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace JobPortalAPI.Controllers
 {
@@ -28,18 +30,71 @@ namespace JobPortalAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest req)
+        public async Task<IActionResult> Login()
         {
             try
             {
-                Console.WriteLine($"AuthController - Login attempt for email: {req?.Email}");
+                Console.WriteLine($"AuthController - Login attempt");
                 Console.WriteLine($"Request path: {HttpContext.Request.Path}");
                 Console.WriteLine($"Request method: {HttpContext.Request.Method}");
                 Console.WriteLine($"Request headers: {string.Join(", ", HttpContext.Request.Headers.Select(h => $"{h.Key}={h.Value}"))}");
 
+                // Read raw request body for debugging and manual parsing
+                HttpContext.Request.EnableBuffering();
+                HttpContext.Request.Body.Position = 0;
+                using var reader = new StreamReader(HttpContext.Request.Body, leaveOpen: true);
+                var rawBody = await reader.ReadToEndAsync();
+                Console.WriteLine($"Raw request body: '{rawBody}'");
+                HttpContext.Request.Body.Position = 0;
+
+                LoginRequest req = null;
+
+                // Try to parse JSON manually first
+                try
+                {
+                    var jsonObj = JObject.Parse(rawBody);
+                    var email = jsonObj.GetValue("Email")?.ToString() ?? jsonObj.GetValue("email")?.ToString() ?? "";
+                    var password = jsonObj.GetValue("Password")?.ToString() ?? jsonObj.GetValue("password")?.ToString() ?? "";
+
+                    Console.WriteLine($"Manual parsing - Email: '{email}', Password: '{password}'");
+
+                    if (!string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(password))
+                    {
+                        req = new LoginRequest { Email = email, Password = password };
+                        Console.WriteLine($"Using manually parsed values: {req.Email}, {req.Password}");
+                    }
+                }
+                catch (Exception parseEx)
+                {
+                    Console.WriteLine($"Manual JSON parsing failed: {parseEx.Message}");
+                }
+
+                // If manual parsing failed, try model binding as fallback
+                if (req == null)
+                {
+                    Console.WriteLine("Manual parsing failed, trying model binding...");
+                    try
+                    {
+                        // Reset position for model binding
+                        HttpContext.Request.Body.Position = 0;
+                        req = await System.Text.Json.JsonSerializer.DeserializeAsync<LoginRequest>(
+                            HttpContext.Request.Body,
+                            new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+                        );
+                        Console.WriteLine($"Model binding result: {req?.Email}, {req?.Password}");
+                    }
+                    catch (Exception modelEx)
+                    {
+                        Console.WriteLine($"Model binding failed: {modelEx.Message}");
+                    }
+                }
+
                 if (req == null || string.IsNullOrWhiteSpace(req.Email) || string.IsNullOrWhiteSpace(req.Password))
                 {
                     Console.WriteLine("Login failed: Email or password missing");
+                    Console.WriteLine($"req is null: {req == null}");
+                    Console.WriteLine($"Email is null/empty: {string.IsNullOrWhiteSpace(req?.Email)}");
+                    Console.WriteLine($"Password is null/empty: {string.IsNullOrWhiteSpace(req?.Password)}");
                     return BadRequest(new { message = "Email and password are required" });
                 }
 

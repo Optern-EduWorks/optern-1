@@ -55,54 +55,102 @@ public class ApplicationsController : ControllerBase
 
     [HttpPost]
     [Authorize]
-    public async Task<ActionResult<Application>> Create(Application app)
+    public async Task<IActionResult> Create([FromBody] Application app)
     {
-        // Get candidate ID from authenticated user
-        var emailClaim = User.FindFirst("Email");
-        if (emailClaim == null)
+        try
         {
-            return Unauthorized(new { message = "Invalid authentication token" });
-        }
+            Console.WriteLine($"ApplicationsController - Create called");
+            Console.WriteLine($"Request path: {HttpContext.Request.Path}");
+            Console.WriteLine($"Request method: {HttpContext.Request.Method}");
+            Console.WriteLine($"Application data received: {System.Text.Json.JsonSerializer.Serialize(app)}");
 
-        var candidate = await _context.CandidateProfiles.FirstOrDefaultAsync(c => c.Email == emailClaim.Value);
-        if (candidate == null)
+            // Get candidate ID from authenticated user
+            var emailClaim = User.FindFirst("Email");
+            if (emailClaim == null)
+            {
+                return Unauthorized(new { message = "Invalid authentication token" });
+            }
+
+            Console.WriteLine($"Looking for candidate with email: {emailClaim.Value}");
+            var candidate = await _context.CandidateProfiles.FirstOrDefaultAsync(c => c.Email.ToLower() == emailClaim.Value.ToLower());
+            if (candidate == null)
+            {
+                Console.WriteLine($"No candidate profile found for email: {emailClaim.Value}");
+                // Check if user exists but doesn't have a candidate profile
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == emailClaim.Value.ToLower());
+                if (user != null)
+                {
+                    Console.WriteLine($"User found but no candidate profile. Creating candidate profile for user: {user.Username}");
+                    // Auto-create candidate profile
+                    candidate = new CandidateProfile
+                    {
+                        FullName = user.Username,
+                        Email = user.Email,
+                        PhoneNumber = "",
+                        Address = "",
+                        CreatedDate = DateTime.Now,
+                        UpdatedDate = DateTime.Now
+                    };
+                    _context.CandidateProfiles.Add(candidate);
+                    await _context.SaveChangesAsync();
+                    Console.WriteLine($"Created candidate profile with ID: {candidate.CandidateID}");
+                }
+                else
+                {
+                    return BadRequest(new { message = "Candidate profile not found. Please complete your profile first." });
+                }
+            }
+
+            // Set CandidateID
+            app.CandidateID = candidate.CandidateID;
+            Console.WriteLine($"Using CandidateID: {app.CandidateID}");
+
+            // Check if job exists and is active
+            Console.WriteLine($"Looking for job with ID: {app.JobID}");
+            var job = await _context.Jobs.FindAsync(app.JobID);
+            if (job == null)
+            {
+                Console.WriteLine($"Job not found with ID: {app.JobID}");
+                return BadRequest(new { message = "Job not found" });
+            }
+
+            if (job.ClosingDate < DateTime.Now)
+            {
+                return BadRequest(new { message = "Job application deadline has passed" });
+            }
+
+            // Check if already applied
+            var existingApplication = await _context.Applications
+                .FirstOrDefaultAsync(a => a.JobID == app.JobID && a.CandidateID == app.CandidateID);
+            if (existingApplication != null)
+            {
+                return BadRequest(new { message = "You have already applied for this job" });
+            }
+
+            // Set default values
+            app.AppliedDate = DateTime.Now;
+            if (string.IsNullOrEmpty(app.Status))
+            {
+                app.Status = "Applied";
+            }
+
+            Console.WriteLine($"About to save application: JobID={app.JobID}, CandidateID={app.CandidateID}, Status={app.Status}");
+            _context.Applications.Add(app);
+            await _context.SaveChangesAsync();
+            Console.WriteLine($"Application saved successfully with ID: {app.ApplicationID}");
+
+            return Ok(new {
+                success = true,
+                message = "Application submitted successfully",
+                applicationId = app.ApplicationID
+            });
+        }
+        catch (Exception ex)
         {
-            return BadRequest(new { message = "Candidate profile not found" });
+            Console.WriteLine($"Error creating application: {ex.Message}");
+            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            return StatusCode(500, new { success = false, message = "Error submitting application", error = ex.Message });
         }
-
-        // Set CandidateID
-        app.CandidateID = candidate.CandidateID;
-
-        // Check if job exists and is active
-        var job = await _context.Jobs.FindAsync(app.JobID);
-        if (job == null)
-        {
-            return BadRequest(new { message = "Job not found" });
-        }
-
-        if (job.ClosingDate < DateTime.Now)
-        {
-            return BadRequest(new { message = "Job application deadline has passed" });
-        }
-
-        // Check if already applied
-        var existingApplication = await _context.Applications
-            .FirstOrDefaultAsync(a => a.JobID == app.JobID && a.CandidateID == app.CandidateID);
-        if (existingApplication != null)
-        {
-            return BadRequest(new { message = "You have already applied for this job" });
-        }
-
-        // Set default values
-        app.AppliedDate = DateTime.Now;
-        if (string.IsNullOrEmpty(app.Status))
-        {
-            app.Status = "Applied";
-        }
-
-        _context.Applications.Add(app);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(Get), new { id = app.ApplicationID }, app);
     }
 
     [HttpPut("{id}")]

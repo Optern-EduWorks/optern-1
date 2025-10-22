@@ -159,10 +159,35 @@ export class JobService {
   // Server fetch methods
   private getAllFromServer(): Observable<Job[]> {
     console.log('Fetching all jobs from server');
-    return this.http.get<any[]>(this.baseUrl).pipe(
-      map(list => {
-        console.log('Raw server response (all jobs):', list);
-        return list
+    return this.http.get<any>(this.baseUrl).pipe(
+      map(response => {
+        console.log('Raw server response (all jobs):', response);
+        console.log('Response type:', typeof response, 'isArray:', Array.isArray(response));
+
+        let jobsArray: any[] = [];
+
+        // Handle the same nested structure as recruiter jobs
+        if (Array.isArray(response)) {
+          jobsArray = response;
+        } else if (response && typeof response === 'object') {
+          // The backend returns { "$id": "1", "$values": [...] }
+          let jobsData = response.$values || response.jobs || response.data || response.result || [];
+          if (jobsData && Array.isArray(jobsData)) {
+            jobsArray = jobsData;
+          } else if (jobsData && jobsData.$values && Array.isArray(jobsData.$values)) {
+            jobsArray = jobsData.$values;
+          } else {
+            console.warn('Jobs property is not an array or $values structure:', jobsData);
+            jobsArray = [];
+          }
+        } else {
+          console.warn('Unexpected response type for all jobs:', typeof response, response);
+          jobsArray = [];
+        }
+
+        console.log('Jobs array to process:', jobsArray);
+
+        return jobsArray
           .filter(job => {
             const closingDate = new Date(job.closingDate || job.ClosingDate);
             const isActive = closingDate >= new Date();
@@ -172,9 +197,16 @@ export class JobService {
             return isActive;
           })
           .map(item => {
-            const mappedJob = this.mapServerToUi(item);
-            return mappedJob;
-          });
+            try {
+              const mappedJob = this.mapServerToUi(item);
+              console.log('Mapped job:', mappedJob);
+              return mappedJob;
+            } catch (e) {
+              console.error('Error mapping job:', item, e);
+              return null;
+            }
+          })
+          .filter(job => job != null) as Job[];
       })
     );
   }
