@@ -159,22 +159,22 @@ export class JobService {
   // Server fetch methods
   private getAllFromServer(): Observable<Job[]> {
     console.log('Fetching all jobs from server');
-    return this.http.get<any[]>(this.baseUrl).pipe(
-      map(list => {
-        console.log('Raw server response (all jobs):', list);
-        return list
-          .filter(job => {
-            const closingDate = new Date(job.closingDate || job.ClosingDate);
-            const isActive = closingDate >= new Date();
-            if (!isActive) {
-              console.log('Filtering out expired job:', job);
-            }
-            return isActive;
-          })
-          .map(item => {
-            const mappedJob = this.mapServerToUi(item);
-            return mappedJob;
-          });
+    return this.http.get<any>(this.baseUrl).pipe(
+      map(response => {
+        console.log('Raw server response (all jobs):', response);
+        let jobsArray: any[] = [];
+        if (Array.isArray(response)) {
+          jobsArray = response;
+        } else if (response && response.$values && Array.isArray(response.$values)) {
+          jobsArray = response.$values;
+        } else {
+          console.warn('Unexpected response format for all jobs:', response);
+          jobsArray = [];
+        }
+        return jobsArray.map(item => {
+          const mappedJob = this.mapServerToUi(item);
+          return mappedJob;
+        });
       })
     );
   }
