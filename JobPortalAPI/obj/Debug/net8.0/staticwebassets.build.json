@@ -1,1 +1,77 @@
-{"Version":1,"Hash":"0yOWnbLG1ld3RX210xqjmsGnEasz9/TSmINXgKjtN/4=","Source":"db_apis","BasePath":"_content/db_apis","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}
+{
+  "Version": 1,
+  "Hash": "Z7ZcU+liFL6vQl9hKn9KCPlHkQjGSZuFfN7tz980gFU=",
+  "Source": "db_apis",
+  "BasePath": "_content/db_apis",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "db_apis\\wwwroot",
+      "Source": "db_apis",
+      "ContentRoot": "D:\\Projects\\optern-new2\\optern\\JobPortalAPI\\wwwroot\\",
+      "BasePath": "_content/db_apis",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\Projects\\optern-new2\\optern\\JobPortalAPI\\wwwroot\\login.html",
+      "SourceId": "db_apis",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\optern-new2\\optern\\JobPortalAPI\\wwwroot\\",
+      "BasePath": "_content/db_apis",
+      "RelativePath": "login.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\login.html"
+    },
+    {
+      "Identity": "D:\\Projects\\optern-new2\\optern\\JobPortalAPI\\wwwroot\\uploads\\grievances\\383cb3d4-5f5f-4cae-a543-5006d4a3b996.pdf",
+      "SourceId": "db_apis",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\optern-new2\\optern\\JobPortalAPI\\wwwroot\\",
+      "BasePath": "_content/db_apis",
+      "RelativePath": "uploads/grievances/383cb3d4-5f5f-4cae-a543-5006d4a3b996.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\grievances\\383cb3d4-5f5f-4cae-a543-5006d4a3b996.pdf"
+    },
+    {
+      "Identity": "D:\\Projects\\optern-new2\\optern\\JobPortalAPI\\wwwroot\\uploads\\grievances\\44c2b7c3-0af3-4651-bd4c-4e3347be412f.pdf",
+      "SourceId": "db_apis",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\optern-new2\\optern\\JobPortalAPI\\wwwroot\\",
+      "BasePath": "_content/db_apis",
+      "RelativePath": "uploads/grievances/44c2b7c3-0af3-4651-bd4c-4e3347be412f.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\grievances\\44c2b7c3-0af3-4651-bd4c-4e3347be412f.pdf"
+    }
+  ]
+}

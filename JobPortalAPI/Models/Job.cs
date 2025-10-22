@@ -22,8 +22,6 @@ namespace JobPortalAPI.Models
 
         public Company? Company { get; set; }
         public Recruiter? Recruiter { get; set; }
-
-
-    
+        public ICollection<Application>? Applications { get; set; }
     }
 }

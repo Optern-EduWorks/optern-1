@@ -19,15 +19,35 @@ public class JobsController : ControllerBase
         Console.WriteLine($"Request path: {HttpContext.Request.Path}");
         Console.WriteLine($"Request method: {HttpContext.Request.Method}");
 
-        // Include company and recruiter details, show all jobs
-        var jobs = await _context.Jobs
-            .Include(j => j.Company)
-            .Include(j => j.Recruiter)
-            .OrderByDescending(j => j.PostedDate)
-            .ToListAsync();
+        try
+        {
+            // Include company and recruiter details, show all jobs
+            var jobs = await _context.Jobs
+                .Include(j => j.Company)
+                .Include(j => j.Recruiter)
+                .OrderByDescending(j => j.PostedDate)
+                .ToListAsync();
 
-        Console.WriteLine($"Found {jobs.Count} jobs");
-        return jobs;
+            Console.WriteLine($"Found {jobs.Count} jobs");
+
+            // Log details of first few jobs for debugging
+            if (jobs.Any())
+            {
+                Console.WriteLine("Sample jobs:");
+                foreach (var job in jobs.Take(3))
+                {
+                    Console.WriteLine($"JobID: {job.JobID}, Title: {job.Title}, Company: {job.Company?.Name ?? "No Company"}, Posted: {job.PostedDate}");
+                }
+            }
+
+            return Ok(jobs);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in GetAll: {ex.Message}");
+            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            return StatusCode(500, new { message = "Error retrieving jobs", error = ex.Message });
+        }
     }
 
     [HttpGet("all")]

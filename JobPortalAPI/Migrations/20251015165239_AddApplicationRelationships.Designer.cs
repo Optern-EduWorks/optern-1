@@ -3,6 +3,7 @@ using System;
 using JobPortalAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace db_apis.Migrations
 {
     [DbContext(typeof(JobPortalContext))]
-    partial class JobPortalContextModelSnapshot : ModelSnapshot
+    [Migration("20251015165239_AddApplicationRelationships")]
+    partial class AddApplicationRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
@@ -262,19 +265,12 @@ namespace db_apis.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CurrentSemester")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("EmailNotifications")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -287,18 +283,9 @@ namespace db_apis.Migrations
                     b.Property<int>("GraduationYear")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("InterviewReminders")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("JobApplicationUpdates")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("LinkedInProfile")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("MarketingCommunications")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -393,7 +380,7 @@ namespace db_apis.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("IndustryID")
+                    b.Property<int>("IndustryID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -626,239 +613,6 @@ namespace db_apis.Migrations
                     b.ToTable("Recruiters");
                 });
 
-            modelBuilder.Entity("JobPortalAPI.Models.Resume", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LinkedInProfile")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ProfessionalObjective")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Resumes");
-                });
-
-            modelBuilder.Entity("JobPortalAPI.Models.ResumeCertification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("CertificationName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("ExpiryDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("IssueDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("IssuingOrganization")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("OrderIndex")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ResumeId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ResumeId");
-
-                    b.ToTable("ResumeCertifications");
-                });
-
-            modelBuilder.Entity("JobPortalAPI.Models.ResumeEducation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Degree")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("GPA")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("GraduationYear")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Institution")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("OrderIndex")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ResumeId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ResumeId");
-
-                    b.ToTable("ResumeEducations");
-                });
-
-            modelBuilder.Entity("JobPortalAPI.Models.ResumeExperience", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Company")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Duration")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("OrderIndex")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ResumeId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ResumeId");
-
-                    b.ToTable("ResumeExperiences");
-                });
-
-            modelBuilder.Entity("JobPortalAPI.Models.ResumeProject", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("OrderIndex")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ProjectLink")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ProjectTitle")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ResumeId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Technologies")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ResumeId");
-
-                    b.ToTable("ResumeProjects");
-                });
-
-            modelBuilder.Entity("JobPortalAPI.Models.ResumeSkill", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("OrderIndex")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ResumeId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("SkillName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SkillType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ResumeId");
-
-                    b.ToTable("ResumeSkills");
-                });
-
             modelBuilder.Entity("JobPortalAPI.Models.StatusLookup", b =>
                 {
                     b.Property<int>("StatusID")
@@ -940,13 +694,13 @@ namespace db_apis.Migrations
             modelBuilder.Entity("JobPortalAPI.Models.Application", b =>
                 {
                     b.HasOne("JobPortalAPI.Models.CandidateProfile", "Candidate")
-                        .WithMany("Applications")
+                        .WithMany()
                         .HasForeignKey("CandidateID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("JobPortalAPI.Models.Job", "Job")
-                        .WithMany("Applications")
+                        .WithMany()
                         .HasForeignKey("JobID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1016,7 +770,8 @@ namespace db_apis.Migrations
                     b.HasOne("JobPortalAPI.Models.IndustryLookup", "Industry")
                         .WithMany()
                         .HasForeignKey("IndustryID")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Industry");
                 });
@@ -1060,77 +815,6 @@ namespace db_apis.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("JobPortalAPI.Models.Resume", b =>
-                {
-                    b.HasOne("JobPortalAPI.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("JobPortalAPI.Models.ResumeCertification", b =>
-                {
-                    b.HasOne("JobPortalAPI.Models.Resume", "Resume")
-                        .WithMany("Certifications")
-                        .HasForeignKey("ResumeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Resume");
-                });
-
-            modelBuilder.Entity("JobPortalAPI.Models.ResumeEducation", b =>
-                {
-                    b.HasOne("JobPortalAPI.Models.Resume", "Resume")
-                        .WithMany("Educations")
-                        .HasForeignKey("ResumeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Resume");
-                });
-
-            modelBuilder.Entity("JobPortalAPI.Models.ResumeExperience", b =>
-                {
-                    b.HasOne("JobPortalAPI.Models.Resume", "Resume")
-                        .WithMany("Experiences")
-                        .HasForeignKey("ResumeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Resume");
-                });
-
-            modelBuilder.Entity("JobPortalAPI.Models.ResumeProject", b =>
-                {
-                    b.HasOne("JobPortalAPI.Models.Resume", "Resume")
-                        .WithMany("Projects")
-                        .HasForeignKey("ResumeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Resume");
-                });
-
-            modelBuilder.Entity("JobPortalAPI.Models.ResumeSkill", b =>
-                {
-                    b.HasOne("JobPortalAPI.Models.Resume", "Resume")
-                        .WithMany("Skills")
-                        .HasForeignKey("ResumeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Resume");
-                });
-
-            modelBuilder.Entity("JobPortalAPI.Models.CandidateProfile", b =>
-                {
-                    b.Navigation("Applications");
-                });
-
             modelBuilder.Entity("JobPortalAPI.Models.Company", b =>
                 {
                     b.Navigation("Jobs");
@@ -1138,27 +822,9 @@ namespace db_apis.Migrations
                     b.Navigation("Recruiters");
                 });
 
-            modelBuilder.Entity("JobPortalAPI.Models.Job", b =>
-                {
-                    b.Navigation("Applications");
-                });
-
             modelBuilder.Entity("JobPortalAPI.Models.Recruiter", b =>
                 {
                     b.Navigation("Jobs");
-                });
-
-            modelBuilder.Entity("JobPortalAPI.Models.Resume", b =>
-                {
-                    b.Navigation("Certifications");
-
-                    b.Navigation("Educations");
-
-                    b.Navigation("Experiences");
-
-                    b.Navigation("Projects");
-
-                    b.Navigation("Skills");
                 });
 #pragma warning restore 612, 618
         }

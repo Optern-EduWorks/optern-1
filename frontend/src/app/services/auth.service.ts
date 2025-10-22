@@ -116,6 +116,11 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+  getToken(): string | null {
+    const user = this.getCurrentUser();
+    return user?.token || null;
+  }
+
   changePassword(currentPassword: string, newPassword: string) {
     const currentUser = this.getCurrentUser();
     if (!currentUser || !currentUser.userId || !currentUser.token) {

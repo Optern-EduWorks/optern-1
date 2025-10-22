@@ -214,3 +214,382 @@
   color: #6c757d;
   margin-top: 8px;
 }
+
+/* --- Remove buttons --- */
+.remove-item-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.remove-item-btn:hover {
+  background-color: #c82333;
+}
+
+/* --- No items message --- */
+.no-items-message {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px dashed #dee2e6;
+  margin: 20px 0;
+}
+
+/* --- Save message --- */
+.save-message {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.save-message.success {
+  background-color: #d1edff;
+  color: #0c63e4;
+  border: 1px solid #bee5eb;
+}
+
+.save-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* --- Loading states --- */
+.add-item-btn:disabled,
+.save-btn:disabled,
+.build-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* --- Form section positioning --- */
+.form-section {
+  position: relative;
+}
+
+/* --- Preview Actions --- */
+.preview-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.edit-btn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.download-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-btn:hover {
+  background-color: #5a6268;
+}
+
+.download-btn:hover {
+  background-color: #c82333;
+}
+
+/* --- Resume Preview Styles --- */
+.resume-preview {
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.resume-header {
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 2px solid #1976D2;
+  padding-bottom: 20px;
+}
+
+.resume-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  color: #212529;
+}
+
+.contact-info {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.contact-info span {
+  display: flex;
+  align-items: center;
+}
+
+.resume-section {
+  margin-bottom: 30px;
+}
+
+.resume-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1976D2;
+  margin: 0 0 15px 0;
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 5px;
+}
+
+.resume-section p {
+  line-height: 1.6;
+  color: #495057;
+  margin: 0 0 15px 0;
+}
+
+/* --- Experience Items --- */
+.experience-item {
+  margin-bottom: 20px;
+}
+
+.experience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.experience-header strong {
+  color: #212529;
+  font-size: 16px;
+}
+
+.duration {
+  font-size: 14px;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* --- Education Items --- */
+.education-item {
+  margin-bottom: 15px;
+}
+
+.education-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 5px;
+}
+
+.education-header strong {
+  color: #212529;
+  font-size: 16px;
+}
+
+.graduation-year {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.institution {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 3px;
+}
+
+.gpa {
+  font-size: 13px;
+  color: #868e96;
+  font-style: italic;
+}
+
+/* --- Skills --- */
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skill-tag {
+  background-color: #e3f2fd;
+  color: #1976D2;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid #1976D2;
+}
+
+/* --- Projects --- */
+.project-item {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.project-item:last-child {
+  border-bottom: none;
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.project-header strong {
+  color: #212529;
+  font-size: 16px;
+}
+
+.technologies {
+  font-size: 14px;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.project-link {
+  color: #1976D2;
+  text-decoration: none;
+  font-size: 14px;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.project-link:hover {
+  text-decoration: underline;
+}
+
+/* --- Certifications --- */
+.certification-item {
+  margin-bottom: 15px;
+}
+
+.certification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 5px;
+}
+
+.certification-header strong {
+  color: #212529;
+  font-size: 16px;
+}
+
+.certification-date {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.issuer {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 3px;
+}
+
+.expiry {
+  font-size: 13px;
+  color: #868e96;
+  font-style: italic;
+}
+
+/* --- No Preview Message --- */
+.no-preview-message {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  border: 1px dashed #dee2e6;
+}
+
+.no-preview-message p {
+  color: #6c757d;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* --- Responsive adjustments --- */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .remove-item-btn {
+    position: static;
+    margin-top: 12px;
+    align-self: flex-start;
+  }
+
+  .form-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .preview-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .resume-preview {
+    padding: 20px;
+  }
+
+  .resume-header h1 {
+    font-size: 24px;
+  }
+
+  .contact-info {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .experience-header,
+  .education-header,
+  .project-header,
+  .certification-header {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
