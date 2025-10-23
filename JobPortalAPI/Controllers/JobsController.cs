@@ -40,7 +40,33 @@ public class JobsController : ControllerBase
                 }
             }
 
-            return Ok(jobs);
+            // Convert to DTOs to avoid circular references
+            var jobDtos = jobs.Select(job => new
+            {
+                jobID = job.JobID,
+                title = job.Title,
+                company = job.Company?.Name ?? "Unknown Company",
+                location = job.Location,
+                salary = job.SalaryRange,
+                remote = job.RemoteAllowed,
+                type = job.EmploymentType,
+                applicants = 0, // Default value since we don't have applications table relationship
+                skills = job.Skills ?? "",
+                description = job.Description,
+                rating = 4.5, // Default rating
+                posted = job.PostedDate.ToString("yyyy-MM-dd"),
+                closingDate = job.ClosingDate.ToString("yyyy-MM-dd"),
+                logo = "https://i.imgur.com/2JV8V4A.png", // Default logo
+                priority = "medium priority",
+                status = job.ClosingDate < DateTime.Now ? "closed" : "active",
+                icon = job.Title?.Substring(0, 1).ToUpper() ?? "J",
+                workMode = job.RemoteAllowed ? "Remote" : "Onsite",
+                tags = string.IsNullOrEmpty(job.Skills) ? new[] { new { label = "General", color = "blue" } } : job.Skills.Split(',').Select(s => new { label = s.Trim(), color = "blue" }),
+                requirements = new string[] { },
+                benefits = new string[] { }
+            });
+
+            return Ok(jobDtos);
         }
         catch (Exception ex)
         {

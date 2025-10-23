@@ -131,8 +131,8 @@ export class JobService {
 
     const mappedJob = {
       jobID: server.jobID ?? server.JobID ?? 0,
-      title: server.title ?? server.Title ?? 'Untitled',
-      company: server.company?.name ?? server.Company?.Name ?? server.company ?? 'Unknown Company',
+      title: server.title || server.Title || '',
+      company: server.company?.name ?? server.Company?.Name ?? server.company ?? server.recruiter?.fullName ?? server.Recruiter?.FullName ?? 'Unknown Company',
       location: server.location ?? server.Location ?? 'Not specified',
       salary: server.salary ?? server.SalaryRange ?? 'Competitive',
       remote: server.remote ?? server.RemoteAllowed ?? false,
@@ -146,7 +146,7 @@ export class JobService {
       priority: server.priority ?? server.category ?? server.Category ?? 'medium priority',
       // populate optional recruiter UI fields
       status: server.status ?? server.Status ?? 'active',
-      icon: (server.title ?? server.Title ?? 'U').toString().charAt(0).toUpperCase(),
+      icon: (server.title || server.Title || 'J').toString().charAt(0).toUpperCase(),
       workMode: workMode,
       tags: skillsArray.map((s: string) => ({ label: s, color: 'blue' })),
       requirements: server.requirements ?? (server.Requirements ? server.Requirements.split(',') : []) ?? [],
@@ -188,14 +188,6 @@ export class JobService {
         console.log('Jobs array to process:', jobsArray);
 
         return jobsArray
-          .filter(job => {
-            const closingDate = new Date(job.closingDate || job.ClosingDate);
-            const isActive = closingDate >= new Date();
-            if (!isActive) {
-              console.log('Filtering out expired job:', job);
-            }
-            return isActive;
-          })
           .map(item => {
             try {
               const mappedJob = this.mapServerToUi(item);
