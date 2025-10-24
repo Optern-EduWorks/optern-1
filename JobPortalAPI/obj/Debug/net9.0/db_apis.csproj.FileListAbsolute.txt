@@ -1,0 +1,576 @@
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\appsettings.Development.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\appsettings.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.staticwebassets.runtime.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.staticwebassets.endpoints.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.exe
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.deps.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.runtimeconfig.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\db_apis.pdb
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Azure.Core.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Azure.Identity.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\BCrypt.Net-Next.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Humanizer.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.CodeAnalysis.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.CodeAnalysis.Workspaces.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.Data.SqlClient.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.Data.Sqlite.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Sqlite.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.Extensions.DependencyModel.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.Identity.Client.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.Identity.Client.Extensions.Msal.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.OpenApi.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.SqlServer.Server.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Microsoft.Win32.SystemEvents.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Mono.TextTemplating.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\Newtonsoft.Json.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\SQLitePCLRaw.batteries_v2.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\SQLitePCLRaw.core.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\SQLitePCLRaw.provider.e_sqlite3.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.CodeDom.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Composition.AttributedModel.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Composition.Convention.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Composition.Hosting.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Composition.Runtime.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Composition.TypedParts.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Configuration.ConfigurationManager.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Drawing.Common.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Memory.Data.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Net.WebSockets.WebSocketProtocol.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Runtime.Caching.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Security.Cryptography.ProtectedData.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Security.Permissions.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\System.Windows.Extensions.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\browser-wasm\nativeassets\net8.0\e_sqlite3.a
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-arm\native\libe_sqlite3.so
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-arm64\native\libe_sqlite3.so
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-armel\native\libe_sqlite3.so
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-mips64\native\libe_sqlite3.so
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-musl-arm\native\libe_sqlite3.so
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-musl-x64\native\libe_sqlite3.so
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-ppc64le\native\libe_sqlite3.so
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-s390x\native\libe_sqlite3.so
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-x64\native\libe_sqlite3.so
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-x86\native\libe_sqlite3.so
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\osx-arm64\native\libe_sqlite3.dylib
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\osx-x64\native\libe_sqlite3.dylib
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\win-arm\native\e_sqlite3.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\win-arm64\native\e_sqlite3.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\win-x64\native\e_sqlite3.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\win-x86\native\e_sqlite3.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.csproj.AssemblyReference.cache
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\rpswa.dswa.cache.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.GeneratedMSBuildEditorConfig.editorconfig
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.AssemblyInfoInputs.cache
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.AssemblyInfo.cs
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.csproj.CoreCompileInputs.cache
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.MvcApplicationPartsAssemblyInfo.cs
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.MvcApplicationPartsAssemblyInfo.cache
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.sourcelink.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\rjimswa.dswa.cache.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\scopedcss\bundle\db_apis.styles.css
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\compressed\2xaxa9hk1a-rgljdwlr61.gz
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\staticwebassets.build.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\staticwebassets.build.json.cache
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\staticwebassets.development.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.csproj.Up2Date
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\refint\db_apis.dll
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.pdb
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\db_apis.genruntimeconfig.cache
+D:\khanna\btech\internship\optern\git\JobPortalAPI\obj\Debug\net9.0\ref\db_apis.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\appsettings.Development.json
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\appsettings.json
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\db_apis.staticwebassets.runtime.json
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\db_apis.staticwebassets.endpoints.json
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\db_apis.exe
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\db_apis.deps.json
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\db_apis.runtimeconfig.json
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\db_apis.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\db_apis.pdb
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Azure.Core.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Azure.Identity.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\BCrypt.Net-Next.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Humanizer.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.CodeAnalysis.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.Data.SqlClient.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.Data.Sqlite.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Sqlite.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.Identity.Client.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.Identity.Client.Extensions.Msal.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.OpenApi.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.SqlServer.Server.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Mono.TextTemplating.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Newtonsoft.Json.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\SQLitePCLRaw.batteries_v2.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\SQLitePCLRaw.core.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\SQLitePCLRaw.provider.e_sqlite3.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.CodeDom.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Composition.AttributedModel.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Composition.Convention.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Composition.Hosting.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Composition.Runtime.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Composition.TypedParts.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Configuration.ConfigurationManager.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Drawing.Common.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Memory.Data.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Net.WebSockets.WebSocketProtocol.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Runtime.Caching.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Security.Permissions.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Windows.Extensions.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\browser-wasm\nativeassets\net8.0\e_sqlite3.a
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-arm\native\libe_sqlite3.so
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-arm64\native\libe_sqlite3.so
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-armel\native\libe_sqlite3.so
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-mips64\native\libe_sqlite3.so
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-musl-arm\native\libe_sqlite3.so
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-musl-x64\native\libe_sqlite3.so
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-ppc64le\native\libe_sqlite3.so
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-s390x\native\libe_sqlite3.so
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-x64\native\libe_sqlite3.so
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-x86\native\libe_sqlite3.so
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\osx-arm64\native\libe_sqlite3.dylib
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\osx-x64\native\libe_sqlite3.dylib
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-arm\native\e_sqlite3.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-arm64\native\e_sqlite3.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-x64\native\e_sqlite3.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.csproj.AssemblyReference.cache
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.AssemblyInfoInputs.cache
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.AssemblyInfo.cs
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.csproj.CoreCompileInputs.cache
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\rjimswa.dswa.cache.json
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\scopedcss\bundle\db_apis.styles.css
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\staticwebassets.build.json.cache
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\staticwebassets.development.json
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.csproj.Up2Date
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\refint\db_apis.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.pdb
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.genruntimeconfig.cache
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\ref\db_apis.dll
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\1hxywtfe4g-edsqruyxb0.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\6mmau0jjj7-vagikyz9qx.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\m9shigep74-1dks0wz7uz.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\ewkkc81cvf-vcgfmfixcf.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\ud6bphzcyv-tvy3j3n584.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\l8h6vy4nng-c99ovaub7g.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\iujaaa56zq-rj9x24dshc.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\7c2t5ax7p8-h2bynvs0fg.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\1hktmggdet-g3c7lufo47.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\kfl002crol-3dbtjuh7xq.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\q08g3rcoyk-abinbqzicy.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\m2gme4sk7k-xk6am1nwve.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\133bjhix2c-kmxrrskhr0.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\kd4wynf8ux-tb3o7ox021.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\loef41zzlp-g5am3lfail.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\qcy822ks0p-9nyltcjmyy.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\cqg6o77d48-s9oieupcjk.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\5mmnkt6o5m-mu6q8n2y6p.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\swqb1dopo9-5tlf1jiklj.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\gijk6ds989-teza9znvxg.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\b5ap0ca3x2-msz7ye1631.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\bn8ao8aq7e-sv9xddi46f.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\fqeigzv6jq-iex7xl7to4.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\ks5an3baiw-4r6p00iyu9.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\k89ndquqti-budlm94w2k.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\qt95mbjkzj-rm3pmtb0zi.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\qbafun898j-ugb0ql59er.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\njzu8fwjs8-fnhwz2yc4u.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\jdo794kdcu-trbe501kq1.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\poevuoe7wg-ld8fw9tydk.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\c07im0t6nd-32wrids9cm.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\gjiflly7g5-zc4n2wrrlb.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\etk43wb86w-fshwcv9efs.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\89ilpq3g8t-mesvmbq0x4.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\4adac34j4i-2t2ui10e72.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\5iyp0pseek-yj9h1im5js.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\4uz2991czw-zww81bsfqr.gz
+C:\Users\donas\Downloads\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\os2o4gfiku-jz0zy17irh.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\appsettings.Development.json
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\appsettings.json
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\db_apis.staticwebassets.runtime.json
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\db_apis.staticwebassets.endpoints.json
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\db_apis.exe
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\db_apis.deps.json
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\db_apis.runtimeconfig.json
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\db_apis.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\db_apis.pdb
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Azure.Core.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Azure.Identity.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\BCrypt.Net-Next.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Humanizer.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.CodeAnalysis.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.Data.SqlClient.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.Data.Sqlite.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Sqlite.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.Identity.Client.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.Identity.Client.Extensions.Msal.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.OpenApi.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.SqlServer.Server.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Mono.TextTemplating.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\Newtonsoft.Json.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\SQLitePCLRaw.batteries_v2.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\SQLitePCLRaw.core.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\SQLitePCLRaw.provider.e_sqlite3.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.CodeDom.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Composition.AttributedModel.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Composition.Convention.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Composition.Hosting.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Composition.Runtime.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Composition.TypedParts.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Configuration.ConfigurationManager.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Drawing.Common.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Memory.Data.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Net.WebSockets.WebSocketProtocol.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Runtime.Caching.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Security.Permissions.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\System.Windows.Extensions.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\browser-wasm\nativeassets\net8.0\e_sqlite3.a
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-arm\native\libe_sqlite3.so
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-arm64\native\libe_sqlite3.so
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-armel\native\libe_sqlite3.so
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-mips64\native\libe_sqlite3.so
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-musl-arm\native\libe_sqlite3.so
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-musl-x64\native\libe_sqlite3.so
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-ppc64le\native\libe_sqlite3.so
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-s390x\native\libe_sqlite3.so
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-x64\native\libe_sqlite3.so
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\linux-x86\native\libe_sqlite3.so
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\osx-arm64\native\libe_sqlite3.dylib
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\osx-x64\native\libe_sqlite3.dylib
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-arm\native\e_sqlite3.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-arm64\native\e_sqlite3.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-x64\native\e_sqlite3.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.csproj.AssemblyReference.cache
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.AssemblyInfoInputs.cache
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.AssemblyInfo.cs
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.csproj.CoreCompileInputs.cache
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\rjimswa.dswa.cache.json
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\scopedcss\bundle\db_apis.styles.css
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\1hxywtfe4g-edsqruyxb0.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\l8h6vy4nng-c99ovaub7g.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\iujaaa56zq-rj9x24dshc.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\7c2t5ax7p8-h2bynvs0fg.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\1hktmggdet-g3c7lufo47.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\kfl002crol-3dbtjuh7xq.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\q08g3rcoyk-abinbqzicy.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\m2gme4sk7k-xk6am1nwve.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\133bjhix2c-kmxrrskhr0.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\kd4wynf8ux-tb3o7ox021.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\loef41zzlp-g5am3lfail.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\qcy822ks0p-9nyltcjmyy.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\cqg6o77d48-s9oieupcjk.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\5mmnkt6o5m-mu6q8n2y6p.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\swqb1dopo9-5tlf1jiklj.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\gijk6ds989-teza9znvxg.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\b5ap0ca3x2-msz7ye1631.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\bn8ao8aq7e-sv9xddi46f.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\fqeigzv6jq-iex7xl7to4.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\ks5an3baiw-4r6p00iyu9.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\k89ndquqti-budlm94w2k.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\qt95mbjkzj-rm3pmtb0zi.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\qbafun898j-ugb0ql59er.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\njzu8fwjs8-fnhwz2yc4u.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\jdo794kdcu-trbe501kq1.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\poevuoe7wg-ld8fw9tydk.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\c07im0t6nd-32wrids9cm.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\gjiflly7g5-zc4n2wrrlb.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\etk43wb86w-fshwcv9efs.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\89ilpq3g8t-mesvmbq0x4.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\4adac34j4i-2t2ui10e72.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\5iyp0pseek-yj9h1im5js.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\6mmau0jjj7-vagikyz9qx.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\4uz2991czw-zww81bsfqr.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\os2o4gfiku-jz0zy17irh.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\m9shigep74-1dks0wz7uz.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\ewkkc81cvf-vcgfmfixcf.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\compressed\ud6bphzcyv-tvy3j3n584.gz
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\staticwebassets.build.json.cache
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\staticwebassets.development.json
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.csproj.Up2Date
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\refint\db_apis.dll
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.pdb
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\db_apis.genruntimeconfig.cache
+C:\Users\donas\Downloads\Optern Dona\optern-aakarsh\optern-aakarsh\JobPortalAPI\obj\Debug\net9.0\ref\db_apis.dll

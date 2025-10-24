@@ -1,0 +1,150 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <div class="header-left">
+      <h1 class="dashboard-title">Recruiter <span class="highlight">Dashboard</span> 🎯</h1>
+      <p class="dashboard-subtitle">Welcome back! Here's your recruitment overview for today.</p>
+    </div>
+    <div class="header-right">
+      <span class="user-badge">🚀 TechCorp Inc Recruiter</span>
+    </div>
+  </header>
+
+  <div class="stats-grid" *ngIf="!isLoading">
+    <div class="stat-card green">
+      <div class="stat-icon">💼</div>
+      <div class="stat-content">
+        <div class="stat-number">{{ stats.activeJobs || 0 }}</div>
+        <div class="stat-label">Active Jobs</div>
+        <div class="stat-progress">
+          <div class="progress-bar" [style.width.%]="(stats.activeJobs || 0) * 15"></div>
+        </div>
+        <div class="stat-change">📈 {{ (stats.activeJobs || 0) * 15 }}%</div>
+      </div>
+    </div>
+
+    <div class="stat-card blue">
+      <div class="stat-icon">📄</div>
+      <div class="stat-content">
+        <div class="stat-number">{{ stats.totalApplications || 0 }}</div>
+        <div class="stat-label">Total Applications</div>
+        <div class="stat-progress">
+          <div class="progress-bar" [style.width.%]="(stats.totalApplications || 0) * 2.8"></div>
+        </div>
+        <div class="stat-change">📈 {{ (stats.totalApplications || 0) * 2.8 }}%</div>
+      </div>
+    </div>
+
+    <div class="stat-card teal">
+      <div class="stat-icon">✅</div>
+      <div class="stat-content">
+        <div class="stat-number">{{ stats.hiresThisMonth || 0 }}</div>
+        <div class="stat-label">Hires This Month</div>
+        <div class="stat-progress">
+          <div class="progress-bar" [style.width.%]="(stats.hiresThisMonth || 0) * 12"></div>
+        </div>
+        <div class="stat-change">📈 {{ (stats.hiresThisMonth || 0) * 12 }}%</div>
+      </div>
+    </div>
+
+    <div class="stat-card purple">
+      <div class="stat-icon">📅</div>
+      <div class="stat-content">
+        <div class="stat-number">{{ stats.scheduledInterviews || 0 }}</div>
+        <div class="stat-label">Interviews Scheduled</div>
+        <div class="stat-progress">
+          <div class="progress-bar" [style.width.%]="(stats.scheduledInterviews || 0) * 20"></div>
+        </div>
+        <div class="stat-change">📈 {{ (stats.scheduledInterviews || 0) * 20 }}%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="stats-grid" *ngIf="isLoading">
+    <div class="stat-card green">
+      <div class="stat-icon">💼</div>
+      <div class="stat-content">
+        <div class="loading-spinner"></div>
+        <div class="stat-label">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="card activity-card">
+      <div class="card-header">
+        <h2 class="card-title">Weekly Recruitment Activity</h2>
+        <div class="legend">
+          <span class="legend-item">
+            <span class="legend-dot green"></span> Applications
+          </span>
+          <span class="legend-item">
+            <span class="legend-dot blue"></span> Interviews
+          </span>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas id="recruitmentChart" width="400" height="200"></canvas>
+      </div>
+      <div class="activity-list">
+        <div class="activity-item" *ngFor="let activity of activities">
+          <div class="activity-icon">{{ activity.icon }}</div>
+          <div class="activity-content">
+            <div class="activity-title">{{ activity.title }}</div>
+            <div class="activity-meta">
+              <span class="activity-person">{{ activity.description }}</span>
+              <span class="activity-time">• {{ activity.timeAgo }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" *ngIf="activities.length === 0 && !isLoading">
+          <div class="activity-content">
+            <div class="activity-title">No recent activities</div>
+            <div class="activity-meta">
+              <span class="activity-person">Activity will appear here when candidates apply</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card jobs-card">
+    <div class="card-header">
+      <h2 class="card-title">Top Performing Jobs</h2>
+      <a href="#" class="view-all-link" routerLink="/recruiter/opportunities">👁️ View All</a>
+    </div>
+    <div class="jobs-list">
+      <div class="job-item" *ngFor="let job of topJobs">
+        <div class="job-info">
+          <div class="job-title">{{ job.title }}</div>
+          <div class="job-details">
+            <span class="job-location">📍 Remote</span>
+            <span class="job-type green">{{ job.type }}</span>
+            <span class="job-posted">🕐 Posted {{ job.postedDate }}</span>
+          </div>
+        </div>
+        <div class="job-applications">
+          <div class="applications-count">{{ job.applicationCount }}</div>
+          <div class="applications-label">applications</div>
+        </div>
+      </div>
+      <div class="job-item" *ngIf="topJobs.length === 0 && !isLoading">
+        <div class="job-info">
+          <div class="job-title">No jobs posted yet</div>
+          <div class="job-details">
+            <span class="job-location">Post your first job to see performance metrics</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-banner">
+    <div class="cta-content">
+      <div class="cta-title">Ready to hire top talent? 🚀</div>
+      <div class="cta-subtitle">Post a new job opportunity and connect with qualified candidates.</div>
+    </div>
+    <button class="cta-button" routerLink="/recruiter/opportunities">+ Post New Job</button>
+  </div>
+</div>

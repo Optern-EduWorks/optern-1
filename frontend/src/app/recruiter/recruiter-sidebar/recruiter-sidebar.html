@@ -1,0 +1,84 @@
+<div class="sidebar-container">
+  <div class="logo-section">
+    <div class="logo-container">
+      <div class="logo-icon">O</div>
+      <div class="logo-text">
+        <span class="logo-title">OPTERN</span>
+        <span class="logo-subtitle">Recruiter Portal</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navigation">
+    <ul>
+      <li class="navigation-item" [class.active]="router.url.includes('/dashboard')">
+        <a href="#" (click)="goToDashboard(); $event.preventDefault()">
+          <i class="bi bi-bar-chart-fill"></i>
+          <div>
+            <span class="nav-title">Dashboard</span>
+            <span class="nav-subtitle">Overview & Analytics</span>
+          </div>
+        </a>
+      </li>
+      <li class="navigation-item" [class.active]="router.url.includes('/opportunities')">
+        <a href="#" (click)="goToOpportunities(); $event.preventDefault()">
+          <i class="bi bi-briefcase"></i>
+          <div>
+            <span class="nav-title">Opportunities</span>
+            <span class="nav-subtitle">Manage Job Posts</span>
+          </div>
+        </a>
+      </li>
+      <li class="navigation-item" [class.active]="router.url.includes('/applications')">
+        <a href="#" (click)="goToApplications(); $event.preventDefault()">
+          <i class="bi bi-file-earmark-person"></i>
+          <div>
+            <span class="nav-title">Applications</span>
+            <span class="nav-subtitle">Review Candidates</span>
+          </div>
+        </a>
+      </li>
+      <li class="navigation-item" [class.active]="router.url.includes('/candidates')">
+        <a href="#" (click)="goToCandidates(); $event.preventDefault()">
+          <i class="bi bi-people"></i>
+          <div>
+            <span class="nav-title">Candidates</span>
+            <span class="nav-subtitle">Search & Discover</span>
+          </div>
+        </a>
+      </li>
+      <li class="navigation-item" [class.active]="router.url.includes('/grievances')">
+        <a href="#" (click)="goToGrievances(); $event.preventDefault()">
+          <i class="bi bi-exclamation-circle"></i>
+          <div>
+            <span class="nav-title">Grievances</span>
+            <span class="nav-subtitle">Support & Issues</span>
+          </div>
+        </a>
+      </li>
+      <li class="navigation-item"  [class.active]="router.url.includes('/profile')">
+        <a href="#"  (click)="goToProfile(); $event.preventDefault()">
+          <i class="bi bi-person"></i>
+          <div>
+            <span class="nav-title">Profile</span>
+            <span class="nav-subtitle">Account Settings</span>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar-initial">J</div>
+      <div>
+        <div class="user-name">Jane Recruiter</div>
+        <div class="user-university">TechCorp Inc</div>
+        <div class="user-role" style="color:#1db489;">● Recruiter</div>
+      </div>
+    </div>
+    <button class="logout-button" (click)="logout()">
+      <i class="bi bi-door-open"></i> Logout
+    </button>
+  </div>
+</div>

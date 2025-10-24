@@ -1,0 +1,107 @@
+<div class="signup-container">
+  <div class="signup-card">
+    <div class="logo">
+      <div class="logo-icon">O</div>
+    </div>
+    
+    <h1 class="title">Join OPTERN</h1>
+    <p class="subtitle">Create your account and start connecting with opportunities</p>
+    
+    <form (submit)="onSubmit($event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            id="firstName"
+            class="form-input"
+            [(ngModel)]="model.firstName"
+            name="firstName"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            class="form-input"
+            [(ngModel)]="model.lastName"
+            name="lastName"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="form-input"
+          [(ngModel)]="model.email"
+          name="email"
+          required
+        />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-input"
+            [(ngModel)]="model.password"
+            name="password"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            class="form-input"
+            [(ngModel)]="model.confirmPassword"
+            name="confirmPassword"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="role">I am a</label>
+        <select id="role" class="form-select" [(ngModel)]="model.role" name="role">
+          <option value="recruiter">Recruiter</option>
+          <option value="student">Student</option>
+          <option value="professional">Professional</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="company">Company Name</label>
+        <input
+          type="text"
+          id="company"
+          class="form-input"
+          [(ngModel)]="model.companyName"
+          name="companyName"
+        />
+      </div>
+      
+      <button type="submit" class="submit-button">
+        Create Account
+      </button>
+    </form>
+    
+    <div class="footer-links">
+      <p class="signin-link">
+        Already have an account? <a href="#" (click)="goToSignIn($event)">Sign In</a>
+      </p>
+      <a href="#" class="home-link">← Back to home</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,189 @@
+<div class="applications-page">
+  <div class="header-row">
+    <h1>
+      <span class="main-title">Applications</span> 
+      <span class="main-highlight">Management</span>
+    </h1>
+    <button class="activity-btn" (click)="openAnalyticsModal()"> 
+      <i class="bi bi-bar-chart"></i> Activity Tracker 
+    </button>
+  </div>
+  <div class="subtitle">Review and manage candidate applications for your job postings.</div>
+  <div class="controls-row">
+    <input type="text" class="search-input" placeholder="Search applications..." [(ngModel)]="search" />
+    <select [(ngModel)]="filterStatus">
+      <option>All Status</option>
+      <option>Pending</option>
+      <option>Shortlisted</option>
+      <option>Reviewed</option>
+      <option>Rejected</option>
+      <option>Hired</option>
+    </select>
+    <div class="view-buttons">
+      <button [class.active]="viewMode==='list'" (click)="viewMode='list'"><i class="bi bi-list-ul"></i></button>
+      <button [class.active]="viewMode==='grid'" (click)="viewMode='grid'"><i class="bi bi-grid"></i></button>
+    </div>
+  </div>
+  <!-- Main Applications List -->
+  <div *ngIf="viewMode === 'list'" class="application-list">
+    <div class="application-list-card" *ngFor="let app of filteredApplications">
+      <div class="avatar" [ngStyle]="{'background': app.color}">{{app.initials}}</div>
+      <div class="app-details">
+        <div class="name-row">
+          <span class="applicant-name">{{app.name}}</span>
+          <span class="role">{{app.role}}</span>
+        </div>
+        <div class="info-row">
+          <span class="email">{{app.email}}</span>
+          <span class="location"><i class="bi bi-geo-alt"></i> {{app.location}}</span>
+          <span class="exp"><i class="bi bi-briefcase"></i> {{app.experience}}</span>
+          <span class="applied"><i class="bi bi-calendar"></i> Applied {{app.applied}}</span>
+        </div>
+        <div class="skills-row">
+          <span *ngFor="let skill of app.skills" class="skill-tag">{{skill}}</span>
+        </div>
+        <div class="status-row">
+          <span class="rating"><i class="bi bi-star"></i> {{app.rating}}</span>
+          <span class="status-badge" [ngClass]="app.status.toLowerCase()">{{app.status}}</span>
+        </div>
+      </div>
+      <div class="action-row">
+        <button class="view-details-btn" (click)="openDetailModal(app)">
+          <i class="bi bi-eye"></i> View Details
+        </button>
+        <button class="shortlist-btn" *ngIf="app.status==='Pending' || app.status==='Shortlisted'">Shortlist</button>
+      </div>
+    </div>
+  </div>
+  <!-- Grid view (Optional: copy card layout to grid style) -->
+  <div *ngIf="viewMode === 'grid'" class="application-grid">
+  <div *ngFor="let app of filteredApplications" class="application-grid-card">
+    <div class="card-header">
+      <div class="avatar" [ngStyle]="{'background-color': app.color}">
+        {{ app.initials }}
+      </div>
+      <span class="status-badge" [ngClass]="app.status.toLowerCase()">
+        {{ app.status }}
+      </span>
+    </div>
+    
+    <div class="card-content">
+      <h3 class="name-title">{{ app.name }}</h3>
+      <p class="role">{{ app.role }}</p>
+      
+      <div class="card-info">
+        <span><i class="bi bi-envelope"></i> {{ app.email }}</span>
+        <span><i class="bi bi-geo-alt"></i> {{ app.location }}</span>
+        <span><i class="bi bi-briefcase"></i> {{ app.experience }} experience</span>
+        <span><i class="bi bi-calendar"></i> Applied {{ app.applied }}</span>
+      </div>
+      
+      <div class="skills-row">
+        <span *ngFor="let skill of app.skills.slice(0, 4)" class="skill-tag">{{ skill }}</span>
+        <span *ngIf="app.skills.length > 4" class="skill-tag">+{{ app.skills.length - 4 }}</span>
+      </div>
+      
+      <div class="status-row">
+        <div class="rating">
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-fill"></i>
+          <i class="bi bi-star-half"></i>
+          <span>{{ app.rating }}</span>
+        </div>
+        <span class="status-badge" [ngClass]="app.status.toLowerCase()">
+          {{ app.status }}
+        </span>
+      </div>
+      
+      <div class="card-actions">
+        <button class="view-details-btn" (click)="openDetailModal(app)">
+          <i class="bi bi-eye"></i> View Details
+        </button>
+        <button 
+          *ngIf="app.status === 'Pending'" 
+          class="shortlist-btn" 
+          (click)="shortlist(app)">
+          Shortlist
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Candidate Details Modal -->
+  <div class="modal-overlay" *ngIf="showDetailModal" (click)="closeDetailModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closeDetailModal()"><i class="bi bi-x"></i></button>
+      <div class="modal-header">
+        <div class="avatar-modal" [ngStyle]="{'background': selectedApplication?.color}">{{selectedApplication?.initials}}</div>
+        <h2>{{selectedApplication?.name}}</h2>
+        <div class="role-modal">{{selectedApplication?.role}}</div>
+        <div class="status-badge-modal" [ngClass]="selectedApplication?.status?.toLowerCase()">{{selectedApplication?.status}}</div>
+        <div class="rating-modal"><i class="bi bi-star"></i> {{selectedApplication?.rating}}</div>
+      </div>
+      <div class="modal-content">
+        <div class="modal-section">
+          <h4>Contact Information</h4>
+          <div class="contact-info"><i class="bi bi-envelope"></i> {{selectedApplication?.email}}</div>
+          <div class="contact-info"><i class="bi bi-telephone"></i> {{selectedApplication?.phone}}</div>
+          <div class="contact-info"><i class="bi bi-geo-alt"></i> {{selectedApplication?.location}}</div>
+        </div>
+        <div class="modal-section">
+          <h4>Skills</h4>
+          <div>
+            <span *ngFor="let skill of selectedApplication?.skills" class="skill-tag-modal">{{skill}}</span>
+          </div>
+        </div>
+        <div class="modal-section">
+          <h4>Application Details</h4>
+          <div>Applied: {{selectedApplication?.applied}}</div>
+          <div>Position: {{selectedApplication?.role}}</div>
+        </div>
+        <div class="modal-section">
+          <h4>Education</h4>
+          <div>{{selectedApplication?.education}}</div>
+        </div>
+        <div class="modal-section">
+          <h4>Experience</h4>
+          <div>{{selectedApplication?.experience}}</div>
+        </div>
+        <div class="modal-section">
+          <h4>Cover Letter</h4>
+          <div>{{selectedApplication?.coverLetter}}</div>
+        </div>
+        <div class="modal-actions">
+          <button class="resume-btn"><i class="bi bi-download"></i> Download Resume</button>
+          <button class="interview-btn"><i class="bi bi-calendar2-plus"></i> Schedule Interview</button>
+        </div>
+        <div class="decision-actions">
+          <button class="shortlist-btn">Shortlist Candidate</button>
+          <button class="reject-btn">Reject Application</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Analytics Modal -->
+  <div class="modal-overlay" *ngIf="showAnalyticsModal" (click)="closeAnalyticsModal()">
+    <div class="modal-container-analytics" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closeAnalyticsModal()"><i class="bi bi-x"></i></button>
+      <h2>Application Analytics</h2>
+      <div class="analytics-charts">
+        <div class="chart-section">
+          <h4>Application Trends</h4>
+          <img src="assets/trends.png" class="chart-img" alt="Application Trends"/>
+        </div>
+        <div class="chart-section">
+          <h4>Status Distribution</h4>
+          <img src="assets/status.png" class="chart-img" alt="Status Distribution"/>
+        </div>
+        <div class="chart-section">
+          <h4>Most In-Demand Skills</h4>
+          <img src="assets/skills.png" class="chart-img" alt="In-Demand Skills"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
