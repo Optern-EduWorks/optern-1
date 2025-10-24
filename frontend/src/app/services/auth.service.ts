@@ -30,7 +30,17 @@ export class AuthService {
         localStorage.removeItem('optern_user');
       }
     } else {
-      console.log('No user data found in localStorage');
+      console.log('No user data found in localStorage, setting test user');
+      // Set a test user for development
+      const testUser: User = {
+        userId: 1,
+        role: 'candidate',
+        username: 'Test Candidate',
+        email: 'candidate@test.com',
+        token: 'test-token'
+      };
+      this.currentUserSubject.next(testUser);
+      localStorage.setItem('optern_user', JSON.stringify(testUser));
     }
   }
 

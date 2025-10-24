@@ -13,11 +13,10 @@
     <input type="text" class="search-input" placeholder="Search applications..." [(ngModel)]="search" />
     <select [(ngModel)]="filterStatus">
       <option>All Status</option>
-      <option>Pending</option>
+      <option>Applied</option>
+      <option>Interview Scheduled</option>
       <option>Shortlisted</option>
-      <option>Reviewed</option>
       <option>Rejected</option>
-      <option>Hired</option>
     </select>
     <div class="view-buttons">
       <button [class.active]="viewMode==='list'" (click)="viewMode='list'"><i class="bi bi-list-ul"></i></button>
@@ -31,7 +30,7 @@
       <div class="app-details">
         <div class="name-row">
           <span class="applicant-name">{{app.name}}</span>
-          <span class="role">{{app.role}}</span>
+          <span class="role">{{app.role}} at {{app.company}}</span>
         </div>
         <div class="info-row">
           <span class="email">{{app.email}}</span>
@@ -47,12 +46,14 @@
           <span class="status-badge" [ngClass]="app.status.toLowerCase()">{{app.status}}</span>
         </div>
       </div>
-      <div class="action-row">
-        <button class="view-details-btn" (click)="openDetailModal(app)">
-          <i class="bi bi-eye"></i> View Details
-        </button>
-        <button class="shortlist-btn" *ngIf="app.status==='Pending' || app.status==='Shortlisted'">Shortlist</button>
-      </div>
+        <div class="action-row">
+          <button class="view-details-btn" (click)="openDetailModal(app)">
+            <i class="bi bi-eye"></i> View Details
+          </button>
+          <button class="shortlist-btn" *ngIf="app.status==='Applied'" (click)="shortlist(app)">Shortlist</button>
+          <button class="interview-btn" *ngIf="app.status==='Shortlisted'" (click)="scheduleInterview(app)">Schedule Interview</button>
+          <button class="reject-btn" *ngIf="app.status!=='Rejected'" (click)="updateStatus(app, 'Rejected')">Reject</button>
+        </div>
     </div>
   </div>
   <!-- Grid view (Optional: copy card layout to grid style) -->
@@ -69,7 +70,7 @@
     
     <div class="card-content">
       <h3 class="name-title">{{ app.name }}</h3>
-      <p class="role">{{ app.role }}</p>
+      <p class="role">{{ app.role }} at {{ app.company }}</p>
       
       <div class="card-info">
         <span><i class="bi bi-envelope"></i> {{ app.email }}</span>
@@ -101,11 +102,23 @@
         <button class="view-details-btn" (click)="openDetailModal(app)">
           <i class="bi bi-eye"></i> View Details
         </button>
-        <button 
-          *ngIf="app.status === 'Pending'" 
-          class="shortlist-btn" 
+        <button
+          *ngIf="app.status === 'Applied'"
+          class="shortlist-btn"
           (click)="shortlist(app)">
           Shortlist
+        </button>
+        <button
+          *ngIf="app.status === 'Shortlisted'"
+          class="interview-btn"
+          (click)="scheduleInterview(app)">
+          Schedule Interview
+        </button>
+        <button
+          *ngIf="app.status !== 'Rejected'"
+          class="reject-btn"
+          (click)="updateStatus(app, 'Rejected')">
+          Reject
         </button>
       </div>
     </div>
@@ -120,7 +133,7 @@
       <div class="modal-header">
         <div class="avatar-modal" [ngStyle]="{'background': selectedApplication?.color}">{{selectedApplication?.initials}}</div>
         <h2>{{selectedApplication?.name}}</h2>
-        <div class="role-modal">{{selectedApplication?.role}}</div>
+        <div class="role-modal">{{selectedApplication?.role}} at {{selectedApplication?.company}}</div>
         <div class="status-badge-modal" [ngClass]="selectedApplication?.status?.toLowerCase()">{{selectedApplication?.status}}</div>
         <div class="rating-modal"><i class="bi bi-star"></i> {{selectedApplication?.rating}}</div>
       </div>
@@ -155,12 +168,12 @@
           <div>{{selectedApplication?.coverLetter}}</div>
         </div>
         <div class="modal-actions">
-          <button class="resume-btn"><i class="bi bi-download"></i> Download Resume</button>
-          <button class="interview-btn"><i class="bi bi-calendar2-plus"></i> Schedule Interview</button>
+          <button class="resume-btn" (click)="downloadResume(selectedApplication)"><i class="bi bi-download"></i> Download Resume</button>
+          <button class="interview-btn" (click)="scheduleInterviewFromModal(selectedApplication)"><i class="bi bi-calendar2-plus"></i> Schedule Interview</button>
         </div>
         <div class="decision-actions">
-          <button class="shortlist-btn">Shortlist Candidate</button>
-          <button class="reject-btn">Reject Application</button>
+          <button class="shortlist-btn" (click)="shortlist(selectedApplication)">Shortlist Candidate</button>
+          <button class="reject-btn" (click)="updateStatus(selectedApplication, 'Rejected')">Reject Application</button>
         </div>
       </div>
     </div>
@@ -173,15 +186,21 @@
       <div class="analytics-charts">
         <div class="chart-section">
           <h4>Application Trends</h4>
-          <img src="assets/trends.png" class="chart-img" alt="Application Trends"/>
+          <div class="chart-placeholder">
+            <canvas id="trendsChart" width="400" height="200"></canvas>
+          </div>
         </div>
         <div class="chart-section">
           <h4>Status Distribution</h4>
-          <img src="assets/status.png" class="chart-img" alt="Status Distribution"/>
+          <div class="chart-placeholder">
+            <canvas id="statusChart" width="400" height="200"></canvas>
+          </div>
         </div>
         <div class="chart-section">
           <h4>Most In-Demand Skills</h4>
-          <img src="assets/skills.png" class="chart-img" alt="In-Demand Skills"/>
+          <div class="chart-placeholder">
+            <canvas id="skillsChart" width="400" height="200"></canvas>
+          </div>
         </div>
       </div>
     </div>

@@ -29,31 +29,32 @@ export const routes: Routes = [
       {
         path: '',
         component: CandidateShellComponent,
+        canActivate: [() => roleGuard('candidate')()],
         children: [
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-          { 
-            path: 'dashboard', 
-            loadComponent: () => import('./candidate/dashboard/dashboard').then(m => m.Dashboard) 
+          {
+            path: 'dashboard',
+            loadComponent: () => import('./candidate/dashboard/dashboard').then(m => m.Dashboard)
           },
-          { 
-            path: 'applications', 
-            loadComponent: () => import('./candidate/applications/applications').then(m => m.Applications) 
+          {
+            path: 'applications',
+            loadComponent: () => import('./candidate/applications/applications').then(m => m.Applications)
           },
-          { 
-            path: 'opportunities', 
-            loadComponent: () => import('./candidate/opportunities/opportunities').then(m => m.Opportunities) 
+          {
+            path: 'opportunities',
+            loadComponent: () => import('./candidate/opportunities/opportunities').then(m => m.Opportunities)
           },
-          { 
-            path: 'resume-builder', 
-            loadComponent: () => import('./candidate/resume-builder/resume-builder').then(m => m.ResumeBuilder) 
+          {
+            path: 'resume-builder',
+            loadComponent: () => import('./candidate/resume-builder/resume-builder').then(m => m.ResumeBuilder)
           },
-          { 
-            path: 'grievances', 
-            loadComponent: () => import('./candidate/grievances/grievances').then(m => m.Grievances) 
+          {
+            path: 'grievances',
+            loadComponent: () => import('./candidate/grievances/grievances').then(m => m.Grievances)
           },
-          { 
-            path: 'profile', 
-            loadComponent: () => import('./candidate/profile/profile').then(m => m.Profile) 
+          {
+            path: 'profile',
+            loadComponent: () => import('./candidate/profile/profile').then(m => m.Profile)
           }
         ]
       }

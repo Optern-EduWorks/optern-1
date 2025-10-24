@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using JobPortalAPI.Data;
 using JobPortalAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -38,6 +39,32 @@ public class ApplicationsController : ControllerBase
             .Include(a => a.Job)
             .Include(a => a.Candidate)
             .Where(a => a.Job != null && a.Job.RecruiterID == recruiter.RecruiterID)
+            .ToListAsync();
+
+        return applications;
+    }
+
+    [HttpGet("by-candidate")]
+    [Authorize]
+    public async Task<ActionResult<IEnumerable<Application>>> GetByCandidate()
+    {
+        var emailClaim = User.FindFirst("Email");
+        if (emailClaim == null)
+        {
+            return Unauthorized(new { message = "Invalid authentication token" });
+        }
+
+        var candidate = await _context.CandidateProfiles.FirstOrDefaultAsync(c => c.Email.ToLower() == emailClaim.Value.ToLower());
+        if (candidate == null)
+        {
+            return BadRequest(new { message = "Candidate profile not found" });
+        }
+
+        var applications = await _context.Applications
+            .Include(a => a.Job)
+            .Include(a => a.Candidate)
+            .Where(a => a.CandidateID == candidate.CandidateID)
+            .OrderByDescending(a => a.AppliedDate)
             .ToListAsync();
 
         return applications;
@@ -89,7 +116,8 @@ public class ApplicationsController : ControllerBase
                         PhoneNumber = "",
                         Address = "",
                         CreatedDate = DateTime.Now,
-                        UpdatedDate = DateTime.Now
+                        UpdatedDate = DateTime.Now,
+                        UserId = user.UserId
                     };
                     _context.CandidateProfiles.Add(candidate);
                     await _context.SaveChangesAsync();
@@ -173,8 +201,23 @@ public class ApplicationsController : ControllerBase
         if (recruiter != null && existingApp.Job != null && existingApp.Job.RecruiterID == recruiter.RecruiterID)
         {
             // Recruiter updating their job's application
+            var oldStatus = existingApp.Status;
             _context.Entry(app).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+
+            // Log activity
+            var activityLog = new ActivityLog
+            {
+                UserID = recruiter.UserId,
+                ActivityType = "Status Update",
+                EntityType = "Application",
+                Description = $"Updated application status from {oldStatus} to {app.Status} for job {existingApp.Job?.Title}",
+                CreatedDate = DateTime.Now,
+                EntityID = id
+            };
+            _context.ActivityLogs.Add(activityLog);
+            await _context.SaveChangesAsync();
+
             return NoContent();
         }
 
@@ -186,6 +229,20 @@ public class ApplicationsController : ControllerBase
             existingApp.CoverLetter = app.CoverLetter;
             existingApp.ResumeUrl = app.ResumeUrl;
             await _context.SaveChangesAsync();
+
+            // Log activity
+            var activityLog = new ActivityLog
+            {
+                UserID = candidate.UserId,
+                ActivityType = "Profile Update",
+                EntityType = "Application",
+                Description = $"Updated cover letter or resume for application to job {existingApp.Job?.Title}",
+                CreatedDate = DateTime.Now,
+                EntityID = id
+            };
+            _context.ActivityLogs.Add(activityLog);
+            await _context.SaveChangesAsync();
+
             return NoContent();
         }
 

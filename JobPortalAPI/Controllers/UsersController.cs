@@ -25,10 +25,10 @@ public class UsersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<User>> CreateUser(User user)
     {
-        // Hash the password before saving
+        // Store password as plain text - AuthController will hash it after first successful login
         if (!string.IsNullOrEmpty(user.Password))
         {
-            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            // Keep password as plain text for now - it will be hashed on first login
         }
         
         // Set default values

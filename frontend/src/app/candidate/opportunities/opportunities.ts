@@ -29,6 +29,9 @@ export class Opportunities {
   // Track applied job IDs to show visual feedback
   appliedJobIds: Set<number> = new Set();
 
+  // Track jobs currently being applied to
+  applyingJobIds: Set<number> = new Set();
+
   private jobService = inject(JobService);
   private applicationService = inject(ApplicationService);
   private authService = inject(AuthService);
@@ -50,6 +53,9 @@ export class Opportunities {
 
     // Initial load
     this.loadJobs();
+
+    // Load applied jobs from applications
+    this.loadAppliedJobs();
   }
 
   loadJobs() {
@@ -70,19 +76,51 @@ export class Opportunities {
     this.loadJobs();
   }
 
+  loadAppliedJobs() {
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) {
+      console.log('No current user, skipping applied jobs load');
+      return;
+    }
+
+    this.applicationService.getByCandidate().subscribe({
+      next: (applications) => {
+        console.log('Loaded applications for applied jobs tracking:', applications);
+        // Extract job IDs from applications
+        this.appliedJobIds.clear();
+        applications.forEach(app => {
+          this.appliedJobIds.add(app.JobID);
+        });
+        console.log('Applied job IDs:', Array.from(this.appliedJobIds));
+      },
+      error: (err) => {
+        console.warn('Could not load applications for applied jobs tracking:', err);
+      }
+    });
+  }
+
   // Check if job has been applied to
   hasApplied(job: Job): boolean {
     return this.appliedJobIds.has(job.jobID);
   }
 
+  // Check if job is currently being applied to
+  isApplying(job: Job): boolean {
+    return this.applyingJobIds.has(job.jobID);
+  }
+
   // Get button text based on application status
   getButtonText(job: Job): string {
-    return this.hasApplied(job) ? 'Applied ✓' : 'Apply Now';
+    if (this.hasApplied(job)) return 'Applied ✓';
+    if (this.isApplying(job)) return 'Applying...';
+    return 'Apply Now';
   }
 
   // Get button class based on application status
   getButtonClass(job: Job): string {
-    return this.hasApplied(job) ? 'applied-btn' : 'apply-now-btn';
+    if (this.hasApplied(job)) return 'applied-btn';
+    if (this.isApplying(job)) return 'applying-btn';
+    return 'apply-now-btn';
   }
 
   apply(job: Job) {
@@ -96,6 +134,14 @@ export class Opportunities {
       alert('Authentication token missing. Please sign in again.');
       return;
     }
+
+    // Prevent multiple applications for the same job
+    if (this.hasApplied(job) || this.isApplying(job)) {
+      return;
+    }
+
+    // Add to applying set for immediate UI feedback
+    this.applyingJobIds.add(job.jobID);
 
     console.log('Applying for job:', job.title, 'with ID:', job.jobID);
 
@@ -116,6 +162,10 @@ export class Opportunities {
           // Show more detailed success message
           alert(`✅ Application submitted successfully!\n\n📋 Application Details:\n• Job: ${job.title}\n• Company: ${job.company}\n• Applied: ${new Date().toLocaleDateString()}\n\nYou will be notified about the status of your application.`);
 
+          // Remove from applying set and add to applied set
+          this.applyingJobIds.delete(job.jobID);
+          this.appliedJobIds.add(job.jobID);
+
           // Disable the apply button for this job
           const applyButton = document.querySelector(`[data-job-id="${job.jobID}"]`) as HTMLButtonElement;
           if (applyButton) {
@@ -128,10 +178,15 @@ export class Opportunities {
           // Optionally refresh jobs to update applicant count
           this.refreshJobs();
         } else {
+          // Remove from applying set on unexpected response
+          this.applyingJobIds.delete(job.jobID);
           alert('Application submitted but response was unexpected');
         }
       },
       error: (err) => {
+        // Remove from applying set on error
+        this.applyingJobIds.delete(job.jobID);
+
         console.error('Application error:', err);
         let errorMessage = '❌ Application failed';
 

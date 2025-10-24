@@ -15,6 +15,7 @@ namespace JobPortalAPI.Models
         public string Bio { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
+        public int UserId { get; set; }
 
         public Company? Company { get; set; } 
         public ICollection<Job> Jobs { get; set; } = new List<Job>();

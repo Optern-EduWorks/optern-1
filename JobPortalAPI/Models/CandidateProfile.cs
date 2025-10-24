@@ -26,6 +26,7 @@ namespace JobPortalAPI.Models
         public bool JobApplicationUpdates { get; set; } = true;
         public bool InterviewReminders { get; set; } = true;
         public bool MarketingCommunications { get; set; } = false;
+        public int UserId { get; set; }
         public ICollection<Application>? Applications { get; set; }
     }
 }

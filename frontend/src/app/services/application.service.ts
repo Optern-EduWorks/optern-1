@@ -1,12 +1,45 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Application {
-  applicationID: number;
-  jobID: number;
-  candidateID: number;
+  ApplicationID: number;
+  JobID: number;
+  CandidateID: number;
+  Status: string;
+  AppliedDate: string;
+  CoverLetter: string;
+  ResumeUrl: string;
+  InterviewStatus: string;
+  Job?: {
+    JobID: number;
+    Title: string;
+    Company: string;
+    Location: string;
+    SalaryRange: string;
+    EmploymentType: string;
+    Description: string;
+    Skills: string;
+    ClosingDate: string;
+    PostedDate: string;
+    RecruiterID: number;
+  };
+  Candidate?: {
+    CandidateID: number;
+    FullName: string;
+    Email: string;
+    PhoneNumber: string;
+    Address: string;
+    CreatedDate: string;
+    UpdatedDate: string;
+  };
+}
+
+export interface ApplicationUpdateRequest {
   status?: string;
+  interviewStatus?: string;
+  coverLetter?: string;
+  resumeUrl?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -20,6 +53,10 @@ export class ApplicationService {
 
   getByRecruiter(): Observable<Application[]> {
     return this.http.get<Application[]>(`${this.baseUrl}/by-recruiter`);
+  }
+
+  getByCandidate(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${this.baseUrl}/by-candidate`);
   }
 
   get(id: number) {
