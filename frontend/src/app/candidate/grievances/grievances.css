@@ -29,8 +29,10 @@
 .grievance-meta { font-size: 14px; color: #6b7280; margin-bottom: 12px; }
 .grievance-description { font-size: 14px; color: #374151; margin: 0; line-height: 1.6; }
 .grievance-attachments { font-size: 14px; color: #4f46e5; margin-top: 12px; display: flex; align-items: center; gap: 6px; }
-.card-actions { text-align: right; }
-.view-details-btn { background: #f3f4f6; color: #4b5563; border: none; border-radius: 8px; padding: 8px 14px; font-weight: 500; cursor: pointer; }
+.card-actions { display: flex; flex-direction: row; gap: 8px; justify-content: flex-end; align-items: center; flex-wrap: nowrap; }
+.view-details-btn { background: #f3f4f6; color: #4b5563; border: none; border-radius: 8px; padding: 8px 14px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.delete-btn { background: #fee2e2; color: #dc2626; border: none; border-radius: 8px; padding: 8px 14px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.delete-btn:hover { background: #fecaca; }
 .support-response { grid-column: 1 / -1; background-color: #fefce8; border-left: 4px solid #facc15; padding: 16px; margin-top: 16px; border-radius: 0 8px 8px 0; }
 .response-title { font-weight: 600; margin: 0 0 4px; }
 .support-response p { margin: 0; color: #71717a; }
@@ -79,3 +81,36 @@
 .official-response i { font-size: 20px; color: #f59e0b; margin-top: 2px; }
 .official-response strong { display: block; font-weight: 600; }
 .official-response p { margin: 4px 0 0; color: #78350f; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .submit-grievance-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .card-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .view-details-btn,
+  .delete-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    width: 95%;
+  }
+}

@@ -129,10 +129,9 @@ export class GrievanceService {
   // Get grievances by user ID
   getGrievancesByUser(userId: number): Observable<Grievance[]> {
     console.log('Fetching grievances for user:', userId);
-    return this.http.get<any>(this.apiUrl)
+    return this.http.get<Grievance[]>(this.apiUrl)
       .pipe(
-        map(response => {
-          const grievances: Grievance[] = response.values || response;
+        map(grievances => {
           console.log('All grievances:', grievances);
           const userGrievances = grievances.filter(g => g.submittedBy === userId);
           console.log('Filtered grievances for user:', userGrievances);

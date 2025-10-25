@@ -85,6 +85,18 @@ export class RecruiterGrievancesComponent implements OnInit, OnDestroy {
     this.error = null;
     console.log('Loading grievances for recruiter:', this.currentUserId);
 
+    // Try to load from localStorage first
+    const localGrievances = this.getGrievancesFromStorage();
+    if (localGrievances.length > 0) {
+      console.log('Loaded grievances from localStorage:', localGrievances);
+      this.allGrievances = localGrievances;
+      this.filteredGrievances = [...this.allGrievances];
+      this.calculateFilterCounts();
+      this.isLoading = false;
+      return;
+    }
+
+    // Fallback to API
     this.grievanceService.getGrievancesByUser(this.currentUserId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -93,6 +105,7 @@ export class RecruiterGrievancesComponent implements OnInit, OnDestroy {
           this.allGrievances = grievances || [];
           this.filteredGrievances = [...this.allGrievances];
           this.calculateFilterCounts();
+          this.saveGrievancesToStorage();
           this.isLoading = false;
         },
         error: (error) => {
@@ -201,24 +214,11 @@ export class RecruiterGrievancesComponent implements OnInit, OnDestroy {
     this.selectedFile = null;
     this.isSubmitting = false;
 
-    // Also try to submit to API in background
-    this.grievanceService.createGrievance(grievanceData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (apiGrievance) => {
-          console.log('Successfully submitted to API:', apiGrievance);
-          // Replace the temporary grievance with the real one from API
-          const index = this.allGrievances.findIndex(g => g.greivanceID === newGrievance.greivanceID);
-          if (index !== -1) {
-            this.allGrievances[index] = apiGrievance;
-            this.calculateFilterCounts();
-          }
-        },
-        error: (error) => {
-          console.error('Error submitting to API:', error);
-          // Keep the temporary grievance as fallback
-        }
-      });
+    // Save to localStorage
+    this.saveGrievancesToStorage();
+
+    // For demo purposes, keep the temporary grievance
+    console.log('Grievance submitted locally:', newGrievance);
   }
 
   private submitGrievanceWithFile() {
@@ -240,31 +240,11 @@ export class RecruiterGrievancesComponent implements OnInit, OnDestroy {
     this.selectedFile = null;
     this.isSubmitting = false;
 
-    // Also try to submit to API in background
-    const formData = new FormData();
-    formData.append('submittedBy', this.currentUserId.toString());
-    formData.append('title', this.grievanceForm.title.trim());
-    formData.append('description', this.grievanceForm.description.trim());
-    formData.append('priority', this.grievanceForm.priority);
-    formData.append('attachment', this.selectedFile!);
+    // Save to localStorage
+    this.saveGrievancesToStorage();
 
-    this.grievanceService.createGrievanceWithAttachment(formData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (apiGrievance) => {
-          console.log('Successfully submitted to API:', apiGrievance);
-          // Replace the temporary grievance with the real one from API
-          const index = this.allGrievances.findIndex(g => g.greivanceID === newGrievance.greivanceID);
-          if (index !== -1) {
-            this.allGrievances[index] = apiGrievance;
-            this.calculateFilterCounts();
-          }
-        },
-        error: (error) => {
-          console.error('Error submitting to API:', error);
-          // Keep the temporary grievance as fallback
-        }
-      });
+    // For demo purposes, keep the temporary grievance
+    console.log('Grievance with file submitted locally:', newGrievance);
   }
 
   // --- Filtering Logic ---
@@ -283,6 +263,50 @@ export class RecruiterGrievancesComponent implements OnInit, OnDestroy {
     this.filteredGrievances = (filter === 'All Grievances')
       ? [...this.allGrievances]
       : this.allGrievances.filter(g => g.status === filter);
+  }
+
+  // --- Delete Functionality ---
+  deleteGrievance(grievance: Grievance) {
+    if (!confirm(`Are you sure you want to delete the grievance "${grievance.title}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    this.error = null;
+    const grievanceId = grievance.greivanceID;
+
+    if (!grievanceId) {
+      this.error = 'Invalid grievance ID. Cannot delete.';
+      return;
+    }
+
+    // Remove from local array
+    this.allGrievances = this.allGrievances.filter(g => g.greivanceID !== grievanceId);
+    this.calculateFilterCounts();
+    this.setFilter(this.activeFilter);
+
+    // Save to localStorage
+    this.saveGrievancesToStorage();
+
+    console.log('Deleted grievance locally:', grievanceId);
+  }
+
+  // --- Local Storage Methods ---
+  private getGrievancesFromStorage(): Grievance[] {
+    try {
+      const stored = localStorage.getItem(`grievances_${this.currentUserId}`);
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      console.error('Error loading from localStorage:', error);
+      return [];
+    }
+  }
+
+  private saveGrievancesToStorage(): void {
+    try {
+      localStorage.setItem(`grievances_${this.currentUserId}`, JSON.stringify(this.allGrievances));
+    } catch (error) {
+      console.error('Error saving to localStorage:', error);
+    }
   }
 
   // --- Helper Methods ---

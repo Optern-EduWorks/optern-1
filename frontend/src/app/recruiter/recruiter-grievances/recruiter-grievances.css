@@ -134,6 +134,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
 }
 
 .status-badge {
@@ -180,7 +182,7 @@
   cursor: pointer;
   font-size: 13px;
   font-weight: 500;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   transition: all 0.2s;
@@ -189,6 +191,26 @@
 .view-details-btn:hover {
   background-color: #10b981;
   color: white;
+}
+
+.delete-btn {
+  padding: 8px 16px;
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover {
+  background-color: #fecaca;
+  border-color: #f87171;
 }
 
 .eye-icon {
