@@ -57,6 +57,7 @@ export class LandingPage implements OnInit, OnDestroy {
 
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
+        console.log('Intersection observed:', entry.target.className, 'isIntersecting:', entry.isIntersecting);
         if (entry.isIntersecting) {
           entry.target.classList.add('is-visible');
         } else {
