@@ -14,6 +14,8 @@ export class LandingPage implements OnInit, OnDestroy {
   private lastScrollY = 0;
   private scrollThreshold = 50;
   private observer: IntersectionObserver | null = null;
+  isModalOpen = false;
+  selectedRole: string | null = null;
 
   constructor(private router: Router, private elementRef: ElementRef) {}
 
@@ -103,5 +105,24 @@ export class LandingPage implements OnInit, OnDestroy {
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+    this.selectedRole = null;
+  }
+
+  selectRole(role: string) {
+    this.selectedRole = role;
+    this.closeModal();
+    if (role === 'student') {
+      this.goToCandidateSignIn();
+    } else if (role === 'recruiter') {
+      this.goToRecruiterSignIn();
+    }
   }
 }
