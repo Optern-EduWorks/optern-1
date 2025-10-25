@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 export interface Grievance {
@@ -41,14 +41,15 @@ export interface CreateGrievanceRequest {
   providedIn: 'root'
 })
 export class GrievanceService {
-  private apiUrl = 'api/grievances'; // This will use the proxy configuration
+  private apiUrl = 'http://localhost:5000/api/grievances'; // Direct API URL
 
   constructor(private http: HttpClient) { }
 
   // Get all grievances
   getAllGrievances(): Observable<Grievance[]> {
-    return this.http.get<Grievance[]>(this.apiUrl)
+    return this.http.get<any>(this.apiUrl)
       .pipe(
+        map(response => response.values || response),
         catchError(this.handleError)
       );
   }
@@ -128,15 +129,16 @@ export class GrievanceService {
   // Get grievances by user ID
   getGrievancesByUser(userId: number): Observable<Grievance[]> {
     console.log('Fetching grievances for user:', userId);
-    return this.http.get<Grievance[]>(this.apiUrl)
+    return this.http.get<any>(this.apiUrl)
       .pipe(
-        map(grievances => {
+        map(response => {
+          const grievances: Grievance[] = response.values || response;
           console.log('All grievances:', grievances);
           const userGrievances = grievances.filter(g => g.submittedBy === userId);
           console.log('Filtered grievances for user:', userGrievances);
           return userGrievances;
         }),
-        catchError(this.handleError)
+        catchError(() => of([]))
       );
   }
 
