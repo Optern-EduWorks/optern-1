@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,12 +7,77 @@ import { Router } from '@angular/router';
   templateUrl: './landing-page.html',
   styleUrl: './landing-page.css'
 })
-export class LandingPage {
-  constructor(private router: Router) {}
+export class LandingPage implements OnInit, OnDestroy {
+  isMobileMenuOpen = false;
+  isHeaderVisible = true;
+  currentYear = new Date().getFullYear();
+  private lastScrollY = 0;
+  private scrollThreshold = 50;
+  private observer: IntersectionObserver | null = null;
+
+  constructor(private router: Router, private elementRef: ElementRef) {}
+
+  ngOnInit() {
+    this.setupScrollLogic();
+    this.setupIntersectionObserver();
+  }
+
+  ngOnDestroy() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const currentScrollY = window.pageYOffset;
+
+    if (currentScrollY > this.scrollThreshold) {
+      if (currentScrollY > this.lastScrollY && this.isHeaderVisible) {
+        this.isHeaderVisible = false;
+      } else if (currentScrollY < this.lastScrollY && !this.isHeaderVisible) {
+        this.isHeaderVisible = true;
+      }
+    } else if (currentScrollY <= this.scrollThreshold && !this.isHeaderVisible) {
+      this.isHeaderVisible = true;
+    }
+    this.lastScrollY = currentScrollY;
+  }
+
+  private setupScrollLogic() {
+    // Header visibility logic is handled by HostListener
+  }
+
+  private setupIntersectionObserver() {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        } else {
+          // Optional: Uncomment to reset animation on scroll out
+          // entry.target.classList.remove('is-visible');
+        }
+      });
+    }, observerOptions);
+
+    // Observe elements after view init
+    setTimeout(() => {
+      const elementsToAnimate = this.elementRef.nativeElement.querySelectorAll('.fade-in-on-scroll');
+      elementsToAnimate.forEach((el: Element) => {
+        this.observer?.observe(el);
+      });
+    });
+  }
 
   // Candidate Portal - Login
   goToCandidateSignIn() {
-    this.router.navigate(['/candidate/login']);
+    this.router.navigate(['/candidate/sign-in']);
   }
 
   // Candidate Portal - Demo (Direct to Dashboard)
@@ -33,5 +98,9 @@ export class LandingPage {
   // Admin Portal - Login (unchanged)
   goToAdminSignIn() {
     this.router.navigate(['/admin/sign-in']);
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 }

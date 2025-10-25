@@ -1,46 +1,306 @@
-<div class="landing-root">
-  <h1 class="main-title">OPTERN</h1>
-  <div class="subtitle">Connect with Opportunities</div>
-  <div class="tagline">
-    Your comprehensive campus recruitment platform. Candidates find dream jobs, recruiters discover top talent, and administrators manage the ecosystem.
-  </div>
-  <div class="portal-cards">
-    <!-- Candidate Portal -->
-    <div class="portal-card">
-      <div class="portal-icon graduate"></div>
-      <div class="portal-title">For Candidates</div>
-      <div class="portal-desc">Discover opportunities, build your profile, and connect with top employers</div>
-      <button (click)="goToCandidateSignIn()" class="portal-btn blue">Candidate Portal</button>
-      <button (click)="goToCandidateDemo()" class="portal-btn secondary">Demo</button>
+<!-- Header/Navigation Bar -->
+<header class="bg-white shadow-xl py-4 px-6 md:px-12 sticky top-0 z-50 rounded-b-xl" [class.header-visible]="isHeaderVisible" [class.header-hidden]="!isHeaderVisible">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex items-center">
+            <!-- Logo -->
+            <img src="/public/favicon.ico" alt="Optern EduWorks Logo" class="h-8 w-auto mr-2">
+            <div class="text-xl font-extrabold text-navy-800">Optern EduWorks</div>
+        </div>
+        <nav class="hidden md:flex space-x-6 items-center">
+            <a href="#students" class="text-gray-600 hover:text-sky-600 font-medium transition duration-300">Students</a>
+            <a href="#recruiters" class="text-gray-600 hover:text-sky-600 font-medium transition duration-300">Recruiters</a>
+            <a href="#institutions" class="text-gray-600 hover:text-sky-600 font-medium transition duration-300">Institutions</a>
+            <a href="#how-it-works" class="text-gray-600 hover:text-sky-600 font-medium transition duration-300">How It Works</a>
+            <button class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-5 rounded-full shadow-lg transition duration-300 transform hover:scale-105" (click)="goToCandidateSignIn()">
+                Get Started
+            </button>
+        </nav>
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+            <button class="text-gray-600 focus:outline-none" (click)="toggleMobileMenu()">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
     </div>
-    
-    <!-- Recruiter Portal -->
-    <div class="portal-card">
-      <div class="portal-icon recruiter"></div>
-      <div class="portal-title">For Recruiters</div>
-      <div class="portal-desc">Post opportunities, manage applications, and find the perfect candidates</div>
-      <button (click)="goToRecruiterSignIn()" class="portal-btn green">Recruiter Login</button>
-      <button (click)="goToRecruiterDemo()" class="portal-btn secondary">Quick Demo</button>
-    </div>
-    
-    <!-- Admin Portal -->
+</header>
 
-  </div>
-  <div class="landing-features">
-    <div class="feature">
-      <div class="feature-icon lightning"></div>
-      <div class="feature-title">Fast & Efficient</div>
-      <div class="feature-desc">Streamlined application process for quick connections</div>
+<div class="mobile-menu-overlay" [class.open]="isMobileMenuOpen" (click)="toggleMobileMenu()"></div>
+<!-- Fixed Mobile Menu Panel -->
+<div class="mobile-menu p-8" [class.open]="isMobileMenuOpen">
+    <!-- Close Button (positioned inside the menu panel) -->
+    <div class="flex justify-end mb-8">
+        <button class="text-gray-500 hover:text-gray-700 focus:outline-none" (click)="toggleMobileMenu()">
+            <!-- X icon -->
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
     </div>
-    <div class="feature">
-      <div class="feature-icon ai"></div>
-      <div class="feature-title">Smart Matching</div>
-      <div class="feature-desc">AI-powered recommendations for better fits</div>
-    </div>
-    <div class="feature">
-      <div class="feature-icon lock"></div>
-      <div class="feature-title">Secure & Trusted</div>
-      <div class="feature-desc">Your data is safe with enterprise-grade security</div>
-    </div>
-  </div>
+
+    <nav class="flex flex-col space-y-2">
+        <a href="#students" class="text-gray-800 hover:text-sky-600 font-medium text-lg block" (click)="toggleMobileMenu()">For Students</a>
+        <a href="#recruiters" class="text-gray-800 hover:text-sky-600 font-medium text-lg block" (click)="toggleMobileMenu()">For Recruiters</a>
+        <a href="#institutions" class="text-gray-800 hover:text-sky-600 font-medium text-lg block" (click)="toggleMobileMenu()">For Institutions</a>
+        <a href="#how-it-works" class="text-gray-800 hover:text-sky-600 font-medium text-lg block" (click)="toggleMobileMenu()">How It Works</a>
+        <button class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 rounded-full shadow-lg transition duration-300 transform hover:scale-105 w-full mt-4" (click)="goToCandidateSignIn(); toggleMobileMenu()">
+            Get Started
+        </button>
+    </nav>
 </div>
+
+<!-- 🌟 Hero Section -->
+<section class="gradient-hero text-white py-24 md:py-40 overflow-hidden rounded-b-3xl shadow-2xl">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10 text-center">
+        <h1 class="text-4xl md:text-7xl font-extrabold leading-tight mb-6 fade-in-on-scroll font-poppins">
+            Empowering Students, Connecting Startups.
+        </h1>
+        <h2 class="text-2xl md:text-3xl font-light mb-8 max-w-5xl mx-auto fade-in-on-scroll delay-100">
+            Optern is India’s next-gen platform that bridges the gap between learners and industry.
+        </h2>
+        <p class="text-base font-semibold mb-12 text-yellow-300 uppercase tracking-widest fade-in-on-scroll delay-200">
+            Learn. Build. Grow — with the power of real experience.
+        </p>
+
+        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 fade-in-on-scroll delay-300">
+            <button class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-4 px-10 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 text-lg" (click)="goToCandidateSignIn()">
+                🎓 For Students → Explore Opportunities
+            </button>
+            <button class="bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-10 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 text-lg" (click)="goToRecruiterSignIn()">
+                🏢 For Recruiters → Post an Opportunity
+            </button>
+            <button class="bg-gray-400 text-white font-semibold py-4 px-10 rounded-full shadow-lg cursor-not-allowed text-lg">
+                🏫 For Institutions → Coming Soon
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- 👩‍🎓 For Students Section -->
+<section id="students" class="bg-pattern-students py-16 md:py-28 mx-auto max-w-7xl mt-8 px-6 md:px-12 rounded-xl shadow-2xl fade-in-on-scroll">
+    <div class="content-relative">
+        <h2 class="text-3xl md:text-5xl font-extrabold text-navy-800 text-center mb-16 font-poppins">Your Career, Supercharged by Real Experience</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+            <!-- Left CTA/Image Column -->
+            <div class="lg:col-span-1 flex flex-col items-center fade-in-on-scroll">
+                <p class="text-xl text-black-800 mb-8 max-w-md"><b>Build a future-ready portfolio with live projects, internships, and verifiable achievements</b>.</p>
+                <img src="/public/student_working.jpeg" alt="Image of a student working on a laptop" class="w-full h-auto object-cover rounded-2xl shadow-xl border-4 border-sky-500 transform hover:scale-[1.02] transition duration-300">
+                <button class="w-full mt-8 bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 px-8 rounded-xl shadow-lg transition duration-300 transform hover:scale-105 text-lg" (click)="goToCandidateSignIn()">
+                    👉 Join Now — Start Building Your Career
+                </button>
+            </div>
+
+            <!-- Right Features Grid -->
+            <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8">
+
+                <!-- Feature: AI-Powered Opportunity Match -->
+                <div class="gradient-student-card p-6 rounded-xl border-b-4 border-sky-500 feature-card-hover fade-in-on-scroll delay-100">
+                    <div class="flex items-start mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00A8E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3 flex-shrink-0 animate-pulse"><path d="M12 5c-3.3 0-6 2.7-6 6 0 2.2 1.5 4.1 3.5 4.7l.6 1.9c.2.6.9 1 1.5 1h.8c.6 0 1.3-.4 1.5-1l.6-1.9c2-1.6 3.5-3.5 3.5-4.7 0-3.3-2.7-6-6-6z"/><path d="M12 5v-.5a2.5 2.5 0 0 1 5 0V5"/><path d="M12 5v-.5a2.5 2.5 0 0 0-5 0V5"/></svg>
+                        <h3 class="text-xl font-bold text-navy-800">AI-Powered Match</h3>
+                    </div>
+                    <p class="text-gray-700">Get personalized project & internship recommendations based on your skills and interests.</p>
+                </div>
+
+                <!-- Feature: Dynamic Skill Profile -->
+                <div class="gradient-student-card p-6 rounded-xl border-b-4 border-sky-500 feature-card-hover fade-in-on-scroll delay-200">
+                    <div class="flex items-start mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00A8E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3 flex-shrink-0 animate-bounce" style="animation-duration: 4s;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <h3 class="text-xl font-bold text-navy-800">Dynamic Skill Profile</h3>
+                    </div>
+                    <p class="text-gray-700">Showcase verified skills, certifications, and achievements in one interactive profile.</p>
+                </div>
+
+                <!-- Feature: Project Showcase Portfolio -->
+                <div class="gradient-student-card p-6 rounded-xl border-b-4 border-sky-500 feature-card-hover fade-in-on-scroll delay-300">
+                    <div class="flex items-start mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00A8E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3 flex-shrink-0 animate-pulse" style="animation-duration: 2s;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        <h3 class="text-xl font-bold text-navy-800">Project Portfolio</h3>
+                    </div>
+                    <p class="text-gray-700">Display completed projects with mentor sign-offs to stand out from the crowd.</p>
+                </div>
+
+                <!-- Feature: Mentorship & Guidance -->
+                <div class="gradient-student-card p-6 rounded-xl border-b-4 border-sky-500 feature-card-hover fade-in-on-scroll delay-400">
+                    <div class="flex items-start mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00A8E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3 flex-shrink-0"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        <h3 class="text-xl font-bold text-navy-800">Mentorship & Guidance</h3>
+                    </div>
+                    <p class="text-gray-700">Learn from experts through one-on-one sessions, mock interviews, and skill clinics.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 🏢 For Recruiters Section -->
+<section id="recruiters" class="bg-pattern-recruiters py-16 md:py-28 mx-auto max-w-7xl mt-8 px-6 md:px-12 rounded-xl shadow-2xl fade-in-on-scroll">
+    <div class="content-relative">
+        <h2 class="text-3xl md:text-5xl font-extrabold text-navy-800 text-center mb-16 font-poppins">Find the Right Talent, Faster.</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+            <!-- Left Features Grid -->
+            <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8 order-2 lg:order-1">
+
+                <!-- Feature: AI-Driven ATS -->
+                <div class="gradient-recruiter-card p-6 rounded-xl border-b-4 border-yellow-600 feature-card-hover fade-in-on-scroll delay-100">
+                    <div class="flex items-start mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3 flex-shrink-0 animate-spin" style="animation-duration: 5s;"><circle cx="12" cy="12" r="10"/></svg>
+                        <h3 class="text-xl font-bold text-navy-800">AI-Driven ATS</h3>
+                    </div>
+                    <p class="text-gray-700">Streamline recruitment with smart filtering, ranking, and match suggestions.</p>
+                </div>
+
+                <!-- Feature: Opportunity Posting Panel -->
+                <div class="gradient-recruiter-card p-6 rounded-xl border-b-4 border-yellow-600 feature-card-hover fade-in-on-scroll delay-200">
+                    <div class="flex items-start mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3 flex-shrink-0"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        <h3 class="text-xl font-bold text-navy-800">Opportunity Posting Panel</h3>
+                    </div>
+                    <p class="text-gray-700">Post internships, projects, or part-time roles with clear deliverables and timelines.</p>
+                </div>
+
+                <!-- Feature: Candidate Search & Filters -->
+                <div class="gradient-recruiter-card p-6 rounded-xl border-b-4 border-yellow-600 feature-card-hover fade-in-on-scroll delay-300">
+                    <div class="flex items-start mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3 flex-shrink-0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <h3 class="text-xl font-bold text-navy-800">Candidate Search & Filters</h3>
+                    </div>
+                    <p class="text-gray-700">Instantly find candidates by skills, college, or project experience.</p>
+                </div>
+
+                <!-- Feature: Verified Student Profiles -->
+                <div class="gradient-recruiter-card p-6 rounded-xl border-b-4 border-yellow-600 feature-card-hover fade-in-on-scroll delay-400">
+                    <div class="flex items-start mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3 flex-shrink-0"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <h3 class="text-xl font-bold text-navy-800">Verified Student Profiles</h3>
+                    </div>
+                    <p class="text-gray-700">View portfolios, badges, and mentor-verified project work.</p>
+                </div>
+            </div>
+
+            <!-- Right CTA/Image Column -->
+            <div class="lg:col-span-1 flex flex-col items-center order-1 lg:order-2 fade-in-on-scroll">
+                <p class="text-xl text-gray-600 mb-8 max-w-md">Optern helps startups, NGOs, and small businesses discover verified, skills-ready students.</p>
+                <img src="/public/recruiter.jpeg" alt="Image of a recruiter interviewing a candidate" class="w-full h-auto object-cover rounded-2xl shadow-xl border-4 border-yellow-600 transform hover:scale-[1.02] transition duration-300">
+                <button class="w-full mt-8 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-8 rounded-xl shadow-lg transition duration-300 transform hover:scale-105 text-lg" (click)="goToRecruiterSignIn()">
+                    🚀 Get Started — Post Your First Opportunity Free
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 🏫 For Educational Institutions Section (Updated Features & Icons) -->
+<section id="institutions" class="bg-pattern-institutions py-16 md:py-28 mx-auto max-w-7xl mt-8 px-6 md:px-12 rounded-xl shadow-2xl fade-in-on-scroll">
+    <div class="content-relative">
+        <div class="text-center fade-in-on-scroll">
+            <h2 class="text-3xl md:text-5xl font-extrabold text-navy-800 mb-4 font-poppins">Institutional Access for Smarter Placement</h2>
+            <p class="text-lg text-gray-600 max-w-4xl mx-auto mb-12">Enable your placement cell to connect verified opportunities with students and validate real-world experience.</p>
+
+            <button class="bg-gray-400 text-white font-semibold py-3 px-8 rounded-full shadow-xl mb-12 cursor-not-allowed transition duration-300 transform hover:scale-105">
+                💡 Coming Soon — Early Access for Colleges Opening Soon
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Institutional Features -->
+            <div class="p-6 bg-white rounded-xl shadow-lg border-l-4 border-navy-800 feature-card-hover fade-in-on-scroll delay-100">
+                <div class="flex items-start mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#002B5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3 flex-shrink-0"><path d="M3 3v18h18"/><path d="M18.5 9.5a2.5 2.5 0 0 1-2.5 2.5H12A2.5 2.5 0 0 1 9.5 9.5v-5A2.5 2.5 0 0 1 12 2h4a2.5 2.5 0 0 1 2.5 2.5z"/><path d="M9 18l5-5"/></svg>
+                    <h3 class="text-xl font-bold text-navy-800">Institutional Dashboard</h3>
+                </div>
+                <p class="text-gray-700">Manage all student activities, internships, and project data centrally.</p>
+            </div>
+            <div class="p-6 bg-white rounded-xl shadow-lg border-l-4 border-navy-800 feature-card-hover fade-in-on-scroll delay-200">
+                <div class="flex items-start mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#002B5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3 flex-shrink-0"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+                    <h3 class="text-xl font-bold text-navy-800">Cohort Analytics</h3>
+                </div>
+                <p class="text-gray-700">Track employability trends and student growth metrics with powerful data tools.</p>
+            </div>
+            <div class="p-6 bg-white rounded-xl shadow-lg border-l-4 border-navy-800 feature-card-hover fade-in-on-scroll delay-300">
+                <div class="flex items-start mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#002B5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3 flex-shrink-0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M16 13L12 17 9 14"/></svg>
+                    <h3 class="text-xl font-bold text-navy-800">Central Verification</h3>
+                </div>
+                <p class="text-gray-700">Approve internships and verify external organization authenticity securely.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 🔍 How Optern Works & 🌍 Why Choose Optern -->
+<section class="py-16 md:py-28 mx-auto max-w-7xl mt-8 px-6 md:px-12 fade-in-on-scroll">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+        <!-- How It Works -->
+        <div id="how-it-works" class="fade-in-on-scroll">
+            <h2 class="text-3xl font-extrabold text-navy-800 mb-8 font-poppins">🔍 How Optern Works</h2>
+            <ol class="space-y-6 text-lg list-none p-0">
+                <li class="flex items-start p-4 bg-gray-100 rounded-lg shadow-md border-l-4 border-sky-500 hover:shadow-lg transition duration-300">
+                    <span class="text-sky-500 font-extrabold text-3xl mr-4 flex-shrink-0">1.</span>
+                    <p class="text-gray-700 pt-1">Students create <b>skill-based profiles</b> & explore curated opportunities.</p>
+                </li>
+                <li class="flex items-start p-4 bg-gray-100 rounded-lg shadow-md border-l-4 border-green-500 hover:shadow-lg transition duration-300">
+                    <span class="text-green-500 font-extrabold text-3xl mr-4 flex-shrink-0">2.</span>
+                    <p class="text-gray-700 pt-1">Recruiters post projects, internships, or roles, and receive <b>matched candidates</b>.</p>
+                </li>
+                <li class="flex items-start p-4 bg-gray-100 rounded-lg shadow-md border-l-4 border-sky-500 hover:shadow-lg transition duration-300">
+                    <span class="text-sky-500 font-extrabold text-3xl mr-4 flex-shrink-0">3.</span>
+                    <p class="text-gray-700 pt-1"><b>AI Engine recommends</b> the best fits using skill graphs & past performance.</p>
+                </li>
+                <li class="flex items-start p-4 bg-gray-100 rounded-lg shadow-md border-l-4 border-yellow-600 hover:shadow-lg transition duration-300">
+                    <span class="text-yellow-600 font-extrabold text-3xl mr-4 flex-shrink-0">4.</span>
+                    <p class="text-gray-700 pt-1">Mentors guide & <b>verify projects</b>.</p>
+                </li>
+            </ol>
+        </div>
+
+        <!-- Why Choose Optern -->
+        <div class="fade-in-on-scroll delay-100">
+            <h2 class="text-3xl font-extrabold text-navy-800 mb-8 font-poppins">🌍 Why Choose Optern</h2>
+            <div class="space-y-6">
+                <!-- Advantage 1 -->
+                <div class="p-5 bg-yellow-100 rounded-xl shadow-lg border-l-4 border-yellow-600 feature-card-hover">
+                    <h3 class="text-xl font-bold text-navy-800 mb-1">Verified Ecosystem</h3>
+                    <p class="text-gray-700">Every recruiter and student undergoes <b>KYC-based verification</b>.</p>
+                </div>
+                <!-- Advantage 2 -->
+                <div class="p-5 bg-yellow-100 rounded-xl shadow-lg border-l-4 border-yellow-600 feature-card-hover">
+                    <h3 class="text-xl font-bold text-navy-800 mb-1">AI Driven Roadmap</h3>
+                    <p class="text-gray-700">Advanced ML models suggest the <b>best-fit roadmaps for opportunities</b> instantly.</p>
+                </div>
+                <!-- Advantage 3 -->
+                <div class="p-5 bg-yellow-100 rounded-xl shadow-lg border-l-4 border-yellow-600 feature-card-hover">
+                    <h3 class="text-xl font-bold text-navy-800 mb-1">Portfolio-First Approach</h3>
+                    <p class="text-gray-700">Projects and mentorships add visible, <b>verifiable proof of skills</b>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 📈 Join the Future CTA -->
+<section class="py-16 md:py-24 gradient-hero text-white text-center rounded-xl shadow-2xl mx-auto max-w-7xl mt-8 px-6 md:px-12 fade-in-on-scroll">
+    <h2 class="text-4xl font-extrabold mb-4 font-poppins fade-in-on-scroll">Join the Future of Real-World Learning</h2>
+    <p class="text-lg text-xl mb-10 fade-in-on-scroll delay-100">
+        “Work. Learn. Build. Together — with Optern.”
+    </p>
+</section>
+
+<!-- 🔒 Footer -->
+<footer class="bg-gray-900 text-gray-300 py-10 mt-8 rounded-t-xl fade-in-on-scroll">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 text-center text-sm">
+        <nav class="space-x-4 mb-4">
+            <a href="#" class="hover:text-sky-500 transition duration-300">About Optern</a>
+            <span class="text-gray-700">|</span>
+            <a href="#" class="hover:text-sky-500 transition duration-300">Privacy Policy</a>
+            <span class="text-gray-700">|</span>
+            <a href="#" class="hover:text-sky-500 transition duration-300">Terms & Conditions</a>
+            <span class="text-gray-700">|</span>
+            <a href="mailto:admin@optern-eduworks.com" class="hover:text-sky-500 transition duration-300">Contact Us</a>
+        </nav>
+        <p class="mb-2">📧 admin@optern-eduworks.com</p>
+        <p>&copy; {{ currentYear }} Optern EduWorks — Empowering Students Through Experience.</p>
+    </div>
+</footer>
