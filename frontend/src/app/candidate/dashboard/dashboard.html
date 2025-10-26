@@ -16,40 +16,40 @@
         <div class="stat-card blue">
             <div class="card-content">
                 <i class="bi bi-broadcast card-icon"></i>
-                <span class="card-value">{{ stats.totalOpportunities || 0 }}</span>
+                <span class="card-value">{{ stats.TotalOpportunities || 0 }}</span>
                 <span class="card-label">Total Opportunities</span>
             </div>
             <div class="card-progress">
-                <div class="progress-bar" [style.width.%]="(stats.totalOpportunities || 0) * 10"></div>
-                <span class="progress-label">{{ (stats.totalOpportunities || 0) * 10 }}%</span>
+                <div class="progress-bar" [style.width.%]="(stats.TotalOpportunities || 0) * 10"></div>
+                <span class="progress-label">{{ (stats.TotalOpportunities || 0) * 10 }}%</span>
             </div>
         </div>
         <div class="stat-card green">
             <div class="card-content">
                 <i class="bi bi-check2-circle card-icon"></i>
-                <span class="card-value">{{ stats.appliedJobs || 0 }}</span>
+                <span class="card-value">{{ stats.AppliedJobs || 0 }}</span>
                 <span class="card-label">Applied Jobs</span>
             </div>
             <div class="card-progress">
-                <div class="progress-bar" [style.width.%]="(stats.appliedJobs || 0) * 8"></div>
-                <span class="progress-label">{{ (stats.appliedJobs || 0) * 8 }}%</span>
+                <div class="progress-bar" [style.width.%]="(stats.AppliedJobs || 0) * 8"></div>
+                <span class="progress-label">{{ (stats.AppliedJobs || 0) * 8 }}%</span>
             </div>
         </div>
         <div class="stat-card purple">
             <div class="card-content">
                 <i class="bi bi-bookmark-check card-icon"></i>
-                <span class="card-value">{{ stats.approvedApplications || 0 }}</span>
+                <span class="card-value">{{ stats.ApprovedApplications || 0 }}</span>
                 <span class="card-label">Approved</span>
             </div>
             <div class="card-progress">
-                <div class="progress-bar" [style.width.%]="(stats.approvedApplications || 0) * 25"></div>
-                <span class="progress-label">{{ (stats.approvedApplications || 0) * 25 }}%</span>
+                <div class="progress-bar" [style.width.%]="(stats.ApprovedApplications || 0) * 25"></div>
+                <span class="progress-label">{{ (stats.ApprovedApplications || 0) * 25 }}%</span>
             </div>
         </div>
         <div class="stat-card orange">
             <div class="card-content">
                 <i class="bi bi-clock-history card-icon"></i>
-                <span class="card-value">{{ stats.inReviewApplications || 0 }}</span>
+                <span class="card-value">{{ stats.InReviewApplications || 0 }}</span>
                 <span class="card-label">In Review</span>
             </div>
             <div class="card-progress">
@@ -86,7 +86,7 @@
                     </div>
                     <span class="status-badge" [ngClass]="activity.status.toLowerCase().replace(' ', '-') + '-badge'">{{ activity.status }}</span>
                 </li>
-                <li class="activity-item" *ngIf="activities.length === 0 && !isLoading">
+                <li class="activity-item" *ngIf="!activities || activities.length === 0 && !isLoading">
                     <div class="activity-content">
                         <div class="activity-title">No recent activities</div>
                         <div class="activity-description">Start applying to jobs to see your activity here</div>
@@ -111,7 +111,7 @@
                     </div>
                     <span class="status-badge" [ngClass]="announcement.type + '-badge'">{{ announcement.type }}</span>
                 </li>
-                <li class="announcement-item" *ngIf="announcements.length === 0 && !isLoading">
+                <li class="announcement-item" *ngIf="!announcements || announcements.length === 0 && !isLoading">
                     <div class="announcement-content">
                         <div class="announcement-title">No announcements</div>
                         <div class="announcement-subtitle">Check back later for updates</div>
@@ -164,7 +164,7 @@
         <div class="achievement-icon">🏆</div>
         <div class="achievement-details">
             <p class="achievement-title">Achievement Unlocked!</p>
-            <p class="achievement-description">You've applied to {{ stats.appliedJobs || 0 }} jobs this month. Keep up the great work! 🎉</p>
+            <p class="achievement-description">You've applied to {{ stats.AppliedJobs || 0 }} jobs this month. Keep up the great work! 🎉</p>
         </div>
     </div>
 </div>

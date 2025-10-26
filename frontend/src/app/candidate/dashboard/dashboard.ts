@@ -45,11 +45,17 @@ export class Dashboard implements OnInit, OnDestroy {
     // Load stats
     this.dashboardService.getCandidateStats().subscribe({
       next: (stats) => {
-        this.stats = stats;
+        console.log('Received stats from API:', stats);
+        console.log('Stats type:', typeof stats);
+        console.log('Stats keys:', Object.keys(stats || {}));
+        this.stats = stats || {};
         this.isLoading = false;
+        console.log('Updated this.stats:', this.stats);
       },
       error: (error) => {
         console.error('Error loading dashboard stats:', error);
+        console.error('Error response:', error.error);
+        console.error('Error status:', error.status);
         this.isLoading = false;
       }
     });
@@ -57,20 +63,22 @@ export class Dashboard implements OnInit, OnDestroy {
     // Load activities
     this.dashboardService.getCandidateActivities().subscribe({
       next: (activities) => {
-        this.activities = activities;
+        this.activities = Array.isArray(activities) ? activities : [];
       },
       error: (error) => {
         console.error('Error loading activities:', error);
+        this.activities = []; // Ensure activities is always an array
       }
     });
 
     // Load announcements
     this.dashboardService.getAnnouncements().subscribe({
       next: (announcements) => {
-        this.announcements = announcements;
+        this.announcements = Array.isArray(announcements) ? announcements : [];
       },
       error: (error) => {
         console.error('Error loading announcements:', error);
+        this.announcements = []; // Ensure announcements is always an array
       }
     });
   }

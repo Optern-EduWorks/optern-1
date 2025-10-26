@@ -4,14 +4,14 @@ import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
 export interface DashboardStats {
-  totalOpportunities?: number;
-  appliedJobs?: number;
-  approvedApplications?: number;
-  inReviewApplications?: number;
-  activeJobs?: number;
-  totalApplications?: number;
-  hiresThisMonth?: number;
-  scheduledInterviews?: number;
+  TotalOpportunities?: number;
+  AppliedJobs?: number;
+  ApprovedApplications?: number;
+  InReviewApplications?: number;
+  ActiveJobs?: number;
+  TotalApplications?: number;
+  HiresThisMonth?: number;
+  ScheduledInterviews?: number;
 }
 
 export interface ActivityItem {

@@ -32,20 +32,88 @@ namespace JobPortalAPI.Controllers
         {
             try
             {
+                // Debug: Log all claims for troubleshooting
+                Console.WriteLine("=== Dashboard Authentication Debug ===");
+                foreach (var claim in User.Claims)
+                {
+                    Console.WriteLine($"Claim: {claim.Type} = {claim.Value}");
+                }
+
                 // Get current user ID from JWT token
-                var userIdClaim = User.FindFirst("userId")?.Value;
+                var userIdClaim = User.FindFirst("UserId")?.Value;
+                Console.WriteLine($"UserId claim found: {userIdClaim}");
+
                 if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
                 {
+                    Console.WriteLine("UserId claim not found or invalid");
                     return Unauthorized("Invalid user token");
                 }
 
+                Console.WriteLine($"Parsed userId: {userId}");
+
+                // Debug: Log total jobs and their closing dates
+                var allJobs = await _context.Jobs.ToListAsync();
+                Console.WriteLine($"Total jobs in database: {allJobs.Count}");
+                foreach (var job in allJobs.Take(5))
+                {
+                    Console.WriteLine($"Job {job.JobID}: {job.Title}, Closing: {job.ClosingDate}, IsFuture: {job.ClosingDate > DateTime.Now}");
+                }
+
+                var futureJobsCount = await _context.Jobs.CountAsync(j => j.ClosingDate > DateTime.Now);
+                Console.WriteLine($"Jobs with future closing dates: {futureJobsCount}");
+
+                // Check if candidate profile exists
+                var candidate = await _context.CandidateProfiles.FirstOrDefaultAsync(c => c.UserId == userId);
+                Console.WriteLine($"Found candidate profile: {candidate != null}, CandidateID: {candidate?.CandidateID}");
+
+                if (candidate == null)
+                {
+                    Console.WriteLine($"No candidate profile found for userId: {userId}");
+                    // Try to create candidate profile if it doesn't exist
+                    var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+                    if (user != null)
+                    {
+                        Console.WriteLine($"Creating candidate profile for user: {user.Email}");
+                        candidate = new CandidateProfile
+                        {
+                            UserId = user.UserId,
+                            FullName = user.Username,
+                            Email = user.Email,
+                            PhoneNumber = "",
+                            Address = "",
+                            CreatedDate = DateTime.Now,
+                            UpdatedDate = DateTime.Now
+                        };
+                        _context.CandidateProfiles.Add(candidate);
+                        await _context.SaveChangesAsync();
+                        Console.WriteLine($"Created candidate profile with ID: {candidate.CandidateID}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"User not found with ID: {userId}");
+                        candidate = null;
+                    }
+                }
+
+                var candidateId = candidate?.CandidateID ?? userId; // Fallback to userId if no profile found
+                Console.WriteLine($"Using CandidateID: {candidateId}");
+
+                var appliedJobsCount = await _context.Applications.CountAsync(a => a.CandidateID == candidateId);
+                Console.WriteLine($"Applied jobs for candidate {candidateId}: {appliedJobsCount}");
+
                 var stats = new DashboardStats
                 {
-                    TotalOpportunities = await _context.Jobs.CountAsync(j => j.ClosingDate > DateTime.Now),
-                    AppliedJobs = await _context.Applications.CountAsync(a => a.CandidateID == userId),
-                    ApprovedApplications = await _context.Applications.CountAsync(a => a.CandidateID == userId && a.Status == "Approved"),
-                    InReviewApplications = await _context.Applications.CountAsync(a => a.CandidateID == userId && a.Status == "In Review")
+                    TotalOpportunities = futureJobsCount,
+                    AppliedJobs = appliedJobsCount,
+                    ApprovedApplications = await _context.Applications.CountAsync(a => a.CandidateID == candidateId && a.Status == "Approved"),
+                    InReviewApplications = await _context.Applications.CountAsync(a => a.CandidateID == candidateId && a.Status == "In Review"),
+                    ActiveJobs = 0, // For candidates, this is not applicable
+                    TotalApplications = appliedJobsCount,
+                    HiresThisMonth = 0, // For candidates, this is not applicable
+                    ScheduledInterviews = 0 // For candidates, this is not applicable
                 };
+
+                Console.WriteLine($"Dashboard stats for user {userId}: {System.Text.Json.JsonSerializer.Serialize(stats)}");
 
                 // Broadcast stats update to candidate group
                 await _hubContext.Clients.Group("candidate").SendAsync("ReceiveDashboardUpdate", "stats-update", new
@@ -59,6 +127,8 @@ namespace JobPortalAPI.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error in GetCandidateStats: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
@@ -70,7 +140,7 @@ namespace JobPortalAPI.Controllers
             try
             {
                 // Get current user ID from JWT token
-                var userIdClaim = User.FindFirst("userId")?.Value;
+                var userIdClaim = User.FindFirst("UserId")?.Value;
                 if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
                 {
                     return Unauthorized("Invalid user token");
@@ -112,34 +182,78 @@ namespace JobPortalAPI.Controllers
         {
             try
             {
-                var userIdClaim = User.FindFirst("userId")?.Value;
+                var userIdClaim = User.FindFirst("UserId")?.Value;
+                Console.WriteLine($"=== Candidate Activities Debug ===");
+                Console.WriteLine($"UserId claim: {userIdClaim}");
+
                 if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
                 {
+                    Console.WriteLine("UserId claim not found or invalid");
                     return Unauthorized("Invalid user token");
+                }
+
+                Console.WriteLine($"Parsed userId: {userId}");
+
+                // Check if candidate profile exists
+                var candidate = await _context.CandidateProfiles.FirstOrDefaultAsync(c => c.UserId == userId);
+                Console.WriteLine($"Found candidate profile: {candidate != null}, CandidateID: {candidate?.CandidateID}");
+
+                if (candidate == null)
+                {
+                    Console.WriteLine($"No candidate profile found for userId: {userId}");
+                    // Try to create candidate profile if it doesn't exist
+                    var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+                    if (user != null)
+                    {
+                        Console.WriteLine($"Creating candidate profile for user: {user.Email}");
+                        candidate = new CandidateProfile
+                        {
+                            UserId = user.UserId,
+                            FullName = user.Username,
+                            Email = user.Email,
+                            PhoneNumber = "",
+                            Address = "",
+                            CreatedDate = DateTime.Now,
+                            UpdatedDate = DateTime.Now
+                        };
+                        _context.CandidateProfiles.Add(candidate);
+                        await _context.SaveChangesAsync();
+                        Console.WriteLine($"Created candidate profile with ID: {candidate.CandidateID}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"User not found with ID: {userId}");
+                        return Ok(new List<ActivityItem>()); // Return empty array instead of error
+                    }
                 }
 
                 var activities = await _context.Applications
                     .Include(a => a.Job)
                     .ThenInclude(j => j.Company)
-                    .Where(a => a.CandidateID == userId)
+                    .Where(a => a.CandidateID == candidate.CandidateID)
                     .OrderByDescending(a => a.AppliedDate)
                     .Take(5)
-                    .Select(a => new ActivityItem
-                    {
-                        Id = a.ApplicationID,
-                        Title = a.Job.Title,
-                        Description = $"Applied to {a.Job.Company.Name}",
-                        TimeAgo = GetTimeAgo(a.AppliedDate),
-                        Status = a.Status,
-                        Icon = "file-earmark-code",
-                        CreatedAt = a.AppliedDate
-                    })
                     .ToListAsync();
 
+                // Convert to ActivityItem after database query to avoid EF issues
+                var activityItems = activities.Select(a => new ActivityItem
+                {
+                    Id = a.ApplicationID,
+                    Title = a.Job.Title,
+                    Description = $"Applied to {a.Job.Company.Name}",
+                    TimeAgo = GetTimeAgo(a.AppliedDate),
+                    Status = a.Status,
+                    Icon = "file-earmark-code",
+                    CreatedAt = a.AppliedDate
+                }).ToList();
+
+                Console.WriteLine($"Found {activities.Count} activities for candidate {candidate.CandidateID}");
                 return Ok(activities);
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error in GetCandidateActivities: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
@@ -150,7 +264,7 @@ namespace JobPortalAPI.Controllers
         {
             try
             {
-                var userIdClaim = User.FindFirst("userId")?.Value;
+                var userIdClaim = User.FindFirst("UserId")?.Value;
                 if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
                 {
                     return Unauthorized("Invalid user token");
@@ -162,22 +276,130 @@ namespace JobPortalAPI.Controllers
                     .Where(a => a.Job.RecruiterID == userId)
                     .OrderByDescending(a => a.AppliedDate)
                     .Take(5)
-                    .Select(a => new ActivityItem
-                    {
-                        Id = a.ApplicationID,
-                        Title = $"New application for {a.Job.Title}",
-                        Description = $"{a.Candidate.FullName}",
-                        TimeAgo = GetTimeAgo(a.AppliedDate),
-                        Status = a.Status,
-                        Icon = "file-earmark-code",
-                        CreatedAt = a.AppliedDate
-                    })
                     .ToListAsync();
+
+                // Convert to ActivityItem after database query to avoid EF issues
+                var activityItems = activities.Select(a => new ActivityItem
+                {
+                    Id = a.ApplicationID,
+                    Title = $"New application for {a.Job.Title}",
+                    Description = $"{a.Candidate.FullName}",
+                    TimeAgo = GetTimeAgo(a.AppliedDate),
+                    Status = a.Status,
+                    Icon = "file-earmark-code",
+                    CreatedAt = a.AppliedDate
+                }).ToList();
 
                 return Ok(activities);
             }
             catch (Exception ex)
             {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // GET: api/dashboard/debug-jobs
+        [HttpGet("debug-jobs")]
+        [AllowAnonymous] // Allow anonymous access for debugging
+        public async Task<ActionResult<object>> DebugJobs()
+        {
+            try
+            {
+                var allJobs = await _context.Jobs.ToListAsync();
+                var debugInfo = new
+                {
+                    totalJobs = allJobs.Count,
+                    currentTime = DateTime.Now,
+                    jobs = allJobs.Select(j => new
+                    {
+                        jobId = j.JobID,
+                        title = j.Title,
+                        closingDate = j.ClosingDate,
+                        isFuture = j.ClosingDate > DateTime.Now,
+                        postedDate = j.PostedDate,
+                        recruiterId = j.RecruiterID
+                    }).ToList()
+                };
+
+                Console.WriteLine($"Debug jobs: {System.Text.Json.JsonSerializer.Serialize(debugInfo)}");
+                return Ok(debugInfo);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in DebugJobs: {ex.Message}");
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // GET: api/dashboard/fix-job-dates
+        [HttpPost("fix-job-dates")]
+        [AllowAnonymous] // Allow anonymous access for debugging
+        public async Task<ActionResult<object>> FixJobDates()
+        {
+            try
+            {
+                var allJobs = await _context.Jobs.ToListAsync();
+                var updatedCount = 0;
+
+                foreach (var job in allJobs)
+                {
+                    if (job.ClosingDate <= DateTime.Now)
+                    {
+                        job.ClosingDate = DateTime.Now.AddDays(30);
+                        updatedCount++;
+                    }
+                }
+
+                if (updatedCount > 0)
+                {
+                    await _context.SaveChangesAsync();
+                }
+
+                var debugInfo = new
+                {
+                    message = $"Updated {updatedCount} jobs with future closing dates",
+                    totalJobs = allJobs.Count,
+                    currentTime = DateTime.Now,
+                    futureJobsCount = await _context.Jobs.CountAsync(j => j.ClosingDate > DateTime.Now)
+                };
+
+                Console.WriteLine($"Fixed job dates: {System.Text.Json.JsonSerializer.Serialize(debugInfo)}");
+                return Ok(debugInfo);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in FixJobDates: {ex.Message}");
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // GET: api/dashboard/debug-user
+        [HttpGet("debug-user")]
+        [AllowAnonymous] // Allow anonymous access for debugging
+        public async Task<ActionResult<object>> DebugUser()
+        {
+            try
+            {
+                var allUsers = await _context.Users.ToListAsync();
+                var allCandidates = await _context.CandidateProfiles.ToListAsync();
+                var allApplications = await _context.Applications.ToListAsync();
+
+                var debugInfo = new
+                {
+                    totalUsers = allUsers.Count,
+                    totalCandidates = allCandidates.Count,
+                    totalApplications = allApplications.Count,
+                    users = allUsers.Select(u => new { userId = u.UserId, email = u.Email, role = u.Role }).ToList(),
+                    candidates = allCandidates.Select(c => new { candidateId = c.CandidateID, email = c.Email, userId = c.UserId }).ToList(),
+                    applications = allApplications.Select(a => new { applicationId = a.ApplicationID, candidateId = a.CandidateID, jobId = a.JobID, status = a.Status }).ToList()
+                };
+
+                Console.WriteLine($"Debug user: {System.Text.Json.JsonSerializer.Serialize(debugInfo)}");
+                return Ok(debugInfo);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in DebugUser: {ex.Message}");
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
@@ -234,7 +456,7 @@ namespace JobPortalAPI.Controllers
         {
             try
             {
-                var userIdClaim = User.FindFirst("userId")?.Value;
+                var userIdClaim = User.FindFirst("UserId")?.Value;
                 if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
                 {
                     return Unauthorized("Invalid user token");
@@ -269,7 +491,7 @@ namespace JobPortalAPI.Controllers
         {
             try
             {
-                var userIdClaim = User.FindFirst("userId")?.Value;
+                var userIdClaim = User.FindFirst("UserId")?.Value;
                 if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
                 {
                     return Unauthorized("Invalid user token");
