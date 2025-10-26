@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using JobPortalAPI.Data;
 using JobPortalAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
+using JobPortalAPI.Hubs;
 using System.Security.Claims;
 
 [Route("api/[controller]")]
@@ -10,7 +12,13 @@ using System.Security.Claims;
 public class ApplicationsController : ControllerBase
 {
     private readonly JobPortalContext _context;
-    public ApplicationsController(JobPortalContext context) => _context = context;
+    private readonly IHubContext<DashboardHub> _hubContext;
+
+    public ApplicationsController(JobPortalContext context, IHubContext<DashboardHub> hubContext)
+    {
+        _context = context;
+        _hubContext = hubContext;
+    }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Application>>> GetAll() =>
@@ -92,7 +100,9 @@ public class ApplicationsController : ControllerBase
                     .ToListAsync();
 
                 Console.WriteLine($"Found {applications.Count} applications for candidate");
-                return applications;
+
+                // Return plain array instead of wrapped response to avoid $values structure
+                return Ok(applications);
             }
 
             Console.WriteLine($"Invalid auth token provided: {authHeader}");
@@ -112,7 +122,8 @@ public class ApplicationsController : ControllerBase
             .OrderByDescending(a => a.AppliedDate)
             .ToListAsync();
 
-        return candidateApplications;
+        // Return plain array instead of wrapped response to avoid $values structure
+        return Ok(candidateApplications);
     }
 
     [HttpGet("{id}")]
@@ -225,6 +236,21 @@ public class ApplicationsController : ControllerBase
             await _context.SaveChangesAsync();
             Console.WriteLine($"Application saved successfully with ID: {app.ApplicationID}");
 
+            // Broadcast real-time update to dashboard
+            await _hubContext.Clients.Group("candidate").SendAsync("ReceiveDashboardUpdate", "stats-update", new
+            {
+                type = "application-created",
+                candidateId = app.CandidateID,
+                jobId = app.JobID
+            });
+
+            await _hubContext.Clients.Group("recruiter").SendAsync("ReceiveDashboardUpdate", "stats-update", new
+            {
+                type = "application-created",
+                jobId = app.JobID,
+                recruiterId = job.RecruiterID
+            });
+
             return Ok(new {
                 success = true,
                 message = "Application submitted successfully",
@@ -291,6 +317,25 @@ public class ApplicationsController : ControllerBase
             };
             _context.ActivityLogs.Add(activityLog);
             await _context.SaveChangesAsync();
+
+            // Broadcast real-time update to dashboard
+            await _hubContext.Clients.Group("recruiter").SendAsync("ReceiveDashboardUpdate", "stats-update", new
+            {
+                type = "application-status-updated",
+                applicationId = id,
+                oldStatus = oldStatus,
+                newStatus = app.Status,
+                jobId = existingApp.JobID,
+                recruiterId = recruiter.RecruiterID
+            });
+
+            await _hubContext.Clients.Group("candidate").SendAsync("ReceiveDashboardUpdate", "stats-update", new
+            {
+                type = "application-status-updated",
+                applicationId = id,
+                newStatus = app.Status,
+                candidateId = existingApp.CandidateID
+            });
 
             return NoContent();
         }
@@ -359,8 +404,29 @@ public class ApplicationsController : ControllerBase
             return Forbid();
         }
 
+        var job = await _context.Jobs.FindAsync(app.JobID);
         _context.Applications.Remove(app);
         await _context.SaveChangesAsync();
+
+        // Broadcast real-time update to dashboard
+        await _hubContext.Clients.Group("candidate").SendAsync("ReceiveDashboardUpdate", "stats-update", new
+        {
+            type = "application-deleted",
+            applicationId = id,
+            candidateId = candidate.CandidateID
+        });
+
+        if (job != null)
+        {
+            await _hubContext.Clients.Group("recruiter").SendAsync("ReceiveDashboardUpdate", "stats-update", new
+            {
+                type = "application-deleted",
+                applicationId = id,
+                jobId = job.JobID,
+                recruiterId = job.RecruiterID
+            });
+        }
+
         return NoContent();
     }
 }

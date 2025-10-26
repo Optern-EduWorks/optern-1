@@ -16,6 +16,10 @@ export class Profile implements OnInit {
   // Property to track the active tab, initialized to 'personal'
   activeTab: string = 'personal';
 
+  // Edit modes
+  isEditMode: boolean = false;
+  isAcademicEditMode: boolean = false;
+
   // Profile data
   profile: CandidateProfile = {
     candidateID: 0,
@@ -134,6 +138,38 @@ export class Profile implements OnInit {
   selectTab(tab: string) {
     this.activeTab = tab;
     this.clearMessages();
+    // Reset edit modes when switching tabs
+    this.isEditMode = false;
+    this.isAcademicEditMode = false;
+  }
+
+  // Method to set active tab (used by HTML template)
+  setActiveTab(tab: string): void {
+    this.selectTab(tab);
+  }
+
+  // Toggle edit mode for personal information
+  toggleEditMode(): void {
+    this.isEditMode = !this.isEditMode;
+  }
+
+  // Toggle edit mode for academic information
+  toggleAcademicEditMode(): void {
+    this.isAcademicEditMode = !this.isAcademicEditMode;
+  }
+
+  // Cancel edit mode
+  cancelEdit(): void {
+    this.isEditMode = false;
+    this.editProfile = { ...this.profile };
+    this.clearMessages();
+  }
+
+  // Cancel academic edit mode
+  cancelAcademicEdit(): void {
+    this.isAcademicEditMode = false;
+    this.editProfile = { ...this.profile };
+    this.clearMessages();
   }
 
   // Load profile data
@@ -249,6 +285,21 @@ export class Profile implements OnInit {
         this.editProfile = { ...data };
         this.successMessage = 'Profile updated successfully!';
         this.isSaving = false;
+        this.isEditMode = false; // Exit edit mode after successful save
+
+        // Update auth service user data with the current fullName and phoneNumber
+        const currentUser = this.authService.getCurrentUser();
+        if (currentUser) {
+          const updatedUser = {
+            ...currentUser,
+            username: data.fullName,
+            phoneNumber: data.phoneNumber
+          };
+          console.log('Updating auth service with new username and phone number:', updatedUser.username, updatedUser.phoneNumber);
+          this.authService.updateCurrentUser(updatedUser);
+          console.log('Updated auth service and localStorage with new data');
+        }
+
         setTimeout(() => this.clearMessages(), 3000);
       },
       error: (error: any) => {
@@ -298,6 +349,20 @@ export class Profile implements OnInit {
         this.editProfile = { ...data };
         this.successMessage = 'Academic information updated successfully!';
         this.isSaving = false;
+        this.isAcademicEditMode = false; // Exit academic edit mode after successful save
+        // Update auth service user data with the current fullName and phoneNumber
+        const currentUser = this.authService.getCurrentUser();
+        if (currentUser) {
+          const updatedUser = {
+            ...currentUser,
+            username: data.fullName,
+            phoneNumber: data.phoneNumber
+          };
+          console.log('Updating auth service with new username and phone number:', updatedUser.username, updatedUser.phoneNumber);
+          this.authService.updateCurrentUser(updatedUser);
+          console.log('Updated auth service and localStorage with new data');
+        }
+
         setTimeout(() => this.clearMessages(), 3000);
       },
       error: (error: any) => {
@@ -409,9 +474,5 @@ export class Profile implements OnInit {
     this.successMessage = '';
   }
 
-  // Cancel editing
-  cancelEdit() {
-    this.editProfile = { ...this.profile };
-    this.clearMessages();
-  }
+
 }

@@ -3,14 +3,21 @@ using Microsoft.EntityFrameworkCore;
 using JobPortalAPI.Data;
 using JobPortalAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
+using JobPortalAPI.Hubs;
 
 [Route("api/[controller]")]
 [ApiController]
 public class JobsController : ControllerBase
 {
     private readonly JobPortalContext _context;
+    private readonly IHubContext<DashboardHub> _hubContext;
 
-    public JobsController(JobPortalContext context) => _context = context;
+    public JobsController(JobPortalContext context, IHubContext<DashboardHub> hubContext)
+    {
+        _context = context;
+        _hubContext = hubContext;
+    }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Job>>> GetAll()
@@ -378,6 +385,21 @@ public class JobsController : ControllerBase
 
                 Console.WriteLine($"Returning job DTO: {System.Text.Json.JsonSerializer.Serialize(jobDto)}");
 
+                // Broadcast real-time update to dashboard
+                await _hubContext.Clients.Group("candidate").SendAsync("ReceiveDashboardUpdate", "stats-update", new
+                {
+                    type = "job-created",
+                    jobId = savedJob.JobID,
+                    recruiterId = savedJob.RecruiterID
+                });
+
+                await _hubContext.Clients.Group("recruiter").SendAsync("ReceiveDashboardUpdate", "stats-update", new
+                {
+                    type = "job-created",
+                    jobId = savedJob.JobID,
+                    recruiterId = savedJob.RecruiterID
+                });
+
                 return Ok(new {
                     success = true,
                     message = "Job created successfully",
@@ -567,6 +589,21 @@ public class JobsController : ControllerBase
             // Save changes
             await _context.SaveChangesAsync();
 
+            // Broadcast real-time update to dashboard
+            await _hubContext.Clients.Group("candidate").SendAsync("ReceiveDashboardUpdate", "stats-update", new
+            {
+                type = "job-updated",
+                jobId = id,
+                recruiterId = recruiter.RecruiterID
+            });
+
+            await _hubContext.Clients.Group("recruiter").SendAsync("ReceiveDashboardUpdate", "stats-update", new
+            {
+                type = "job-updated",
+                jobId = id,
+                recruiterId = recruiter.RecruiterID
+            });
+
             Console.WriteLine($"Job {id} updated successfully");
             return Ok(new { message = "Job updated successfully" });
         }
@@ -666,6 +703,22 @@ public class JobsController : ControllerBase
 
         _context.Jobs.Remove(job);
         await _context.SaveChangesAsync();
+
+        // Broadcast real-time update to dashboard
+        await _hubContext.Clients.Group("candidate").SendAsync("ReceiveDashboardUpdate", "stats-update", new
+        {
+            type = "job-deleted",
+            jobId = id,
+            recruiterId = recruiter.RecruiterID
+        });
+
+        await _hubContext.Clients.Group("recruiter").SendAsync("ReceiveDashboardUpdate", "stats-update", new
+        {
+            type = "job-deleted",
+            jobId = id,
+            recruiterId = recruiter.RecruiterID
+        });
+
         return NoContent();
     }
 }

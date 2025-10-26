@@ -28,38 +28,22 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         return next(authReq);
       } else {
         console.warn('No token found in user data:', user);
-        // For test/development, add test token if no real token
-        if (req.url.includes('/api/')) {
-          console.log('Adding test token for API request');
-          const authReq = req.clone({
-            headers: req.headers.set('Authorization', 'Bearer test-token')
-          });
-          return next(authReq);
-        }
+        // Don't add test token - let the request proceed without auth
+        // This prevents interference with actual login process
+        return next(req);
       }
     } catch (error) {
       console.error('Error parsing user data from localStorage:', error);
       // Clear invalid data
       localStorage.removeItem('optern_user');
-      // For test/development, add test token if no real token
-      if (req.url.includes('/api/')) {
-        console.log('Adding test token for API request after error');
-        const authReq = req.clone({
-          headers: req.headers.set('Authorization', 'Bearer test-token')
-        });
-        return next(authReq);
-      }
+      // Don't add test token - let the request proceed without auth
+      return next(req);
     }
   } else {
     console.log('No user data found in localStorage');
-    // For test/development, add test token if no real token
-    if (req.url.includes('/api/')) {
-      console.log('Adding test token for API request');
-      const authReq = req.clone({
-        headers: req.headers.set('Authorization', 'Bearer test-token')
-      });
-      return next(authReq);
-    }
+    // Don't add test token - let the request proceed without auth
+    // This prevents interference with actual login process
+    return next(req);
   }
   return next(req);
 };

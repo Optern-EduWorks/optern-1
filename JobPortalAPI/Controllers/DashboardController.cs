@@ -47,6 +47,14 @@ namespace JobPortalAPI.Controllers
                     InReviewApplications = await _context.Applications.CountAsync(a => a.CandidateID == userId && a.Status == "In Review")
                 };
 
+                // Broadcast stats update to candidate group
+                await _hubContext.Clients.Group("candidate").SendAsync("ReceiveDashboardUpdate", "stats-update", new
+                {
+                    type = "candidate-stats",
+                    userId = userId,
+                    stats = stats
+                });
+
                 return Ok(stats);
             }
             catch (Exception ex)
@@ -81,6 +89,14 @@ namespace JobPortalAPI.Controllers
                         a.Job.RecruiterID == userId &&
                         a.Status == "Interview Scheduled")
                 };
+
+                // Broadcast stats update to recruiter group
+                await _hubContext.Clients.Group("recruiter").SendAsync("ReceiveDashboardUpdate", "stats-update", new
+                {
+                    type = "recruiter-stats",
+                    userId = userId,
+                    stats = stats
+                });
 
                 return Ok(stats);
             }

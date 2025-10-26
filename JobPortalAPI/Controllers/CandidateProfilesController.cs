@@ -82,10 +82,21 @@ public class CandidateProfilesController : ControllerBase
                 return BadRequest();
             }
 
-            _context.Entry(profile).State = EntityState.Modified;
+            var existingProfile = await _context.CandidateProfiles.FindAsync(id);
+            if (existingProfile == null)
+            {
+                Console.WriteLine($"Profile with ID {id} not found, creating new profile");
+                _context.CandidateProfiles.Add(profile);
+            }
+            else
+            {
+                Console.WriteLine($"Profile with ID {id} found, updating");
+                _context.Entry(existingProfile).CurrentValues.SetValues(profile);
+            }
+
             await _context.SaveChangesAsync();
 
-            Console.WriteLine($"Profile updated successfully for ID: {id}");
+            Console.WriteLine($"Profile saved successfully for ID: {id}");
             return NoContent();
         }
         catch (Exception ex)

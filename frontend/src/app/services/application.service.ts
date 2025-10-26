@@ -59,7 +59,7 @@ export class ApplicationService {
     console.log('ApplicationService: Fetching applications for candidate');
     const token = this.getToken();
     console.log('Using token for request:', token);
-    return this.http.get<any>(`/api/Applications/by-candidate`, {
+    return this.http.get<Application[]>(`/api/Applications/by-candidate`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': token ? `Bearer ${token}` : 'Bearer test-token'
@@ -67,19 +67,11 @@ export class ApplicationService {
     }).pipe(
       tap(response => {
         console.log('Raw API response:', response);
-        // Handle the complex nested structure from .NET API
-        if (response && response.$values && Array.isArray(response.$values)) {
-          console.log('Found $values array with', response.$values.length, 'applications');
-          return response.$values;
+        console.log('Response type:', typeof response);
+        console.log('Is array:', Array.isArray(response));
+        if (Array.isArray(response)) {
+          console.log('Found array with', response.length, 'applications');
         }
-        return response;
-      }),
-      // Transform the response to extract the actual applications array
-      map(response => {
-        if (response && response.$values && Array.isArray(response.$values)) {
-          return response.$values as Application[];
-        }
-        return response as Application[];
       })
     );
   }

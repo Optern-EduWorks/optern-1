@@ -38,17 +38,9 @@ export class AuthService {
         this.initialized = true;
       }
     } else {
-      console.log('No user data found in localStorage, setting fallback test user');
-      // Set fallback test user synchronously
-      const testUser: User = {
-        userId: 1,
-        role: 'candidate',
-        username: 'Test Candidate',
-        email: 'candidate@test.com',
-        token: 'test-token'
-      };
-      this.currentUserSubject.next(testUser);
-      localStorage.setItem('optern_user', JSON.stringify(testUser));
+      console.log('No user data found in localStorage, initializing without fallback user');
+      // Don't set fallback test user - let the user login properly
+      this.currentUserSubject.next(null);
       this.initialized = true;
     }
   }
@@ -57,15 +49,8 @@ export class AuthService {
   async initializeAsyncAuth(): Promise<void> {
     if (this.initialized) return;
 
-    try {
-      console.log('Attempting async login with test credentials');
-      const response = await this.login('candidate@test.com', 'password123').toPromise();
-      console.log('Async test login successful:', response);
-      this.initialized = true;
-    } catch (error) {
-      console.log('Async test login failed, keeping fallback test user:', error);
-      this.initialized = true;
-    }
+    console.log('Async auth initialization completed');
+    this.initialized = true;
   }
 
   login(email: string, password: string) {
@@ -173,5 +158,16 @@ export class AuthService {
         'Authorization': `Bearer ${currentUser.token}`
       }
     });
+  }
+
+  updateCurrentUser(updatedUser: User) {
+    console.log('Updating current user:', updatedUser);
+    this.currentUserSubject.next(updatedUser);
+    try {
+      localStorage.setItem('optern_user', JSON.stringify(updatedUser));
+      console.log('Updated user saved to localStorage');
+    } catch (e) {
+      console.error('Failed to save updated user to localStorage:', e);
+    }
   }
 }
