@@ -15,8 +15,14 @@ export interface User {
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
+  private initialized = false;
 
   constructor(private http: HttpClient) {
+    // Initialize authentication synchronously first
+    this.initializeAuth();
+  }
+
+  private initializeAuth() {
     // hydrate from localStorage if available
     const raw = localStorage.getItem('optern_user');
     console.log('AuthService constructor - raw localStorage data:', raw);
@@ -25,13 +31,15 @@ export class AuthService {
         const parsed = JSON.parse(raw);
         console.log('Parsed user from localStorage:', parsed);
         this.currentUserSubject.next(parsed);
+        this.initialized = true;
       } catch (error) {
         console.error('Error parsing user from localStorage:', error);
         localStorage.removeItem('optern_user');
+        this.initialized = true;
       }
     } else {
-      console.log('No user data found in localStorage, setting test user');
-      // Set a test user for development
+      console.log('No user data found in localStorage, setting fallback test user');
+      // Set fallback test user synchronously
       const testUser: User = {
         userId: 1,
         role: 'candidate',
@@ -41,6 +49,22 @@ export class AuthService {
       };
       this.currentUserSubject.next(testUser);
       localStorage.setItem('optern_user', JSON.stringify(testUser));
+      this.initialized = true;
+    }
+  }
+
+  // Method to initialize authentication asynchronously
+  async initializeAsyncAuth(): Promise<void> {
+    if (this.initialized) return;
+
+    try {
+      console.log('Attempting async login with test credentials');
+      const response = await this.login('candidate@test.com', 'password123').toPromise();
+      console.log('Async test login successful:', response);
+      this.initialized = true;
+    } catch (error) {
+      console.log('Async test login failed, keeping fallback test user:', error);
+      this.initialized = true;
     }
   }
 

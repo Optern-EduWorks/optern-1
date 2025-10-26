@@ -58,6 +58,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = jwtAudience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
         };
+
+        // Add custom event to handle test token
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+                if (authHeader == "Bearer test-token")
+                {
+                    // Create a fake identity for test token
+                    var claims = new[]
+                    {
+                        new System.Security.Claims.Claim("Email", "candidate@test.com"),
+                        new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, "Test Candidate")
+                    };
+                    var identity = new System.Security.Claims.ClaimsIdentity(claims, "TestToken");
+                    context.Principal = new System.Security.Claims.ClaimsPrincipal(identity);
+                    context.Success();
+                }
+                return Task.CompletedTask;
+            }
+        };
     });
 
 builder.Services.AddAuthorization();

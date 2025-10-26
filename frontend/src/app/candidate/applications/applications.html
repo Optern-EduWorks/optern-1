@@ -37,6 +37,18 @@
 
   <!-- Application Listings -->
   <div [ngSwitch]="viewMode">
+    <!-- Empty State -->
+    <div *ngIf="filteredApplications.length === 0" class="empty-state">
+      <div class="empty-state-content">
+        <i class="bi bi-clipboard-check"></i>
+        <h3>No Applications Yet</h3>
+        <p>You haven't applied to any jobs yet. Start exploring opportunities and submit your applications!</p>
+        <a href="/opportunities" class="btn btn-primary">
+          <i class="bi bi-search"></i> Browse Opportunities
+        </a>
+      </div>
+    </div>
+
     <!-- Grid View -->
     <div *ngSwitchCase="'grid'" class="listings-grid">
       <div class="card-grid" *ngFor="let app of filteredApplications">

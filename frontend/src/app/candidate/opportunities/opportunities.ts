@@ -140,6 +140,20 @@ export class Opportunities {
       return;
     }
 
+    // Show confirmation dialog
+    const confirmed = window.confirm(
+      `Are you sure you want to apply for this job?\n\n` +
+      `📋 Job Details:\n` +
+      `• Position: ${job.title}\n` +
+      `• Company: ${job.company}\n` +
+      `• Location: ${job.location || 'Not specified'}\n\n` +
+      `Once applied, you cannot withdraw your application.`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
     // Add to applying set for immediate UI feedback
     this.applyingJobIds.add(job.jobID);
 
