@@ -75,7 +75,7 @@ export class SignalRService {
       this.connectionStatus$.next(true);
 
       // Join appropriate group based on user role
-      const userRole = currentUser.role;
+      const userRole = currentUser.role?.toLowerCase();
       if (userRole === 'candidate' || userRole === 'recruiter') {
         await this.joinGroup(userRole);
       }

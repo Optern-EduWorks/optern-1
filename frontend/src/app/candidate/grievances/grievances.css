@@ -65,9 +65,10 @@
 .status-tag.status-in-review { background-color: #ffedd5; color: #f97316; }
 .status-tag.status-resolved { background-color: #dcfce7; color: #22c55e; }
 .status-tag.status-submitted { background-color: #e0f2fe; color: #0ea5e9; }
-.grievance-meta { font-size: 14px; color: #6b7280; margin-bottom: 12px; }
+.grievance-meta { font-size: 14px; color: #6b7280; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .grievance-description { font-size: 14px; color: #374151; margin: 0; line-height: 1.6; }
-.grievance-attachments { font-size: 14px; color: #4f46e5; margin-top: 12px; display: flex; align-items: center; gap: 6px; }
+.attachment-indicator { display: inline-flex; align-items: center; gap: 4px; color: #4f46e5; font-weight: 500; font-size: 13px; }
+.attachment-indicator i { font-size: 14px; }
 .card-actions { display: flex; flex-direction: row; gap: 8px; justify-content: flex-end; align-items: center; flex-wrap: nowrap; }
 .view-details-btn { background: #f3f4f6; color: #4b5563; border: none; border-radius: 8px; padding: 8px 14px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
 .delete-btn { background: #fee2e2; color: #dc2626; border: none; border-radius: 8px; padding: 8px 14px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
@@ -106,20 +107,23 @@
 .details-section { margin-bottom: 24px; }
 .details-section h3 { font-size: 16px; font-weight: 600; margin: 0 0 12px; }
 .details-section p { color: #374151; line-height: 1.6; }
+.details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 24px; }
 .detail-item { display: flex; flex-direction: column; gap: 4px; }
-.detail-item span { font-size: 14px; color: #6b7280; }
-.detail-item strong { font-size: 14px; font-weight: 500; }
-.attachment-list { display: flex; flex-direction: column; gap: 12px; }
-.attachment-item { display: flex; align-items: center; gap: 12px; background: #f9fafb; padding: 12px; border-radius: 8px; }
-.attachment-item i { font-size: 24px; color: #6b7280; }
-.file-info { flex-grow: 1; }
-.file-name { display: block; font-weight: 500; }
+.detail-label { font-size: 14px; color: #6b7280; font-weight: 500; }
+.detail-value { font-size: 14px; color: #374151; font-weight: 500; }
+.attachment-info { display: flex; align-items: center; gap: 8px; }
+.attachment-info i { font-size: 16px; color: #6b7280; }
+.file-name { font-size: 14px; font-weight: 500; color: #374151; }
 .file-size { font-size: 12px; color: #6b7280; }
-.download-link { font-size: 14px; font-weight: 500; color: #4f46e5; text-decoration: none; }
-.official-response { display: flex; gap: 12px; background-color: #fffbeb; padding: 16px; border-radius: 8px; }
-.official-response i { font-size: 20px; color: #f59e0b; margin-top: 2px; }
-.official-response strong { display: block; font-weight: 600; }
-.official-response p { margin: 4px 0 0; color: #78350f; }
+.description-content { background-color: #f9fafb; padding: 16px; border-radius: 8px; border-left: 4px solid #4f46e5; }
+.support-response { background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; }
+.response-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.response-header i { font-size: 18px; color: #16a34a; }
+.response-header span { font-weight: 600; color: #166534; }
+.support-response p { margin: 0; color: #166534; line-height: 1.6; }
+.resolution-notice { background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; display: flex; align-items: flex-start; gap: 12px; }
+.resolution-notice i { font-size: 20px; color: #16a34a; margin-top: 2px; }
+.resolution-notice p { margin: 0; color: #166534; line-height: 1.6; }
 
 /* Responsive */
 @media (max-width: 768px) {

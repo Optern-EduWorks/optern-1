@@ -29,6 +29,7 @@ export class Grievances implements OnInit, OnDestroy {
   // Data holders
   selectedGrievance: Grievance | null = null;
   activeFilter: string = 'All Grievances';
+  selectedGrievanceCategory: string = '';
 
   // API data
   allGrievances: Grievance[] = [];
@@ -132,6 +133,12 @@ export class Grievances implements OnInit, OnDestroy {
 
   openDetailsModal(grievance: Grievance) {
     this.selectedGrievance = grievance;
+    // Get category from the grievance data, not the form
+    this.selectedGrievanceCategory = (grievance as any).category || 'Other';
+    console.log('Opening details modal for grievance:', grievance);
+    console.log('Attachment file name:', (grievance as any).attachmentFileName);
+    console.log('Attachment file size:', (grievance as any).attachmentFileSize);
+    console.log('Category:', (grievance as any).category);
     this.isDetailsModalVisible = true;
   }
 
@@ -199,12 +206,13 @@ export class Grievances implements OnInit, OnDestroy {
     };
 
     // For demo purposes, immediately add to the list
-    const newGrievance: Grievance = {
+    const newGrievance: any = {
       greivanceID: Date.now(), // Temporary ID
       submittedBy: this.currentUserId,
       title: grievanceData.title,
       description: grievanceData.description,
       priority: grievanceData.priority,
+      category: this.grievanceForm.category,
       status: 'Submitted',
       createdDate: new Date().toISOString()
     };
@@ -225,14 +233,18 @@ export class Grievances implements OnInit, OnDestroy {
 
   private submitGrievanceWithFile() {
     // For demo purposes, immediately add to the list
-    const newGrievance: Grievance = {
+    const newGrievance: any = {
       greivanceID: Date.now(), // Temporary ID
       submittedBy: this.currentUserId,
       title: this.grievanceForm.title.trim(),
       description: this.grievanceForm.description.trim(),
       priority: this.grievanceForm.priority,
+      category: this.grievanceForm.category,
       status: 'Submitted',
-      createdDate: new Date().toISOString()
+      createdDate: new Date().toISOString(),
+      attachmentFileName: this.selectedFile?.name,
+      attachmentFilePath: `/uploads/grievances/${this.selectedFile?.name}`,
+      attachmentFileSize: this.selectedFile?.size
     };
 
     this.allGrievances.unshift(newGrievance);
@@ -323,5 +335,13 @@ export class Grievances implements OnInit, OnDestroy {
 
   getPriorityClass(priority: string): string {
     return `priority-${priority.toLowerCase().replace(' ', '-')}`;
+  }
+
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 }

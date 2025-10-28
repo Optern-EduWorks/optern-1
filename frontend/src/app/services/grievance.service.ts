@@ -15,6 +15,8 @@ export interface Grievance {
   attachmentFileName?: string;
   attachmentFilePath?: string;
   attachmentFileSize?: number;
+  supportResponse?: string;
+  category?: string;
 }
 
 // Extended interface for frontend use with computed properties

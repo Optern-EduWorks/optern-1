@@ -14,15 +14,7 @@ export interface DashboardStats {
   ScheduledInterviews?: number;
 }
 
-export interface ActivityItem {
-  id: number;
-  title: string;
-  description: string;
-  timeAgo: string;
-  status: string;
-  icon: string;
-  createdAt: Date;
-}
+
 
 export interface AnnouncementItem {
   id: number;
@@ -74,10 +66,6 @@ export class DashboardService {
     return this.http.get<DashboardStats>(`${this.baseUrl}/candidate-stats`, { headers: this.getHeaders() });
   }
 
-  getCandidateActivities(): Observable<ActivityItem[]> {
-    return this.http.get<ActivityItem[]>(`${this.baseUrl}/candidate-activities`, { headers: this.getHeaders() });
-  }
-
   getAnnouncements(): Observable<AnnouncementItem[]> {
     return this.http.get<AnnouncementItem[]>(`${this.baseUrl}/announcements`, { headers: this.getHeaders() });
   }
@@ -85,10 +73,6 @@ export class DashboardService {
   // Recruiter dashboard methods
   getRecruiterStats(): Observable<DashboardStats> {
     return this.http.get<DashboardStats>(`${this.baseUrl}/recruiter-stats`, { headers: this.getHeaders() });
-  }
-
-  getRecruiterActivities(): Observable<ActivityItem[]> {
-    return this.http.get<ActivityItem[]>(`${this.baseUrl}/recruiter-activities`, { headers: this.getHeaders() });
   }
 
   getTopPerformingJobs(): Observable<JobPerformanceItem[]> {

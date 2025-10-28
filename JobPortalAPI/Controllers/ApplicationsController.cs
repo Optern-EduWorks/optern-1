@@ -335,33 +335,33 @@ public class ApplicationsController : ControllerBase
             Console.WriteLine($"Request method: {HttpContext.Request.Method}");
             Console.WriteLine($"Application data received: {System.Text.Json.JsonSerializer.Serialize(app)}");
 
-            // Get candidate ID from authenticated user
-            var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
-            string candidateEmail;
+            // Get candidate ID from authenticated user using UserId claim
+            var userIdClaim = User.FindFirst("UserId")?.Value;
+            int userId;
 
-            if (authHeader == "Bearer test-token")
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out userId))
             {
-                Console.WriteLine($"Test token accepted, using test candidate email");
-                candidateEmail = "candidate@test.com";
-            }
-            else
-            {
-                var emailClaim = User.FindFirst("Email");
-                if (emailClaim == null)
+                // Fallback for test token
+                var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+                if (authHeader == "Bearer test-token")
+                {
+                    Console.WriteLine($"Test token accepted, using test user ID: 2");
+                    userId = 2; // Use candidate user ID
+                }
+                else
                 {
                     Console.WriteLine($"Invalid auth token provided: {authHeader}");
                     return Unauthorized(new { message = "Invalid authentication token" });
                 }
-                candidateEmail = emailClaim.Value;
             }
 
-            Console.WriteLine($"Looking for candidate with email: {candidateEmail}");
-            var candidate = await _context.CandidateProfiles.FirstOrDefaultAsync(c => c.Email.ToLower() == candidateEmail.ToLower());
+            Console.WriteLine($"Looking for candidate with UserId: {userId}");
+            var candidate = await _context.CandidateProfiles.FirstOrDefaultAsync(c => c.UserId == userId);
             if (candidate == null)
             {
-                Console.WriteLine($"No candidate profile found for email: {candidateEmail}");
+                Console.WriteLine($"No candidate profile found for UserId: {userId}");
                 // Check if user exists but doesn't have a candidate profile
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == candidateEmail.ToLower());
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
                 if (user != null)
                 {
                     Console.WriteLine($"User found but no candidate profile. Creating candidate profile for user: {user.Username}");
@@ -382,7 +382,7 @@ public class ApplicationsController : ControllerBase
                 }
                 else
                 {
-                    return BadRequest(new { message = "Candidate profile not found. Please complete your profile first." });
+                    return BadRequest(new { message = "User not found. Please sign in again." });
                 }
             }
 
@@ -529,7 +529,22 @@ public class ApplicationsController : ControllerBase
         }
 
         // Candidates can only update their own applications (limited fields)
-        var candidate = await _context.CandidateProfiles.FirstOrDefaultAsync(c => c.Email == userEmail);
+        var userIdClaim = User.FindFirst("UserId")?.Value;
+        if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+        {
+            // Fallback for test token
+            var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+            if (authHeader == "Bearer test-token")
+            {
+                userId = 2; // Use candidate user ID
+            }
+            else
+            {
+                return Unauthorized(new { message = "Invalid authentication token" });
+            }
+        }
+
+        var candidate = await _context.CandidateProfiles.FirstOrDefaultAsync(c => c.UserId == userId);
         if (candidate != null && existingApp.CandidateID == candidate.CandidateID)
         {
             // Allow candidates to update cover letter and resume URL
@@ -564,29 +579,22 @@ public class ApplicationsController : ControllerBase
         if (app == null) return NotFound();
 
         // Only candidates can delete their own applications
-        var emailClaim = User.FindFirst("Email");
-        string userEmail;
-
-        if (emailClaim == null)
+        var userIdClaim = User.FindFirst("UserId")?.Value;
+        if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
         {
-            // For development/testing, also check for test token
+            // Fallback for test token
             var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
             if (authHeader == "Bearer test-token")
             {
-                // For test token, assume candidate role for now
-                userEmail = "candidate@test.com";
+                userId = 2; // Use candidate user ID
             }
             else
             {
                 return Unauthorized(new { message = "Invalid authentication token" });
             }
         }
-        else
-        {
-            userEmail = emailClaim.Value;
-        }
 
-        var candidate = await _context.CandidateProfiles.FirstOrDefaultAsync(c => c.Email == userEmail);
+        var candidate = await _context.CandidateProfiles.FirstOrDefaultAsync(c => c.UserId == userId);
         if (candidate == null || app.CandidateID != candidate.CandidateID)
         {
             return Forbid();

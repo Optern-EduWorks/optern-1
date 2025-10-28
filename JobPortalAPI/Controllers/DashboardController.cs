@@ -248,6 +248,50 @@ namespace JobPortalAPI.Controllers
                 }).ToList();
 
                 Console.WriteLine($"Found {activities.Count} activities for candidate {candidate.CandidateID}");
+
+                // If no activities found, return some default activities to show the user
+                if (activityItems.Count == 0)
+                {
+                    activityItems = new List<ActivityItem>
+                    {
+                        new ActivityItem
+                        {
+                            Id = 1,
+                            Title = "Welcome to Job Portal!",
+                            Description = "Complete your profile to get started",
+                            TimeAgo = "Just now",
+                            Status = "Info",
+                            Icon = "person-circle",
+                            CreatedAt = DateTime.Now
+                        },
+                        new ActivityItem
+                        {
+                            Id = 2,
+                            Title = "Explore Job Opportunities",
+                            Description = "Browse available positions",
+                            TimeAgo = "Recently",
+                            Status = "Info",
+                            Icon = "search",
+                            CreatedAt = DateTime.Now.AddMinutes(-5)
+                        },
+                        new ActivityItem
+                        {
+                            Id = 3,
+                            Title = "Build Your Resume",
+                            Description = "Create a professional resume",
+                            TimeAgo = "Recently",
+                            Status = "Info",
+                            Icon = "file-earmark-richtext",
+                            CreatedAt = DateTime.Now.AddMinutes(-10)
+                        }
+                    };
+                    Console.WriteLine("Returning default activities for new user");
+                }
+                else
+                {
+                    Console.WriteLine($"Returning {activityItems.Count} real activities");
+                }
+
                 return Ok(activityItems);
             }
             catch (Exception ex)

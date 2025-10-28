@@ -68,57 +68,29 @@
         </div>
     </div>
 
-    <!-- Main Content Grid -->
-    <div class="main-content-grid">
-        <!-- Recent Activities Card -->
-        <div class="content-card">
-            <div class="card-header">
-                <h3>Recent Activities</h3>
-            </div>
-            <ul class="activity-list">
-                <li class="activity-item" *ngFor="let activity of activities">
-                    <div class="activity-content">
-                        <div class="activity-title">{{ activity.title }}</div>
-                        <div class="activity-description">{{ activity.description }}</div>
-                        <div class="activity-meta">
-                            <span class="activity-time">{{ activity.timeAgo }}</span>
-                        </div>
-                    </div>
-                    <span class="status-badge" [ngClass]="activity.status.toLowerCase().replace(' ', '-') + '-badge'">{{ activity.status }}</span>
-                </li>
-                <li class="activity-item" *ngIf="!activities || activities.length === 0 && !isLoading">
-                    <div class="activity-content">
-                        <div class="activity-title">No recent activities</div>
-                        <div class="activity-description">Start applying to jobs to see your activity here</div>
-                    </div>
-                </li>
-            </ul>
+    <!-- Announcements Card -->
+    <div class="content-card">
+        <div class="card-header">
+            <h3>Announcements</h3>
         </div>
-
-        <!-- Announcements Card -->
-        <div class="content-card">
-            <div class="card-header">
-                <h3>Announcements</h3>
-            </div>
-            <ul class="announcement-list">
-                <li class="announcement-item" *ngFor="let announcement of announcements">
-                    <div class="announcement-content">
-                        <div class="announcement-title">{{ announcement.title }}</div>
-                        <div class="announcement-subtitle">{{ announcement.subtitle }}</div>
-                        <div class="announcement-meta">
-                            <span class="announcement-time">{{ announcement.timeAgo }}</span>
-                        </div>
+        <ul class="announcement-list">
+            <li class="announcement-item" *ngFor="let announcement of announcements">
+                <div class="announcement-content">
+                    <div class="announcement-title">{{ announcement.title }}</div>
+                    <div class="announcement-subtitle">{{ announcement.subtitle }}</div>
+                    <div class="announcement-meta">
+                        <span class="announcement-time">{{ announcement.timeAgo }}</span>
                     </div>
-                    <span class="status-badge" [ngClass]="announcement.type + '-badge'">{{ announcement.type }}</span>
-                </li>
-                <li class="announcement-item" *ngIf="!announcements || announcements.length === 0 && !isLoading">
-                    <div class="announcement-content">
-                        <div class="announcement-title">No announcements</div>
-                        <div class="announcement-subtitle">Check back later for updates</div>
-                    </div>
-                </li>
-            </ul>
-        </div>
+                </div>
+                <span class="status-badge" [ngClass]="announcement.type + '-badge'">{{ announcement.type }}</span>
+            </li>
+            <li class="announcement-item" *ngIf="!announcements || announcements.length === 0 && !isLoading">
+                <div class="announcement-content">
+                    <div class="announcement-title">No announcements</div>
+                    <div class="announcement-subtitle">Check back later for updates</div>
+                </div>
+            </li>
+        </ul>
     </div>
 
     <!-- Quick Actions Section -->

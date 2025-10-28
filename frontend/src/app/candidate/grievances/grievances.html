@@ -60,6 +60,9 @@
         <div class="grievance-meta">
           <span>Submitted: {{ formatDate(g.createdDate) }}</span> &bull;
           <span>By: User #{{ g.submittedBy }}</span>
+          <span *ngIf="g.attachmentFileName" class="attachment-indicator">
+            <i class="bi bi-paperclip"></i> Attachment
+          </span>
         </div>
         <p class="grievance-description">{{ g.description }}</p>
       </div>
@@ -166,26 +169,69 @@
         </div>
         <button class="modal-close-btn" (click)="closeDetailsModal()"><i class="bi bi-x"></i></button>
       </div>
+
       <div class="modal-meta-bar">
         <span class="status-tag" [ngClass]="'status-' + selectedGrievance.status.toLowerCase().replace(' ', '-')">
             <i class="bi" [ngClass]="{
                 'bi-arrow-in-right-circle': selectedGrievance.status === 'Submitted',
                 'bi-hourglass-split': selectedGrievance.status === 'In Review',
-                'bi-check2-circle': selectedGrievance.status === 'Resolved'
+                'bi-check2-circle': selectedGrievance.status === 'Resolved',
+                'bi-x-circle': selectedGrievance.status === 'Closed'
             }"></i> {{ selectedGrievance.status }}
         </span>
         <span class="date-info">Submitted: {{ formatDate(selectedGrievance.createdDate) }}</span>
         <span class="date-info">Submitted By: User #{{ selectedGrievance.submittedBy }}</span>
       </div>
-      <div class="details-section">
+
+      <div class="details-grid">
         <div class="detail-item">
-          <span>Priority</span>
+          <span class="detail-label">Priority</span>
           <strong class="priority-tag" [ngClass]="getPriorityClass(selectedGrievance.priority)">{{ selectedGrievance.priority }}</strong>
         </div>
+
+        <div class="detail-item" *ngIf="selectedGrievanceCategory">
+          <span class="detail-label">Category</span>
+          <span class="detail-value">{{ selectedGrievanceCategory }}</span>
+        </div>
+
+        <div class="detail-item" *ngIf="selectedGrievance?.attachmentFileName">
+          <span class="detail-label">Attachment</span>
+          <div class="attachment-info">
+            <i class="bi bi-paperclip"></i>
+            <span class="file-name">{{ selectedGrievance?.attachmentFileName }}</span>
+            <span class="file-size" *ngIf="selectedGrievance?.attachmentFileSize">
+              ({{ formatFileSize(selectedGrievance.attachmentFileSize!) }})
+            </span>
+          </div>
+        </div>
       </div>
+
       <div class="details-section">
         <h3>Description</h3>
-        <p>{{ selectedGrievance.description }}</p>
+        <div class="description-content">
+          <p>{{ selectedGrievance.description }}</p>
+        </div>
+      </div>
+
+      <!-- Support Response Section (if available) -->
+      <div class="details-section" *ngIf="selectedGrievance.supportResponse">
+        <h3>Support Response</h3>
+        <div class="support-response">
+          <div class="response-header">
+            <i class="bi bi-headset"></i>
+            <span>Support Team Response</span>
+          </div>
+          <p>{{ selectedGrievance.supportResponse }}</p>
+        </div>
+      </div>
+
+      <!-- Resolution Details (if resolved) -->
+      <div class="details-section" *ngIf="selectedGrievance.status === 'Resolved'">
+        <h3>Resolution Details</h3>
+        <div class="resolution-notice">
+          <i class="bi bi-check-circle-fill"></i>
+          <p>This grievance has been resolved. If you need further assistance, please submit a new grievance.</p>
+        </div>
       </div>
   </div>
 </div>

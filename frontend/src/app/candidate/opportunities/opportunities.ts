@@ -239,6 +239,11 @@ export class Opportunities {
   // View job details method
   viewJobDetails(job: Job) {
     // Create a detailed modal or navigate to a detailed view
+    const hasApplied = this.hasApplied(job);
+    const isApplying = this.isApplying(job);
+    const buttonText = this.getButtonText(job);
+    const buttonClass = this.getButtonClass(job);
+
     const detailsHtml = `
       <div style="max-width: 600px; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
         <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
@@ -290,7 +295,7 @@ export class Opportunities {
             </div>
             <div style="display: flex; gap: 8px;">
               <button onclick="this.closest('.modal-overlay').remove()" style="background: #fff; border: 1px solid #d1d5db; color: #6b7280; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Close</button>
-              <button onclick="window.location.reload()" style="background: #4f46e5; border: none; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Apply Now</button>
+              <button id="apply-btn-${job.jobID}" onclick="window.applyJobFromModal(${job.jobID})" class="${buttonClass}" style="padding: 8px 16px; border-radius: 6px; cursor: pointer; border: none; ${hasApplied ? 'background-color: #28a745; color: white; cursor: not-allowed;' : isApplying ? 'background-color: #ffc107; color: black;' : 'background-color: #4f46e5; color: white;'}">${buttonText}</button>
             </div>
           </div>
         </div>
@@ -322,6 +327,22 @@ export class Opportunities {
         modalOverlay.remove();
       }
     });
+
+    // Add global function for modal apply button (bind to component instance)
+    (window as any).applyJobFromModal = ((jobId: number) => {
+      const jobToApply = this.jobs.find(j => j.jobID === jobId);
+      if (jobToApply) {
+        this.apply(jobToApply);
+        // Update button in modal
+        const applyBtn = document.getElementById(`apply-btn-${jobId}`);
+        if (applyBtn) {
+          applyBtn.textContent = 'Applied ✓';
+          applyBtn.style.backgroundColor = '#28a745';
+          applyBtn.style.cursor = 'not-allowed';
+          (applyBtn as HTMLButtonElement).disabled = true;
+        }
+      }
+    }).bind(this);
 
     document.body.appendChild(modalOverlay);
   }
