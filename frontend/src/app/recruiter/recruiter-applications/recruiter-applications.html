@@ -26,7 +26,7 @@
   <!-- Main Applications List -->
   <div *ngIf="viewMode === 'list'" class="application-list">
     <div class="application-list-card" *ngFor="let app of filteredApplications">
-      <div class="avatar" [ngStyle]="{'background': app.color}">{{app.initials}}</div>
+      <div class="avatar-list" [ngStyle]="{'background': app.color}">{{app.initials}}</div>
       <div class="app-details">
         <div class="name-row">
           <span class="applicant-name">{{app.name}}</span>
@@ -86,11 +86,7 @@
       
       <div class="status-row">
         <div class="rating">
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-fill"></i>
-          <i class="bi bi-star-half"></i>
+          <i *ngFor="let star of getStarRating(app.rating)" class="bi" [ngClass]="star"></i>
           <span>{{ app.rating }}</span>
         </div>
         <span class="status-badge" [ngClass]="app.status.toLowerCase()">

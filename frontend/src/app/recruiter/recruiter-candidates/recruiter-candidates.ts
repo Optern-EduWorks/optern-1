@@ -60,6 +60,7 @@ export class RecruiterCandidatesComponent implements OnInit, OnDestroy {
   // Modal visibility states
   showSearchHistoryModal: boolean = false;
   showProfileModal: boolean = false;
+  showFilters: boolean = false;
 
   // Selected candidate for profile modal
   selectedCandidate: Candidate | null = null;
@@ -211,21 +212,37 @@ export class RecruiterCandidatesComponent implements OnInit, OnDestroy {
   setViewMode(mode: 'grid' | 'list'): void {
     this.viewMode = mode;
   }
+
+  /**
+   * Toggle filters visibility
+   */
+  toggleFilters(): void {
+    this.showFilters = !this.showFilters;
+  }
   
   /**
    * Handle search action
    */
   onSearch(): void {
     console.log('Search query:', this.searchQuery);
-    // TODO: Implement search logic
+    // For now, just refresh candidates - in a real implementation,
+    // this would send the search query to the API
+    this.refreshCandidates();
   }
   
   /**
    * Toggle bookmark for candidate
    */
   toggleBookmark(candidateId: number): void {
-    console.log('Bookmark toggled for candidate ID:', candidateId);
-    // TODO: Implement bookmark logic
+    const candidate = this.candidates.find(c => c.id === candidateId);
+    if (candidate) {
+      // Add bookmark property if it doesn't exist
+      if (!candidate.hasOwnProperty('bookmarked')) {
+        (candidate as any).bookmarked = false;
+      }
+      (candidate as any).bookmarked = !(candidate as any).bookmarked;
+      console.log('Bookmark toggled for candidate ID:', candidateId, 'New state:', (candidate as any).bookmarked);
+    }
   }
   
   /**
@@ -250,8 +267,12 @@ export class RecruiterCandidatesComponent implements OnInit, OnDestroy {
    * Contact candidate
    */
   contactCandidate(candidateId: number): void {
-    console.log('Contact candidate ID:', candidateId);
-    // TODO: Implement contact logic
+    const candidate = this.candidates.find(c => c.id === candidateId);
+    if (candidate) {
+      alert(`Contact form for ${candidate.name} would open here. Email: ${candidate.email}`);
+    } else {
+      console.error('Candidate not found for ID:', candidateId);
+    }
   }
   
   /**
@@ -275,8 +296,12 @@ export class RecruiterCandidatesComponent implements OnInit, OnDestroy {
    */
   loadSearchHistory(search: SearchHistory): void {
     console.log('Loading search:', search.title);
-    // TODO: Implement search loading logic
+    // Load the search parameters into the current search
+    this.searchQuery = search.title;
+    // In a real implementation, you might also set filters based on skills, experience, location
     this.closeSearchHistory();
+    // Optionally trigger search
+    this.onSearch();
   }
   
   /**

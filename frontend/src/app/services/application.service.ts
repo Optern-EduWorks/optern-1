@@ -15,7 +15,10 @@ export interface Application {
   Job?: {
     JobID: number;
     Title: string;
-    Company: string;
+    Company?: {
+      CompanyID: number;
+      Name: string;
+    };
     Location: string;
     SalaryRange: string;
     EmploymentType: string;
@@ -53,7 +56,23 @@ export class ApplicationService {
   }
 
   getByRecruiter(): Observable<Application[]> {
-    return this.http.get<Application[]>(`${this.baseUrl}/by-recruiter`);
+    const token = this.authService.getToken();
+    return this.http.get<Application[]>(`${this.baseUrl}/by-recruiter`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token ? `Bearer ${token}` : 'Bearer test-token'
+      }
+    }).pipe(
+      map(response => {
+        // Handle ASP.NET Core serialization with $values wrapper
+        if (Array.isArray(response)) {
+          return response;
+        } else if (response && typeof response === 'object' && response['$values']) {
+          return response['$values'];
+        }
+        return [];
+      })
+    );
   }
 
   getByCandidate(): Observable<Application[]> {
@@ -73,6 +92,15 @@ export class ApplicationService {
         if (Array.isArray(response)) {
           console.log('Found array with', response.length, 'applications');
         }
+      }),
+      map(response => {
+        // Handle ASP.NET Core serialization with $values wrapper
+        if (Array.isArray(response)) {
+          return response;
+        } else if (response && typeof response === 'object' && response['$values']) {
+          return response['$values'];
+        }
+        return [];
       })
     );
   }

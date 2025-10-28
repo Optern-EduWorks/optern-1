@@ -9,13 +9,19 @@
   <div class="filter-bar">
     <div class="search-box">
       <i class="bi bi-search"></i>
-      <input type="text" placeholder="Search jobs, companies, or skills...">
+      <input type="text" placeholder="Search jobs, companies, or skills..." (input)="onSearchChange($event)">
     </div>
     <div class="filter-options">
-      <button class="filter-btn">
-        <span>All Categories (6)</span>
-        <i class="bi bi-chevron-down"></i>
+      <button class="filter-btn" (click)="toggleCategoriesDropdown()">
+        <span>{{ selectedCategory }} ({{ filteredJobs.length }})</span>
+        <i class="bi bi-chevron-down" [class.rotated]="showCategoriesDropdown"></i>
       </button>
+      <!-- Categories Dropdown -->
+      <div class="categories-dropdown" *ngIf="showCategoriesDropdown">
+        <div class="dropdown-item" *ngFor="let category of categories" (click)="selectCategory(category)" [class.active]="selectedCategory === category">
+          {{ category }}
+        </div>
+      </div>
       <div class="view-toggle">
         <button [class.active]="viewMode === 'list'" (click)="setView('list')"><i class="bi bi-list-ul"></i></button>
         <button [class.active]="viewMode === 'grid'" (click)="setView('grid')"><i class="bi bi-grid-fill"></i></button>
@@ -24,23 +30,63 @@
         <i class="bi bi-arrow-clockwise"></i>
         <span>Refresh</span>
       </button>
-      <button class="filters-main-btn">
+      <button class="filters-main-btn" (click)="toggleFiltersPanel()">
         <i class="bi bi-funnel"></i>
         <span>Filters</span>
       </button>
     </div>
   </div>
 
+  <!-- Filters Panel -->
+  <div class="filters-panel" *ngIf="showFiltersPanel">
+    <div class="filters-content">
+      <h3>Filter Jobs</h3>
+      <div class="filter-group">
+        <label>Location</label>
+        <input type="text" [(ngModel)]="filters.location" placeholder="e.g., New York, Remote">
+      </div>
+      <div class="filter-group">
+        <label>Job Type</label>
+        <select [(ngModel)]="filters.jobType">
+          <option value="">All Types</option>
+          <option value="Full-time">Full-time</option>
+          <option value="Part-time">Part-time</option>
+          <option value="Contract">Contract</option>
+          <option value="Internship">Internship</option>
+          <option value="Freelance">Freelance</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Salary Range</label>
+        <div class="salary-range">
+          <input type="number" [(ngModel)]="filters.salaryMin" placeholder="Min">
+          <span>to</span>
+          <input type="number" [(ngModel)]="filters.salaryMax" placeholder="Max">
+        </div>
+      </div>
+      <div class="filter-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="filters.remoteOnly">
+          Remote work only
+        </label>
+      </div>
+      <div class="filter-actions">
+        <button class="clear-btn" (click)="clearFilters()">Clear All</button>
+        <button class="apply-btn" (click)="applyFilters()">Apply Filters</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Job Listings Header -->
   <div class="listings-header">
-    <p>Found {{ jobs.length }} opportunities</p>
+    <p>Found {{ filteredJobs.length }} opportunities</p>
   </div>
 
   <!-- Job Listings - Grid or List -->
   <div [ngSwitch]="viewMode">
     <!-- List View -->
     <div *ngSwitchCase="'list'" class="job-listings-list">
-      <div class="job-card-list" *ngFor="let job of jobs">
+      <div class="job-card-list" *ngFor="let job of filteredJobs">
         <div class="job-card-list-header">
           <img [src]="job.logo" alt="{{job.company}} logo" class="company-logo">
           <div class="job-title-section">
@@ -71,17 +117,23 @@
           <div class="job-rating">
             <i class="bi bi-star-fill"></i> {{ job.rating }} &bull; {{ job.posted }}
           </div>
-          <button [class]="getButtonClass(job)" (click)="apply(job)" [attr.data-job-id]="job.jobID" [disabled]="hasApplied(job)">
-            {{ getButtonText(job) }}
-            <i *ngIf="!hasApplied(job)" class="bi bi-arrow-right-short"></i>
-          </button>
+          <div class="job-actions">
+            <button class="view-details-btn" (click)="viewJobDetails(job)">
+              <i class="bi bi-eye"></i>
+              View Details
+            </button>
+            <button [class]="getButtonClass(job)" (click)="apply(job)" [attr.data-job-id]="job.jobID" [disabled]="hasApplied(job)">
+              {{ getButtonText(job) }}
+              <i *ngIf="!hasApplied(job)" class="bi bi-arrow-right-short"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Grid View -->
     <div *ngSwitchCase="'grid'" class="job-listings-grid">
-      <div class="job-card-grid" *ngFor="let job of jobs">
+      <div class="job-card-grid" *ngFor="let job of filteredJobs">
         <div class="job-card-grid-header">
           <img [src]="job.logo" alt="{{job.company}} logo" class="company-logo">
           <div>
@@ -112,10 +164,16 @@
           <div class="job-rating">
             <i class="bi bi-star-fill"></i> {{ job.rating }} &bull; {{ job.posted }}
           </div>
-          <button [class]="getButtonClass(job)" (click)="apply(job)" [attr.data-job-id]="job.jobID" [disabled]="hasApplied(job)">
-            {{ getButtonText(job) }}
-            <i *ngIf="!hasApplied(job)" class="bi bi-arrow-right-short"></i>
-          </button>
+          <div class="job-actions">
+            <button class="view-details-btn" (click)="viewJobDetails(job)">
+              <i class="bi bi-eye"></i>
+              View Details
+            </button>
+            <button [class]="getButtonClass(job)" (click)="apply(job)" [attr.data-job-id]="job.jobID" [disabled]="hasApplied(job)">
+              {{ getButtonText(job) }}
+              <i *ngIf="!hasApplied(job)" class="bi bi-arrow-right-short"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>

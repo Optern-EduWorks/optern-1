@@ -45,11 +45,49 @@ public class ApplicationsController : ControllerBase
 
         var applications = await _context.Applications
             .Include(a => a.Job)
+                .ThenInclude(j => j.Company)
             .Include(a => a.Candidate)
             .Where(a => a.Job != null && a.Job.RecruiterID == recruiter.RecruiterID)
             .ToListAsync();
 
-        return applications;
+        // Return DTOs to avoid circular references
+        var applicationDtos = applications.Select(a => new {
+            ApplicationID = a.ApplicationID,
+            JobID = a.JobID,
+            CandidateID = a.CandidateID,
+            Status = a.Status,
+            AppliedDate = a.AppliedDate,
+            CoverLetter = a.CoverLetter,
+            ResumeUrl = a.ResumeUrl,
+            InterviewStatus = a.InterviewStatus,
+            Job = a.Job == null ? null : new {
+                JobID = a.Job.JobID,
+                Title = a.Job.Title,
+                Location = a.Job.Location,
+                SalaryRange = a.Job.SalaryRange,
+                EmploymentType = a.Job.EmploymentType,
+                Description = a.Job.Description,
+                Skills = a.Job.Skills,
+                ClosingDate = a.Job.ClosingDate,
+                PostedDate = a.Job.PostedDate,
+                RecruiterID = a.Job.RecruiterID,
+                Company = a.Job.Company == null ? null : new {
+                    CompanyID = a.Job.Company.CompanyID,
+                    Name = a.Job.Company.Name
+                }
+            },
+            Candidate = a.Candidate == null ? null : new {
+                CandidateID = a.Candidate.CandidateID,
+                FullName = a.Candidate.FullName,
+                Email = a.Candidate.Email,
+                PhoneNumber = a.Candidate.PhoneNumber,
+                Address = a.Candidate.Address,
+                CreatedDate = a.Candidate.CreatedDate,
+                UpdatedDate = a.Candidate.UpdatedDate
+            }
+        });
+
+        return Ok(applicationDtos);
     }
 
     [HttpGet("by-candidate")]

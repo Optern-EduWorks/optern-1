@@ -76,14 +76,11 @@ export class Applications implements OnInit, OnDestroy {
       next: (data) => {
         console.log('Raw API response in loadApplications:', data);
 
-        // Handle ASP.NET Core array serialization with $values wrapper
+        // Data is now handled in the service, so it should be a clean array
         let applications: any[] = [];
-        if (data && (data as any).$values && Array.isArray((data as any).$values)) {
-          applications = (data as any).$values;
-          console.log('Extracted applications from $values wrapper:', applications.length);
-        } else if (data && Array.isArray(data)) {
+        if (data && Array.isArray(data)) {
           applications = data;
-          console.log('Data is already an array:', applications.length);
+          console.log('Applications array:', applications.length);
         } else {
           console.log('Unexpected data format:', typeof data, data);
         }

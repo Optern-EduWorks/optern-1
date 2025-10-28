@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { JobService, Job } from '../../services/job.service';
 import { ApplicationService } from '../../services/application.service';
 import { AuthService } from '../../services/auth.service';
@@ -8,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-opportunities',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, FormsModule],
   // Updated file paths
   templateUrl: './opportunities.html',
   styleUrls: ['./opportunities.css']
@@ -25,6 +26,27 @@ export class Opportunities {
 
   // Jobs loaded from backend with auto-refresh
   jobs: Job[] = [];
+
+  // Filtered jobs for display
+  filteredJobs: Job[] = [];
+
+  // Search and filter properties
+  searchTerm: string = '';
+  selectedCategory: string = 'All Categories';
+  showCategoriesDropdown: boolean = false;
+  showFiltersPanel: boolean = false;
+
+  // Filter options
+  filters = {
+    location: '',
+    jobType: '',
+    remoteOnly: false,
+    salaryMin: '',
+    salaryMax: ''
+  };
+
+  // Available categories based on job types
+  categories: string[] = ['All Categories', 'Full-time', 'Part-time', 'Contract', 'Internship', 'Freelance'];
 
   // Track applied job IDs to show visual feedback
   appliedJobIds: Set<number> = new Set();
@@ -44,6 +66,7 @@ export class Opportunities {
         console.log('Received updated jobs in component:', data);
         console.log('Number of jobs received:', data?.length || 0);
         this.jobs = data || [];
+        this.updateFilteredJobs();
       },
       error: (err) => {
         console.error('Error in jobs subscription:', err);
@@ -121,6 +144,186 @@ export class Opportunities {
     if (this.hasApplied(job)) return 'applied-btn';
     if (this.isApplying(job)) return 'applying-btn';
     return 'apply-now-btn';
+  }
+
+  // Search and filter methods
+  onSearchChange(event: any) {
+    this.searchTerm = event.target.value.toLowerCase();
+    this.updateFilteredJobs();
+  }
+
+  toggleCategoriesDropdown() {
+    this.showCategoriesDropdown = !this.showCategoriesDropdown;
+  }
+
+  selectCategory(category: string) {
+    this.selectedCategory = category;
+    this.showCategoriesDropdown = false;
+    this.updateFilteredJobs();
+  }
+
+  toggleFiltersPanel() {
+    this.showFiltersPanel = !this.showFiltersPanel;
+  }
+
+  applyFilters() {
+    this.updateFilteredJobs();
+    this.showFiltersPanel = false;
+  }
+
+  clearFilters() {
+    this.searchTerm = '';
+    this.selectedCategory = 'All Categories';
+    this.filters = {
+      location: '',
+      jobType: '',
+      remoteOnly: false,
+      salaryMin: '',
+      salaryMax: ''
+    };
+    this.updateFilteredJobs();
+    this.showFiltersPanel = false;
+  }
+
+  private updateFilteredJobs() {
+    let filtered = [...this.jobs];
+
+    // Apply search filter
+    if (this.searchTerm) {
+      filtered = filtered.filter(job =>
+        job.title.toLowerCase().includes(this.searchTerm) ||
+        job.company.toLowerCase().includes(this.searchTerm) ||
+        job.description.toLowerCase().includes(this.searchTerm) ||
+        job.skills.some(skill => skill.toLowerCase().includes(this.searchTerm)) ||
+        job.location.toLowerCase().includes(this.searchTerm)
+      );
+    }
+
+    // Apply category filter
+    if (this.selectedCategory !== 'All Categories') {
+      filtered = filtered.filter(job => job.type === this.selectedCategory);
+    }
+
+    // Apply additional filters
+    if (this.filters.location) {
+      filtered = filtered.filter(job =>
+        job.location.toLowerCase().includes(this.filters.location.toLowerCase())
+      );
+    }
+
+    if (this.filters.jobType) {
+      filtered = filtered.filter(job => job.type === this.filters.jobType);
+    }
+
+    if (this.filters.remoteOnly) {
+      filtered = filtered.filter(job => job.remote);
+    }
+
+    if (this.filters.salaryMin) {
+      filtered = filtered.filter(job => {
+        const salary = parseFloat(job.salary.replace(/[^0-9.-]/g, ''));
+        return !isNaN(salary) && salary >= parseFloat(this.filters.salaryMin);
+      });
+    }
+
+    if (this.filters.salaryMax) {
+      filtered = filtered.filter(job => {
+        const salary = parseFloat(job.salary.replace(/[^0-9.-]/g, ''));
+        return !isNaN(salary) && salary <= parseFloat(this.filters.salaryMax);
+      });
+    }
+
+    this.filteredJobs = filtered;
+  }
+
+  // View job details method
+  viewJobDetails(job: Job) {
+    // Create a detailed modal or navigate to a detailed view
+    const detailsHtml = `
+      <div style="max-width: 600px; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <img src="${job.logo}" alt="${job.company} logo" style="width: 60px; height: 60px; border-radius: 8px; margin-right: 16px; border: 1px solid #e5e7eb;">
+            <div>
+              <h2 style="margin: 0; font-size: 24px; font-weight: 600; color: #111827;">${job.title}</h2>
+              <p style="margin: 4px 0 0 0; font-size: 16px; color: #6b7280;">${job.company}</p>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="bi bi-geo-alt" style="color: #6b7280;"></i>
+              <span>${job.location}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="bi bi-briefcase" style="color: #6b7280;"></i>
+              <span>${job.type}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="bi bi-cash-stack" style="color: #6b7280;"></i>
+              <span>${job.salary}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="bi bi-people" style="color: #6b7280;"></i>
+              <span>${job.applicants} applicants</span>
+            </div>
+          </div>
+
+          ${job.remote ? '<div style="background: #e0f2fe; color: #0ea5e9; padding: 8px 12px; border-radius: 6px; display: inline-block; margin-bottom: 20px;">Remote Work Available</div>' : ''}
+
+          <div style="margin-bottom: 20px;">
+            <h3 style="font-size: 18px; font-weight: 600; color: #111827; margin-bottom: 12px;">Job Description</h3>
+            <p style="color: #374151; line-height: 1.6;">${job.description}</p>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h3 style="font-size: 18px; font-weight: 600; color: #111827; margin-bottom: 12px;">Required Skills</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              ${job.skills.map(skill => `<span style="background: #eef2ff; color: #4f46e5; padding: 6px 12px; border-radius: 6px; font-size: 14px;">${skill}</span>`).join('')}
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="bi bi-star-fill" style="color: #f59e0b;"></i>
+              <span style="color: #6b7280;">${job.rating} • Posted ${job.posted}</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button onclick="this.closest('.modal-overlay').remove()" style="background: #fff; border: 1px solid #d1d5db; color: #6b7280; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Close</button>
+              <button onclick="window.location.reload()" style="background: #4f46e5; border: none; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Apply Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Create modal overlay
+    const modalOverlay = document.createElement('div');
+    modalOverlay.className = 'modal-overlay';
+    modalOverlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    `;
+
+    modalOverlay.innerHTML = detailsHtml;
+
+    // Close modal when clicking outside
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.remove();
+      }
+    });
+
+    document.body.appendChild(modalOverlay);
   }
 
   apply(job: Job) {

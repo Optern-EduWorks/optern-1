@@ -28,7 +28,7 @@
       <h1 class="page-title">Recruiter <span class="highlight">Profile</span></h1>
       <p class="page-description">Manage your recruiter profile and company information.</p>
     </div>
-    <button class="edit-profile-btn" (click)="toggleEditMode()" *ngIf="activeTab === 'personal' && !isEditMode">
+    <button class="edit-profile-btn" (click)="toggleEditMode()" *ngIf="(activeTab === 'personal' || activeTab === 'company' || activeTab === 'stats') && !isEditMode">
       <span class="edit-icon">✏</span> Edit Profile
     </button>
     <div class="edit-actions" *ngIf="isEditMode">
@@ -194,8 +194,21 @@
           <div class="company-header">
             <div class="company-icon">🚀</div>
             <div>
-              <h4 class="company-name">{{ companyInfo.name }}</h4>
-              <p class="company-industry">{{ companyInfo.industry }}</p>
+              <input
+                *ngIf="isEditMode"
+                type="text"
+                class="company-name-input"
+                [(ngModel)]="companyInfo.name"
+                placeholder="Company Name">
+              <h4 *ngIf="!isEditMode" class="company-name">{{ companyInfo.name }}</h4>
+
+              <input
+                *ngIf="isEditMode"
+                type="text"
+                class="company-industry-input"
+                [(ngModel)]="companyInfo.industry"
+                placeholder="Industry">
+              <p *ngIf="!isEditMode" class="company-industry">{{ companyInfo.industry }}</p>
             </div>
           </div>
 
@@ -204,7 +217,13 @@
               <span class="detail-icon">🌐</span>
               <div>
                 <label class="detail-label">Website</label>
-                <a [href]="companyInfo.website" target="_blank" class="detail-link">
+                <input
+                  *ngIf="isEditMode"
+                  type="url"
+                  class="detail-input"
+                  [(ngModel)]="companyInfo.website"
+                  placeholder="https://example.com">
+                <a *ngIf="!isEditMode" [href]="companyInfo.website" target="_blank" class="detail-link">
                   {{ companyInfo.website }}
                 </a>
               </div>
@@ -214,7 +233,13 @@
               <span class="detail-icon">📍</span>
               <div>
                 <label class="detail-label">Headquarters</label>
-                <p class="detail-value">{{ companyInfo.headquarters }}</p>
+                <input
+                  *ngIf="isEditMode"
+                  type="text"
+                  class="detail-input"
+                  [(ngModel)]="companyInfo.headquarters"
+                  placeholder="City, State/Country">
+                <p *ngIf="!isEditMode" class="detail-value">{{ companyInfo.headquarters }}</p>
               </div>
             </div>
 
@@ -222,7 +247,13 @@
               <span class="detail-icon">👥</span>
               <div>
                 <label class="detail-label">Company Size</label>
-                <p class="detail-value">{{ companyInfo.companySize }}</p>
+                <input
+                  *ngIf="isEditMode"
+                  type="text"
+                  class="detail-input"
+                  [(ngModel)]="companyInfo.companySize"
+                  placeholder="100-500 employees">
+                <p *ngIf="!isEditMode" class="detail-value">{{ companyInfo.companySize }}</p>
               </div>
             </div>
 
@@ -230,7 +261,13 @@
               <span class="detail-icon">📅</span>
               <div>
                 <label class="detail-label">Founded</label>
-                <p class="detail-value">{{ companyInfo.founded }}</p>
+                <input
+                  *ngIf="isEditMode"
+                  type="text"
+                  class="detail-input"
+                  [(ngModel)]="companyInfo.founded"
+                  placeholder="2020">
+                <p *ngIf="!isEditMode" class="detail-value">{{ companyInfo.founded }}</p>
               </div>
             </div>
           </div>
@@ -238,7 +275,13 @@
           <!-- Benefits -->
           <div class="benefits-section">
             <label class="detail-label">Benefits</label>
-            <div class="benefits-tags">
+            <input
+              *ngIf="isEditMode"
+              type="text"
+              class="benefits-input"
+              [(ngModel)]="companyInfo.benefitsString"
+              placeholder="Health Insurance, Flexible Work, Stock Options (comma separated)">
+            <div *ngIf="!isEditMode" class="benefits-tags">
               <span class="benefit-tag" *ngFor="let benefit of companyInfo.benefits">
                 {{ benefit }}
               </span>
@@ -249,13 +292,25 @@
         <!-- About Company -->
         <div class="company-about">
           <h4 class="about-title">About Our Company</h4>
-          <p class="about-text">{{ companyInfo.about }}</p>
+          <textarea
+            *ngIf="isEditMode"
+            class="about-textarea"
+            [(ngModel)]="companyInfo.about"
+            rows="4"
+            placeholder="Describe your company..."></textarea>
+          <p *ngIf="!isEditMode" class="about-text">{{ companyInfo.about }}</p>
         </div>
 
         <!-- Company Culture -->
         <div class="company-culture">
           <h4 class="about-title">Company Culture</h4>
-          <p class="about-text">{{ companyInfo.culture }}</p>
+          <textarea
+            *ngIf="isEditMode"
+            class="about-textarea"
+            [(ngModel)]="companyInfo.culture"
+            rows="4"
+            placeholder="Describe your company culture..."></textarea>
+          <p *ngIf="!isEditMode" class="about-text">{{ companyInfo.culture }}</p>
         </div>
       </div>
     </div>
@@ -271,22 +326,46 @@
         <!-- Main Stats Cards -->
         <div class="stats-cards-grid">
           <div class="stat-card stat-card-green">
-            <div class="stat-number">{{ recruitmentStats.totalHires }}</div>
+            <input
+              *ngIf="isEditMode"
+              type="number"
+              class="stat-input"
+              [(ngModel)]="recruitmentStats.totalHires"
+              placeholder="0">
+            <div *ngIf="!isEditMode" class="stat-number">{{ recruitmentStats.totalHires }}</div>
             <div class="stat-label">Total Hires</div>
           </div>
 
           <div class="stat-card stat-card-blue">
-            <div class="stat-number">{{ recruitmentStats.activeJobs }}</div>
+            <input
+              *ngIf="isEditMode"
+              type="number"
+              class="stat-input"
+              [(ngModel)]="recruitmentStats.activeJobs"
+              placeholder="0">
+            <div *ngIf="!isEditMode" class="stat-number">{{ recruitmentStats.activeJobs }}</div>
             <div class="stat-label">Active Jobs</div>
           </div>
 
           <div class="stat-card stat-card-orange">
-            <div class="stat-number">{{ recruitmentStats.monthlyApplications }}</div>
+            <input
+              *ngIf="isEditMode"
+              type="number"
+              class="stat-input"
+              [(ngModel)]="recruitmentStats.monthlyApplications"
+              placeholder="0">
+            <div *ngIf="!isEditMode" class="stat-number">{{ recruitmentStats.monthlyApplications }}</div>
             <div class="stat-label">Monthly Applications</div>
           </div>
 
           <div class="stat-card stat-card-purple">
-            <div class="stat-number">{{ recruitmentStats.successRate }}%</div>
+            <input
+              *ngIf="isEditMode"
+              type="number"
+              class="stat-input"
+              [(ngModel)]="recruitmentStats.successRate"
+              placeholder="0">
+            <div *ngIf="!isEditMode" class="stat-number">{{ recruitmentStats.successRate }}%</div>
             <div class="stat-label">Success Rate</div>
           </div>
         </div>
@@ -297,12 +376,27 @@
           <div class="metrics-grid">
             <div class="metric-item">
               <label class="metric-label">Average Time to Hire</label>
-              <p class="metric-value">{{ recruitmentStats.avgTimeToHire }} days</p>
+              <input
+                *ngIf="isEditMode"
+                type="number"
+                class="metric-input"
+                [(ngModel)]="recruitmentStats.avgTimeToHire"
+                placeholder="0">
+              <p *ngIf="!isEditMode" class="metric-value">{{ recruitmentStats.avgTimeToHire }} days</p>
             </div>
 
             <div class="metric-item">
               <label class="metric-label">Candidate Satisfaction</label>
-              <p class="metric-value highlight-rating">{{ recruitmentStats.candidateSatisfaction }}/5</p>
+              <input
+                *ngIf="isEditMode"
+                type="number"
+                step="0.1"
+                min="0"
+                max="5"
+                class="metric-input"
+                [(ngModel)]="recruitmentStats.candidateSatisfaction"
+                placeholder="0.0">
+              <p *ngIf="!isEditMode" class="metric-value highlight-rating">{{ recruitmentStats.candidateSatisfaction }}/5</p>
             </div>
           </div>
         </div>
@@ -313,17 +407,35 @@
           <div class="monthly-stats">
             <div class="monthly-stat-item">
               <label class="monthly-label">New Hires</label>
-              <p class="monthly-value">{{ recruitmentStats.newHires }}</p>
+              <input
+                *ngIf="isEditMode"
+                type="number"
+                class="monthly-input"
+                [(ngModel)]="recruitmentStats.newHires"
+                placeholder="0">
+              <p *ngIf="!isEditMode" class="monthly-value">{{ recruitmentStats.newHires }}</p>
             </div>
 
             <div class="monthly-stat-item">
               <label class="monthly-label">Interview Scheduled</label>
-              <p class="monthly-value">{{ recruitmentStats.interviewsScheduled }}</p>
+              <input
+                *ngIf="isEditMode"
+                type="number"
+                class="monthly-input"
+                [(ngModel)]="recruitmentStats.interviewsScheduled"
+                placeholder="0">
+              <p *ngIf="!isEditMode" class="monthly-value">{{ recruitmentStats.interviewsScheduled }}</p>
             </div>
 
             <div class="monthly-stat-item">
               <label class="monthly-label">Offers Extended</label>
-              <p class="monthly-value">{{ recruitmentStats.offersExtended }}</p>
+              <input
+                *ngIf="isEditMode"
+                type="number"
+                class="monthly-input"
+                [(ngModel)]="recruitmentStats.offersExtended"
+                placeholder="0">
+              <p *ngIf="!isEditMode" class="monthly-value">{{ recruitmentStats.offersExtended }}</p>
             </div>
           </div>
         </div>

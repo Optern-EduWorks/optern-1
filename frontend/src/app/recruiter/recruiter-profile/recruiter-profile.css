@@ -610,6 +610,85 @@
   color: #10b981;
 }
 
+/* Editable Input Fields - Matching existing UI design */
+.company-name-input,
+.company-industry-input {
+  border: none;
+  background: transparent;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  outline: none;
+}
+
+.company-name-input:focus,
+.company-industry-input:focus {
+  background: rgba(16, 185, 129, 0.05);
+  border-radius: 4px;
+}
+
+.detail-input,
+.benefits-input,
+.about-textarea,
+.stat-input,
+.metric-input,
+.monthly-input {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1f2937;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.detail-input:focus,
+.benefits-input:focus,
+.about-textarea:focus,
+.stat-input:focus,
+.metric-input:focus,
+.monthly-input:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.about-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.6;
+}
+
+.stat-input {
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0 0 8px 0;
+}
+
+.stat-input:focus {
+  background: rgba(16, 185, 129, 0.05);
+  border-radius: 4px;
+}
+
+.metric-input {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.monthly-input {
+  font-size: 24px;
+  font-weight: 700;
+  color: #10b981;
+  text-align: center;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .stats-cards-grid {

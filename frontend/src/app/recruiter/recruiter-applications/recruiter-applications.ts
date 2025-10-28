@@ -84,7 +84,7 @@ export class ApplicationsManagementComponent implements OnInit, OnDestroy {
           id: app.ApplicationID,
           name: app.Candidate?.FullName || 'Unknown Candidate',
           role: app.Job?.Title || 'Unknown Position',
-          company: app.Job?.Company || 'Unknown Company',
+          company: app.Job?.Company?.Name || 'Unknown Company',
           initials: (app.Candidate?.FullName || 'U').split(' ').map((n: string) => n[0]).join('').toUpperCase(),
           color: this.getRandomColor(),
           email: app.Candidate?.Email || '',
@@ -117,8 +117,26 @@ export class ApplicationsManagementComponent implements OnInit, OnDestroy {
   }
 
   get filteredApplications() {
-    if (this.filterStatus === "All Status") return this.applications;
-    return this.applications.filter(app => app.status === this.filterStatus);
+    let filtered = this.applications;
+
+    // Filter by status
+    if (this.filterStatus !== "All Status") {
+      filtered = filtered.filter(app => app.status === this.filterStatus);
+    }
+
+    // Filter by search term
+    if (this.search.trim()) {
+      const searchTerm = this.search.toLowerCase();
+      filtered = filtered.filter(app =>
+        app.name.toLowerCase().includes(searchTerm) ||
+        app.email.toLowerCase().includes(searchTerm) ||
+        app.role.toLowerCase().includes(searchTerm) ||
+        app.company.toLowerCase().includes(searchTerm) ||
+        app.location.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    return filtered;
   }
 
   openDetailModal(app: Application) {
@@ -203,5 +221,25 @@ export class ApplicationsManagementComponent implements OnInit, OnDestroy {
         alert('Resume not available for this candidate');
       }
     }
+  }
+
+  getStarRating(rating: number): string[] {
+    const stars: string[] = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push('bi-star-fill');
+    }
+
+    if (hasHalfStar) {
+      stars.push('bi-star-half');
+    }
+
+    while (stars.length < 5) {
+      stars.push('bi-star');
+    }
+
+    return stars;
   }
 }
