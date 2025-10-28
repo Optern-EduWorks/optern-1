@@ -66,43 +66,51 @@ export class Applications implements OnInit, OnDestroy {
     }
   }
 
+  trackByApplicationId(index: number, app: any): any {
+    return app.ApplicationID;
+  }
+
   private loadApplications() {
     // Load real applications from the API
     this.applicationService.getByCandidate().subscribe({
       next: (data) => {
-        console.log('Raw API response:', data);
-        console.log('Response type:', typeof data);
-        console.log('Response keys:', Object.keys(data || {}));
+        console.log('Raw API response in loadApplications:', data);
 
         // Handle ASP.NET Core array serialization with $values wrapper
         let applications: any[] = [];
         if (data && (data as any).$values && Array.isArray((data as any).$values)) {
           applications = (data as any).$values;
-          console.log('Found applications in $values wrapper:', applications.length);
+          console.log('Extracted applications from $values wrapper:', applications.length);
         } else if (data && Array.isArray(data)) {
           applications = data;
-          console.log('Found applications as direct array:', applications.length);
+          console.log('Data is already an array:', applications.length);
         } else {
-          console.log('No applications found in response');
+          console.log('Unexpected data format:', typeof data, data);
         }
 
+        console.log('Applications array before processing:', applications);
+
         if (applications.length > 0) {
-          this.allApplications = applications.map(app => ({
-            ...app,
-            interviewDate: this.extractInterviewDate(app.InterviewStatus)
-          }));
-          console.log(`Loaded ${this.allApplications.length} real applications`);
+          this.allApplications = applications.map(app => {
+            // Clean the application object to remove $id, $ref, $values properties
+            const cleanedApp = this.cleanObject(app);
+            return {
+              ...cleanedApp,
+              Status: cleanedApp.Status || 'Applied', // Ensure Status has a default value
+              interviewDate: this.extractInterviewDate(cleanedApp.InterviewStatus)
+            };
+          });
+          console.log(`Loaded ${this.allApplications.length} real applications after cleaning`);
+          console.log('First application sample:', this.allApplications[0]);
         } else {
-          // No applications found - show empty state instead of dummy data
           this.allApplications = [];
-          console.log('No applications found for this candidate');
+          console.log('No applications found');
         }
         this.filteredApplications = [...this.allApplications];
         this.calculateFilterCounts();
       },
       error: (err) => {
         console.error('Could not load applications from API:', err);
-        // On error, show empty state instead of dummy data
         this.allApplications = [];
         this.filteredApplications = [];
         this.filterCounts = {
@@ -114,6 +122,24 @@ export class Applications implements OnInit, OnDestroy {
         };
       }
     });
+  }
+
+  private cleanObject(obj: any): any {
+    if (obj === null || typeof obj !== 'object') {
+      return obj;
+    }
+
+    if (Array.isArray(obj)) {
+      return obj.map(item => this.cleanObject(item));
+    }
+
+    const cleaned: any = {};
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key) && !key.startsWith('$')) {
+        cleaned[key] = this.cleanObject(obj[key]);
+      }
+    }
+    return cleaned;
   }
 
 

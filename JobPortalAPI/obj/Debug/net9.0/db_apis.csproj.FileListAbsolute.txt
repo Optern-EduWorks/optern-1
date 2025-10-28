@@ -891,3 +891,4 @@ D:\khanna\btech\optern-main\JobPortalAPI\obj\Debug\net9.0\refint\db_apis.dll
 D:\khanna\btech\optern-main\JobPortalAPI\obj\Debug\net9.0\db_apis.pdb
 D:\khanna\btech\optern-main\JobPortalAPI\obj\Debug\net9.0\db_apis.genruntimeconfig.cache
 D:\khanna\btech\optern-main\JobPortalAPI\obj\Debug\net9.0\ref\db_apis.dll
+D:\khanna\btech\optern-main\JobPortalAPI\obj\Debug\net9.0\db_apis.sourcelink.json

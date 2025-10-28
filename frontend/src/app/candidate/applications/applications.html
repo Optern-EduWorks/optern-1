@@ -51,12 +51,12 @@
 
     <!-- Grid View -->
     <div *ngSwitchCase="'grid'" class="listings-grid">
-      <div class="card-grid" *ngFor="let app of filteredApplications">
+      <div class="card-grid" *ngFor="let app of filteredApplications; trackBy: trackByApplicationId">
         <div class="card-header">
-          <img [src]="app.Job?.Company || 'assets/user-profile.jpg'" alt="{{app.Job?.Company}} Logo" class="company-logo">
+          <img src="assets/user-profile.jpg" alt="{{app.Job?.Company?.Name}} Logo" class="company-logo">
           <div>
             <h3 class="job-title">{{ app.Job?.Title }}</h3>
-            <p class="company-name">{{ app.Job?.Company }}</p>
+            <p class="company-name">{{ app.Job?.Company?.Name }}</p>
           </div>
         </div>
         <div class="job-details">
@@ -72,12 +72,12 @@
             <div *ngIf="app.Status === 'Interview Scheduled'" class="interview-details">
                 <i class="bi bi-calendar-check"></i> Interview scheduled for {{ app.interviewDate }}
             </div>
-            <button class="status-tag" [ngClass]="'status-' + app.Status.toLowerCase().replace(' ', '-')">
+            <button class="status-tag" [ngClass]="'status-' + (app.Status || 'Unknown').toLowerCase().replace(' ', '-')">
                 <i [ngClass]="{
                     'bi-check-circle-fill': app.Status === 'Applied' || app.Status === 'Shortlisted',
                     'bi-calendar-event-fill': app.Status === 'Interview Scheduled',
                     'bi-x-circle-fill': app.Status === 'Rejected'
-                }"></i> {{ app.Status }}
+                }"></i> {{ app.Status || 'Unknown' }}
             </button>
             <button class="view-details-btn" (click)="openModal(app)"><i class="bi bi-eye"></i> View Details</button>
         </div>
@@ -86,11 +86,11 @@
 
     <!-- List View -->
     <div *ngSwitchCase="'list'" class="listings-list">
-      <div class="card-list" *ngFor="let app of filteredApplications">
-        <img [src]="app.Job?.Company || 'assets/user-profile.jpg'" alt="{{app.Job?.Company}} Logo" class="company-logo">
+      <div class="card-list" *ngFor="let app of filteredApplications; trackBy: trackByApplicationId">
+        <img src="assets/user-profile.jpg" alt="{{app.Job?.Company?.Name}} Logo" class="company-logo">
         <div class="job-info">
           <h3 class="job-title">{{ app.Job?.Title }}</h3>
-          <p class="company-name">{{ app.Job?.Company }} &bull; {{ app.Job?.Location }}</p>
+          <p class="company-name">{{ app.Job?.Company?.Name }} &bull; {{ app.Job?.Location }}</p>
           <div class="job-tags">
             <span class="job-tag">{{ app.Job?.EmploymentType }}</span>
             <span class="job-tag salary">{{ app.Job?.SalaryRange }}</span>
@@ -103,12 +103,12 @@
             </div>
         </div>
         <div class="status-actions">
-           <button class="status-tag" [ngClass]="'status-' + app.Status.toLowerCase().replace(' ', '-')">
+           <button class="status-tag" [ngClass]="'status-' + (app.Status || 'Unknown').toLowerCase().replace(' ', '-')">
                 <i [ngClass]="{
                     'bi-check-circle-fill': app.Status === 'Applied' || app.Status === 'Shortlisted',
                     'bi-calendar-event-fill': app.Status === 'Interview Scheduled',
                     'bi-x-circle-fill': app.Status === 'Rejected'
-                }"></i> {{ app.Status }}
+                }"></i> {{ app.Status || 'Unknown' }}
             </button>
             <button class="view-details-btn" (click)="openModal(app)"><i class="bi bi-eye"></i> View Details</button>
         </div>
@@ -123,10 +123,10 @@
     <!-- Modal Header -->
     <div class="modal-header">
       <div class="modal-header-info">
-        <img [src]="selectedApplication.Job?.Company || 'assets/user-profile.jpg'" alt="{{selectedApplication.Job?.Company}} Logo" class="modal-company-logo">
+        <img src="assets/user-profile.jpg" alt="{{selectedApplication.Job?.Company?.Name}} Logo" class="modal-company-logo">
         <div>
           <h2 class="modal-title">{{ selectedApplication.Job?.Title }}</h2>
-          <p class="modal-company">{{ selectedApplication.Job?.Company }}</p>
+          <p class="modal-company">{{ selectedApplication.Job?.Company?.Name }}</p>
         </div>
       </div>
       <button class="modal-close-btn" (click)="closeModal()"><i class="bi bi-x"></i></button>
@@ -135,12 +135,12 @@
     <!-- Modal Body -->
     <div class="modal-body">
       <div class="modal-status-bar">
-        <span class="status-tag" [ngClass]="'status-' + selectedApplication.Status.toLowerCase().replace(' ', '-')">
+        <span class="status-tag" [ngClass]="'status-' + (selectedApplication.Status || 'Unknown').toLowerCase().replace(' ', '-')">
           <i [ngClass]="{
               'bi-check-circle-fill': selectedApplication.Status === 'Applied' || selectedApplication.Status === 'Shortlisted',
               'bi-calendar-event-fill': selectedApplication.Status === 'Interview Scheduled',
               'bi-x-circle-fill': selectedApplication.Status === 'Rejected'
-          }"></i> {{ selectedApplication.Status }}
+          }"></i> {{ selectedApplication.Status || 'Unknown' }}
         </span>
         <span class="modal-applied-date">Applied on {{ selectedApplication.AppliedDate | date:'mediumDate' }}</span>
       </div>

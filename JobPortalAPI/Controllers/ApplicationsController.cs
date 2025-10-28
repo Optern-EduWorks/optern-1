@@ -109,6 +109,7 @@ public class ApplicationsController : ControllerBase
                     Console.WriteLine($"Found candidate: {testCandidate.FullName} (ID: {testCandidate.CandidateID})");
                     var testApplications = await _context.Applications
                         .Include(a => a.Job)
+                            .ThenInclude(j => j.Company)
                         .Include(a => a.Candidate)
                         .Where(a => a.CandidateID == testCandidate.CandidateID)
                         .OrderByDescending(a => a.AppliedDate)
@@ -116,8 +117,37 @@ public class ApplicationsController : ControllerBase
 
                     Console.WriteLine($"Found {testApplications.Count} applications for candidate");
 
-                    // Return plain array instead of wrapped response to avoid $values structure
-                    return Ok(testApplications);
+                    // Return DTOs to avoid circular references
+                    var testApplicationDtos = testApplications.Select(a => new {
+                        ApplicationID = a.ApplicationID,
+                        JobID = a.JobID,
+                        CandidateID = a.CandidateID,
+                        Status = a.Status,
+                        AppliedDate = a.AppliedDate,
+                        CoverLetter = a.CoverLetter,
+                        ResumeUrl = a.ResumeUrl,
+                        InterviewStatus = a.InterviewStatus,
+                        Job = a.Job == null ? null : new {
+                            JobID = a.Job.JobID,
+                            Title = a.Job.Title,
+                            Location = a.Job.Location,
+                            SalaryRange = a.Job.SalaryRange,
+                            EmploymentType = a.Job.EmploymentType,
+                            Description = a.Job.Description,
+                            Skills = a.Job.Skills,
+                            Company = a.Job.Company == null ? null : new {
+                                CompanyID = a.Job.Company.CompanyID,
+                                Name = a.Job.Company.Name
+                            }
+                        },
+                        Candidate = a.Candidate == null ? null : new {
+                            CandidateID = a.Candidate.CandidateID,
+                            FullName = a.Candidate.FullName,
+                            Email = a.Candidate.Email
+                        }
+                    });
+
+                    return Ok(testApplicationDtos);
                 }
 
                 Console.WriteLine($"Invalid auth token provided: {authHeader}");
@@ -132,13 +162,43 @@ public class ApplicationsController : ControllerBase
 
             var emailCandidateApplications = await _context.Applications
                 .Include(a => a.Job)
+                    .ThenInclude(j => j.Company)
                 .Include(a => a.Candidate)
                 .Where(a => a.CandidateID == candidateProfile.CandidateID)
                 .OrderByDescending(a => a.AppliedDate)
                 .ToListAsync();
 
-            // Return plain array instead of wrapped response to avoid $values structure
-            return Ok(emailCandidateApplications);
+            // Return DTOs to avoid circular references
+            var emailApplicationDtos = emailCandidateApplications.Select(a => new {
+                ApplicationID = a.ApplicationID,
+                JobID = a.JobID,
+                CandidateID = a.CandidateID,
+                Status = a.Status,
+                AppliedDate = a.AppliedDate,
+                CoverLetter = a.CoverLetter,
+                ResumeUrl = a.ResumeUrl,
+                InterviewStatus = a.InterviewStatus,
+                Job = a.Job == null ? null : new {
+                    JobID = a.Job.JobID,
+                    Title = a.Job.Title,
+                    Location = a.Job.Location,
+                    SalaryRange = a.Job.SalaryRange,
+                    EmploymentType = a.Job.EmploymentType,
+                    Description = a.Job.Description,
+                    Skills = a.Job.Skills,
+                    Company = a.Job.Company == null ? null : new {
+                        CompanyID = a.Job.Company.CompanyID,
+                        Name = a.Job.Company.Name
+                    }
+                },
+                Candidate = a.Candidate == null ? null : new {
+                    CandidateID = a.Candidate.CandidateID,
+                    FullName = a.Candidate.FullName,
+                    Email = a.Candidate.Email
+                }
+            });
+
+            return Ok(emailApplicationDtos);
         }
 
         Console.WriteLine($"Parsed userId: {userId}");
@@ -178,6 +238,7 @@ public class ApplicationsController : ControllerBase
 
         var candidateApplications = await _context.Applications
             .Include(a => a.Job)
+                .ThenInclude(j => j.Company)
             .Include(a => a.Candidate)
             .Where(a => a.CandidateID == candidate.CandidateID)
             .OrderByDescending(a => a.AppliedDate)
@@ -185,8 +246,37 @@ public class ApplicationsController : ControllerBase
 
         Console.WriteLine($"Found {candidateApplications.Count} applications for candidate {candidate.CandidateID}");
 
-        // Return plain array instead of wrapped response to avoid $values structure
-        return Ok(candidateApplications);
+        // Return DTOs to avoid circular references
+        var candidateApplicationDtos = candidateApplications.Select(a => new {
+            ApplicationID = a.ApplicationID,
+            JobID = a.JobID,
+            CandidateID = a.CandidateID,
+            Status = a.Status,
+            AppliedDate = a.AppliedDate,
+            CoverLetter = a.CoverLetter,
+            ResumeUrl = a.ResumeUrl,
+            InterviewStatus = a.InterviewStatus,
+            Job = a.Job == null ? null : new {
+                JobID = a.Job.JobID,
+                Title = a.Job.Title,
+                Location = a.Job.Location,
+                SalaryRange = a.Job.SalaryRange,
+                EmploymentType = a.Job.EmploymentType,
+                Description = a.Job.Description,
+                Skills = a.Job.Skills,
+                Company = a.Job.Company == null ? null : new {
+                    CompanyID = a.Job.Company.CompanyID,
+                    Name = a.Job.Company.Name
+                }
+            },
+            Candidate = a.Candidate == null ? null : new {
+                CandidateID = a.Candidate.CandidateID,
+                FullName = a.Candidate.FullName,
+                Email = a.Candidate.Email
+            }
+        });
+
+        return Ok(candidateApplicationDtos);
     }
 
     [HttpGet("{id}")]
