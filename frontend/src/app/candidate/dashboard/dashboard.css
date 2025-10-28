@@ -120,10 +120,11 @@
 .content-card {
   background-color: #ffffff;
   border-radius: 16px;
-  padding: 28px; /* Increased padding */
+  padding: 32px; /* Increased padding for better proportions */
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); /* Softer shadow */
   margin-top: 24px;
-  max-width: 800px; /* Limit width for better alignment */
+  width: 100%; /* Full width for better use of space */
+  max-width: 1200px; /* Increased max-width for better proportions */
   margin-left: auto;
   margin-right: auto; /* Center the card */
 }
@@ -275,18 +276,26 @@
 
 .actions-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
 }
 
 .action-item {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
   background-color: #ffffff;
-  padding: 20px;
+  padding: 24px;
   border-radius: 12px;
   border: 1px solid #f1f3f5;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.action-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: #e2e8f0;
+  transform: translateY(-2px);
 }
 
 .action-icon {
