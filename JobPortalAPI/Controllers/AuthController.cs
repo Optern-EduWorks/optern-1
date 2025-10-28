@@ -402,9 +402,9 @@ namespace JobPortalAPI.Controllers
                 }
 
                 var recruiter = await _context.Recruiters.FirstOrDefaultAsync(r => r.Email == emailClaim.Value);
-                
-                return Ok(new { 
-                    user = new { 
+
+                return Ok(new {
+                    user = new {
                         email = user.Email,
                         role = user.Role,
                         userId = user.UserId
@@ -421,6 +421,128 @@ namespace JobPortalAPI.Controllers
                 Console.WriteLine($"Get profile error: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return StatusCode(500, new { message = "An error occurred while fetching profile" });
+            }
+        }
+
+        [HttpGet("active-sessions")]
+        [Microsoft.AspNetCore.Authorization.Authorize]
+        public async Task<IActionResult> GetActiveSessions()
+        {
+            try
+            {
+                var userIdClaim = User.FindFirst("UserId");
+                if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int authenticatedUserId))
+                {
+                    return Unauthorized(new { message = "Invalid authentication token" });
+                }
+
+                // Get client IP address
+                var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
+
+                // Get user agent
+                var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
+
+                // Parse user agent to get device info
+                var deviceName = ParseDeviceName(userAgent);
+                var location = GetLocationFromIP(ipAddress);
+
+                // For demo purposes, return mock session data
+                // In a real application, you would query a sessions table
+                var sessions = new[]
+                {
+                    new {
+                        sessionId = Guid.NewGuid().ToString(),
+                        deviceName = deviceName,
+                        location = location,
+                        ipAddress = ipAddress,
+                        lastActive = DateTime.Now,
+                        isCurrent = true,
+                        userAgent = userAgent
+                    },
+                    new {
+                        sessionId = Guid.NewGuid().ToString(),
+                        deviceName = "Chrome on Windows",
+                        location = "Mumbai, India",
+                        ipAddress = "192.168.1.101",
+                        lastActive = DateTime.Now.AddHours(-2),
+                        isCurrent = false,
+                        userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                    },
+                    new {
+                        sessionId = Guid.NewGuid().ToString(),
+                        deviceName = "Safari on iPhone",
+                        location = "Delhi, India",
+                        ipAddress = "192.168.1.102",
+                        lastActive = DateTime.Now.AddDays(-1),
+                        isCurrent = false,
+                        userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X)"
+                    }
+                };
+
+                return Ok(new {
+                    sessions = sessions,
+                    totalSessions = sessions.Length,
+                    currentSessionCount = sessions.Count(s => s.isCurrent)
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Get active sessions error: {ex.Message}");
+                return StatusCode(500, new { message = "An error occurred while fetching active sessions" });
+            }
+        }
+
+        [HttpPost("revoke-session/{sessionId}")]
+        [Microsoft.AspNetCore.Authorization.Authorize]
+        public async Task<IActionResult> RevokeSession(string sessionId)
+        {
+            try
+            {
+                var userIdClaim = User.FindFirst("UserId");
+                if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int authenticatedUserId))
+                {
+                    return Unauthorized(new { message = "Invalid authentication token" });
+                }
+
+                // In a real application, you would:
+                // 1. Find the session in the database
+                // 2. Mark it as revoked/invalid
+                // 3. Return success
+
+                // For demo purposes, just return success
+                return Ok(new { message = "Session revoked successfully" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Revoke session error: {ex.Message}");
+                return StatusCode(500, new { message = "An error occurred while revoking the session" });
+            }
+        }
+
+        [HttpPost("revoke-all-sessions")]
+        [Microsoft.AspNetCore.Authorization.Authorize]
+        public async Task<IActionResult> RevokeAllSessions()
+        {
+            try
+            {
+                var userIdClaim = User.FindFirst("UserId");
+                if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int authenticatedUserId))
+                {
+                    return Unauthorized(new { message = "Invalid authentication token" });
+                }
+
+                // In a real application, you would:
+                // 1. Find all sessions for this user except current
+                // 2. Mark them as revoked/invalid
+                // 3. Return success
+
+                // For demo purposes, just return success
+                return Ok(new { message = "All other sessions revoked successfully" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Revoke all sessions error: {ex.Message}");
+                return StatusCode(500, new { message = "An error occurred while revoking sessions" });
             }
         }
 
@@ -514,6 +636,47 @@ namespace JobPortalAPI.Controllers
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return StatusCode(500, new { message = "An internal server error occurred. Please try again later." });
             }
+        }
+
+        private string ParseDeviceName(string userAgent)
+        {
+            if (string.IsNullOrEmpty(userAgent))
+                return "Unknown Device";
+
+            userAgent = userAgent.ToLower();
+
+            if (userAgent.Contains("chrome") && userAgent.Contains("windows"))
+                return "Chrome on Windows";
+            else if (userAgent.Contains("firefox") && userAgent.Contains("windows"))
+                return "Firefox on Windows";
+            else if (userAgent.Contains("safari") && userAgent.Contains("mac"))
+                return "Safari on Mac";
+            else if (userAgent.Contains("chrome") && userAgent.Contains("mac"))
+                return "Chrome on Mac";
+            else if (userAgent.Contains("safari") && userAgent.Contains("iphone"))
+                return "Safari on iPhone";
+            else if (userAgent.Contains("chrome") && userAgent.Contains("android"))
+                return "Chrome on Android";
+            else if (userAgent.Contains("edge") && userAgent.Contains("windows"))
+                return "Edge on Windows";
+            else if (userAgent.Contains("opera"))
+                return "Opera Browser";
+            else
+                return "Web Browser";
+        }
+
+        private string GetLocationFromIP(string ipAddress)
+        {
+            // In a real application, you would use a geolocation service
+            // For demo purposes, return mock locations based on IP
+            if (ipAddress.StartsWith("192.168."))
+                return "Mumbai, India";
+            else if (ipAddress.StartsWith("10."))
+                return "Delhi, India";
+            else if (ipAddress == "Unknown")
+                return "Unknown Location";
+            else
+                return "Mumbai, India"; // Default location
         }
 
         private string GenerateJwtToken(User user)

@@ -80,13 +80,7 @@
           <span class="tab-icon">🎓</span>
           Academic Information
         </button>
-        <button
-          class="tab-button"
-          [class.active]="activeTab === 'notification'"
-          (click)="setActiveTab('notification')">
-          <span class="tab-icon">🔔</span>
-          Notification Settings
-        </button>
+
         <button
           class="tab-button"
           [class.active]="activeTab === 'security'"
@@ -268,141 +262,104 @@
         </div>
       </div>
 
-      <!-- Notification Settings Tab -->
-      <div class="tab-pane" *ngIf="activeTab === 'notification'">
-        <div class="info-section">
-          <div class="section-header">
-            <span class="section-icon">🔔</span>
-            <h3 class="section-title">Notification Preferences</h3>
-          </div>
 
-          <div class="notification-settings">
-            <div class="setting-item">
-              <div class="setting-details">
-                <h4>Email Notifications</h4>
-                <p>Receive important updates via email.</p>
-              </div>
-              <label class="switch">
-                <input type="checkbox" [(ngModel)]="notificationSettings.emailNotifications">
-                <span class="slider"></span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <div class="setting-details">
-                <h4>Job Application Updates</h4>
-                <p>Get notified about application status changes.</p>
-              </div>
-              <label class="switch">
-                <input type="checkbox" [(ngModel)]="notificationSettings.jobApplicationUpdates">
-                <span class="slider"></span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <div class="setting-details">
-                <h4>Interview Reminders</h4>
-                <p>Receive reminders for scheduled interviews.</p>
-              </div>
-              <label class="switch">
-                <input type="checkbox" [(ngModel)]="notificationSettings.interviewReminders">
-                <span class="slider"></span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <div class="setting-details">
-                <h4>Marketing Communications</h4>
-                <p>Receive promotional emails and notifications.</p>
-              </div>
-              <label class="switch">
-                <input type="checkbox" [(ngModel)]="notificationSettings.marketingCommunications">
-                <span class="slider"></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="form-actions">
-            <button type="button" class="save-btn" (click)="saveNotificationPreferences()">Save Preferences</button>
-            <button type="button" class="cancel-btn" (click)="notificationSettings = {emailNotifications: true, jobApplicationUpdates: true, interviewReminders: true, marketingCommunications: false}">Reset to Default</button>
-          </div>
-        </div>
-      </div>
 
       <!-- Security Settings Tab -->
       <div class="tab-pane" *ngIf="activeTab === 'security'">
         <div class="info-section">
           <div class="section-header">
-            <span class="section-icon">🔒</span>
+            <span class="section-icon"></span>
             <h3 class="section-title">Security Settings</h3>
           </div>
 
           <!-- Password Management -->
           <div class="subsection">
             <h4 class="subsection-title">Password Management</h4>
-            <div class="info-grid">
-              <div class="info-item full-width">
-                <label class="info-label">Current Password</label>
+            <div class="password-form">
+              <div class="password-input-group">
+                <label class="password-label">Current Password</label>
                 <div class="password-field">
-                  <input type="password" class="info-input"
+                  <input type="password" class="password-input"
                          [(ngModel)]="passwordData.currentPassword"
-                         [type]="passwordVisibility.current ? 'text' : 'password'">
-                  <i class="bi {{ passwordVisibility.current ? 'bi-eye' : 'bi-eye-slash' }} toggle-password"
+                         [type]="passwordVisibility.current ? 'text' : 'password'"
+                         placeholder="Enter your current password">
+                  <i class="bi {{ passwordVisibility.current ? 'bi-eye' : 'bi-eye-slash' }} password-toggle"
                      (click)="togglePasswordVisibility('current')"></i>
                 </div>
               </div>
-              <div class="info-item full-width">
-                <label class="info-label">New Password</label>
+              <div class="password-input-group">
+                <label class="password-label">New Password</label>
                 <div class="password-field">
-                  <input type="password" class="info-input"
+                  <input type="password" class="password-input"
                          [(ngModel)]="passwordData.newPassword"
-                         [type]="passwordVisibility.new ? 'text' : 'password'">
-                  <i class="bi {{ passwordVisibility.new ? 'bi-eye' : 'bi-eye-slash' }} toggle-password"
+                         [type]="passwordVisibility.new ? 'text' : 'password'"
+                         placeholder="Enter your new password">
+                  <i class="bi {{ passwordVisibility.new ? 'bi-eye' : 'bi-eye-slash' }} password-toggle"
                      (click)="togglePasswordVisibility('new')"></i>
                 </div>
               </div>
-              <div class="info-item full-width">
-                <label class="info-label">Confirm New Password</label>
+              <div class="password-input-group">
+                <label class="password-label">Confirm New Password</label>
                 <div class="password-field">
-                  <input type="password" class="info-input"
+                  <input type="password" class="password-input"
                          [(ngModel)]="passwordData.confirmPassword"
-                         [type]="passwordVisibility.confirm ? 'text' : 'password'">
-                  <i class="bi {{ passwordVisibility.confirm ? 'bi-eye' : 'bi-eye-slash' }} toggle-password"
+                         [type]="passwordVisibility.confirm ? 'text' : 'password'"
+                         placeholder="Confirm your new password">
+                  <i class="bi {{ passwordVisibility.confirm ? 'bi-eye' : 'bi-eye-slash' }} password-toggle"
                      (click)="togglePasswordVisibility('confirm')"></i>
                 </div>
               </div>
-            </div>
-            <div class="form-actions">
-              <button type="button" class="save-btn" (click)="updatePassword()">Update Password</button>
+              <div class="password-actions">
+                <button type="button" class="update-password-btn" (click)="updatePassword()">Update Password</button>
+              </div>
             </div>
           </div>
 
-          <!-- Two-Factor Authentication -->
-          <div class="subsection">
-            <h4 class="subsection-title">Two-Factor Authentication (2FA)</h4>
-            <div class="security-feature">
-              <div class="setting-details">
-                <h4>Enable 2FA</h4>
-                <p>Add an extra layer of security to your account.</p>
-              </div>
-              <button class="save-btn">Setup 2FA</button>
-            </div>
-          </div>
 
-          <!-- Login Sessions -->
-          <div class="subsection">
-            <h4 class="subsection-title">Login Sessions</h4>
-            <div class="security-feature">
-              <div class="setting-details">
-                <h4>Active Sessions</h4>
-                <p>View and manage devices logged into your account.</p>
-              </div>
-              <button class="view-sessions-btn">
-                <i class="bi bi-laptop"></i> View Active Sessions
-              </button>
-            </div>
-          </div>
+
+
         </div>
       </div>
 
     </div>
 
+  </div>
+</div>
+
+<!-- Active Sessions Modal -->
+<div class="sessions-modal-overlay" *ngIf="showSessionsModal" (click)="closeSessionsModal()">
+  <div class="sessions-modal-content" (click)="$event.stopPropagation()">
+    <div class="sessions-modal-header">
+      <h2 class="sessions-modal-title">Active Login Sessions</h2>
+      <button class="sessions-modal-close-btn" (click)="closeSessionsModal()"><i class="bi bi-x"></i></button>
+    </div>
+    <p class="sessions-modal-subtitle">Manage devices that are currently logged into your account.</p>
+
+    <div class="sessions-list">
+      <div class="session-item" [class.current-session]="session.isCurrent" *ngFor="let session of activeSessions">
+        <div class="session-info">
+          <div class="session-device">
+            <i class="bi bi-laptop"></i>
+            <div>
+              <div class="device-name">{{ session.deviceName }}</div>
+              <div class="device-location">{{ session.location }}</div>
+            </div>
+          </div>
+          <div class="session-details">
+            <div class="session-time">Last active: {{ session.lastActive | date:'medium' }}</div>
+            <div class="session-ip">IP: {{ session.ipAddress }}</div>
+          </div>
+        </div>
+        <div class="session-actions">
+          <span class="current-badge" *ngIf="session.isCurrent">Current Session</span>
+          <button class="revoke-btn" *ngIf="!session.isCurrent" (click)="revokeSession(session)">Revoke</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sessions-modal-actions">
+      <button class="revoke-all-btn" (click)="revokeAllSessions()">Revoke All Other Sessions</button>
+      <button class="close-modal-btn" (click)="closeSessionsModal()">Close</button>
+    </div>
   </div>
 </div>

@@ -71,6 +71,10 @@ export class Profile implements OnInit {
     confirm: false
   };
 
+  // Active sessions modal
+  showSessionsModal = false;
+  activeSessions: any[] = [];
+
   constructor(private profileService: ProfileService, private authService: AuthService) {}
 
   ngOnInit() {
@@ -472,6 +476,82 @@ export class Profile implements OnInit {
   private clearMessages() {
     this.errorMessage = '';
     this.successMessage = '';
+  }
+
+  // View active sessions
+  viewActiveSessions() {
+    // Call the real API to get active sessions
+    this.authService.getActiveSessions().subscribe({
+      next: (response: any) => {
+        console.log('Active sessions response:', response);
+        if (response && response.sessions) {
+          this.activeSessions = response.sessions.map((session: any) => ({
+            ...session,
+            lastActive: new Date(session.lastActive)
+          }));
+          this.showSessionsModal = true;
+        } else {
+          console.error('Invalid sessions response:', response);
+          this.errorMessage = 'Failed to load active sessions';
+        }
+      },
+      error: (error: any) => {
+        console.error('Error loading active sessions:', error);
+        this.errorMessage = 'Failed to load active sessions. Please try again.';
+      }
+    });
+  }
+
+  // Close sessions modal
+  closeSessionsModal() {
+    this.showSessionsModal = false;
+    this.activeSessions = [];
+  }
+
+  // Revoke a specific session
+  revokeSession(session: any) {
+    if (confirm(`Are you sure you want to revoke access for "${session.deviceName}"?`)) {
+      this.authService.revokeSession(session.sessionId).subscribe({
+        next: (response: any) => {
+          console.log('Session revoked successfully:', response);
+          // Remove the session from the local array
+          this.activeSessions = this.activeSessions.filter(s => s.sessionId !== session.sessionId);
+          this.successMessage = `Session for ${session.deviceName} has been revoked.`;
+          setTimeout(() => this.clearMessages(), 3000);
+        },
+        error: (error: any) => {
+          console.error('Error revoking session:', error);
+          this.errorMessage = 'Failed to revoke session. Please try again.';
+          setTimeout(() => this.clearMessages(), 3000);
+        }
+      });
+    }
+  }
+
+  // Revoke all other sessions
+  revokeAllSessions() {
+    const otherSessions = this.activeSessions.filter(s => !s.isCurrent);
+    if (otherSessions.length === 0) {
+      alert('No other sessions to revoke.');
+      return;
+    }
+
+    if (confirm(`Are you sure you want to revoke access for all ${otherSessions.length} other device(s)?`)) {
+      this.authService.revokeAllSessions().subscribe({
+        next: (response: any) => {
+          console.log('All sessions revoked successfully:', response);
+          // Keep only the current session
+          this.activeSessions = this.activeSessions.filter(s => s.isCurrent);
+          this.successMessage = `All other sessions have been revoked. You will remain logged in on this device.`;
+          setTimeout(() => this.clearMessages(), 3000);
+        },
+        error: (error: any) => {
+          console.error('Error revoking all sessions:', error);
+          this.errorMessage = 'Failed to revoke sessions. Please try again.';
+          setTimeout(() => this.clearMessages(), 3000);
+        }
+      });
+    }
   }
 
 

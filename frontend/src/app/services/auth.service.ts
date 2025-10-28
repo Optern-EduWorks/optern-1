@@ -174,4 +174,49 @@ export class AuthService {
       console.error('Failed to save updated user to localStorage:', e);
     }
   }
+
+  getActiveSessions() {
+    const currentUser = this.getCurrentUser();
+    if (!currentUser || !currentUser.token) {
+      console.error('Get active sessions failed: No user logged in or no token');
+      return throwError(() => new Error('Please log in to view active sessions'));
+    }
+
+    console.log('Fetching active sessions for user:', currentUser.userId);
+    return this.http.get('/api/Auth/active-sessions', {
+      headers: {
+        'Authorization': `Bearer ${currentUser.token}`
+      }
+    });
+  }
+
+  revokeSession(sessionId: string) {
+    const currentUser = this.getCurrentUser();
+    if (!currentUser || !currentUser.token) {
+      console.error('Revoke session failed: No user logged in or no token');
+      return throwError(() => new Error('Please log in to revoke sessions'));
+    }
+
+    console.log('Revoking session:', sessionId);
+    return this.http.post(`/api/Auth/revoke-session/${sessionId}`, {}, {
+      headers: {
+        'Authorization': `Bearer ${currentUser.token}`
+      }
+    });
+  }
+
+  revokeAllSessions() {
+    const currentUser = this.getCurrentUser();
+    if (!currentUser || !currentUser.token) {
+      console.error('Revoke all sessions failed: No user logged in or no token');
+      return throwError(() => new Error('Please log in to revoke sessions'));
+    }
+
+    console.log('Revoking all other sessions for user:', currentUser.userId);
+    return this.http.post('/api/Auth/revoke-all-sessions', {}, {
+      headers: {
+        'Authorization': `Bearer ${currentUser.token}`
+      }
+    });
+  }
 }
