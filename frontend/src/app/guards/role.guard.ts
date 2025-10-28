@@ -1,0 +1,38 @@
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+
+export function roleGuard(allowedRole: string) {
+  return async () => {
+    const router = inject(Router);
+    const authService = inject(AuthService);
+
+    // Wait for authentication to initialize
+    await authService.initializeAsyncAuth();
+
+    const user = authService.getCurrentUser();
+    console.log('Role guard check - user:', user);
+
+    if (!user || !user.userId || !user.token) {
+      console.log('Role guard: No valid user found, redirecting to login');
+      // Redirect to appropriate login page if no valid user
+      const loginRoute = allowedRole === 'recruiter' ? '/recruiter/sign-in' : '/candidate/sign-in';
+      router.navigate([loginRoute]);
+      return false;
+    }
+
+    // Map backend roles to frontend expected roles (case-insensitive)
+    const mappedRole = user.role?.toLowerCase() === 'student' ? 'candidate' : user.role?.toLowerCase();
+
+    if (mappedRole !== allowedRole) {
+      console.log(`Role guard: User role '${user.role}' (mapped to '${mappedRole}') does not match required role '${allowedRole}'`);
+      authService.logout(); // Force logout for wrong role
+      const loginRoute = allowedRole === 'recruiter' ? '/recruiter/sign-in' : '/candidate/sign-in';
+      router.navigate([loginRoute]);
+      return false;
+    }
+
+    console.log(`Role guard: Access granted for ${user.role} user`);
+    return true;
+  };
+}

@@ -1,0 +1,395 @@
+<div class="opportunities-container">
+  <!-- Header and Post Button -->
+  <div class="opportunities-header">
+    <div>
+      <h1 class="page-title">Job <span class="highlight">Opportunities</span></h1>
+      <p class="page-subtitle">Manage your job postings and track applications from potential candidates.</p>
+    </div>
+    <button class="post-job-btn" (click)="openPostJobModal()">
+      <i class="bi bi-plus-circle"></i> Post New Opportunity
+    </button>
+  </div>
+
+  <!-- Filter Tabs -->
+  <div class="filters-section">
+    <div class="filter-tabs">
+  <button class="filter-tab" [class.active]="filterActiveTab === 'All Jobs'" (click)="setFilter('All Jobs')">
+    All Jobs <span class="count">{{ allJobsCount }}</span>
+  </button>
+  <button class="filter-tab" [class.active]="filterActiveTab === 'Active'" (click)="setFilter('Active')">
+    Active <span class="count">{{ activeJobsCount }}</span>
+  </button>
+  <button class="filter-tab" [class.active]="filterActiveTab === 'Closed'" (click)="setFilter('Closed')">
+    Closed <span class="count">{{ closedJobsCount }}</span>
+  </button>
+  <button class="filter-tab" [class.active]="filterActiveTab === 'Draft'" (click)="setFilter('Draft')">
+    Draft <span class="count">{{ draftJobsCount }}</span>
+  </button>
+</div>
+
+  </div>
+
+  <!-- Search & View Toggle -->
+  <div class="search-bar-section">
+    <div class="search-wrapper">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Search job titles or locations..." class="search-input" [(ngModel)]="searchQuery" />
+    </div>
+    <select class="type-filter" [(ngModel)]="selectedType">
+      <option>All Types</option>
+      <option>Full-time</option>
+      <option>Part-time</option>
+      <option>Contract</option>
+      <option>Internship</option>
+    </select>
+    <div class="view-toggle">
+      <button class="view-btn" [class.active]="viewMode === 'grid'" (click)="viewMode = 'grid'">
+        <i class="bi bi-grid-3x3-gap"></i>
+      </button>
+      <button class="view-btn" [class.active]="viewMode === 'list'" (click)="viewMode = 'list'">
+        <i class="bi bi-list-ul"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Jobs Grid -->
+  <div class="jobs-grid" *ngIf="viewMode === 'grid'">
+    <div class="job-card" *ngFor="let job of filteredJobs">
+      <div class="job-card-header">
+        <div class="job-icon">{{ job.icon || (job.title ? job.title.charAt(0).toUpperCase() : 'J') }}</div>
+        <span
+          class="status-badge"
+          [ngClass]="{
+            active: (job.status || 'active') === 'active',
+            closed: (job.status || 'active') === 'closed',
+            draft: (job.status || 'active') === 'draft'
+          }"
+        >
+          {{ job.status || 'active' }}
+        </span>
+      </div>
+      <h3 class="job-title">{{ job.title }}</h3>
+      <div class="job-meta">
+        <span class="meta-item"><i class="bi bi-geo-alt"></i> {{ job.location || 'Remote' }}</span>
+        <span class="meta-item"><i class="bi bi-briefcase"></i> {{ job.workMode || 'Full-time' }}</span>
+        <span class="meta-item"><i class="bi bi-currency-dollar"></i> {{ job.salary || 'Competitive' }}</span>
+      </div>
+      <div class="job-tags">
+        <span *ngFor="let tag of (job.tags || [])" class="tag" [ngClass]="tag.color || 'blue'">{{ tag.label }}</span>
+      </div>
+      <div class="job-stats">
+        <span class="stat"><i class="bi bi-people"></i> {{ job.applicants || 0 }} applications</span>
+        <span class="stat"><i class="bi bi-calendar"></i> Posted {{ job.posted || 'Recently' }}</span>
+      </div>
+      <div class="job-actions">
+        <button class="btn-view" (click)="openDetailModal(job)">
+          <i class="bi bi-eye"></i> View Details
+        </button>
+        <button class="btn-edit" (click)="openEditJobModal(job)">Edit</button>
+        <button class="btn-delete" (click)="deleteJob(job)">
+          <i class="bi bi-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jobs List -->
+  <div class="jobs-list" *ngIf="viewMode === 'list'">
+    <div class="job-list-item" *ngFor="let job of filteredJobs">
+      <div class="job-icon-list">{{ job.icon || (job.title ? job.title.charAt(0).toUpperCase() : 'J') }}</div>
+      <div class="job-list-content">
+        <div class="job-list-header">
+          <h3 class="job-title-list">{{ job.title }}</h3>
+          <span
+            class="status-badge"
+            [ngClass]="{
+              active: (job.status || 'active') === 'active',
+              closed: (job.status || 'active') === 'closed',
+              draft: (job.status || 'active') === 'draft'
+            }"
+          >
+            {{ job.status || 'active' }}
+          </span>
+        </div>
+        <div class="job-meta-list">
+          <span class="meta-item"><i class="bi bi-geo-alt"></i> {{ job.location || 'Remote' }}</span>
+          <span class="meta-item"><i class="bi bi-briefcase"></i> {{ job.workMode || 'Full-time' }}</span>
+          <span class="meta-item"><i class="bi bi-currency-dollar"></i> {{ job.salary || 'Competitive' }}</span>
+          <span class="meta-item"><i class="bi bi-people"></i> {{ job.applicants || 0 }} applications</span>
+          <span class="meta-item"><i class="bi bi-calendar"></i> Posted {{ job.posted || 'Recently' }}</span>
+        </div>
+        <div class="job-tags">
+          <span *ngFor="let tag of (job.tags || [])" class="tag" [ngClass]="tag.color || 'blue'">{{ tag.label }}</span>
+        </div>
+      </div>
+      <div class="job-list-actions">
+        <button class="btn-view" (click)="openDetailModal(job)">
+          <i class="bi bi-eye"></i> View Details
+        </button>
+        <button class="btn-edit" (click)="openEditJobModal(job)">Edit</button>
+        <button class="btn-delete" (click)="deleteJob(job)">
+          <i class="bi bi-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Message -->
+  <div class="loading-message" *ngIf="isLoading">
+    <div class="loading-content">
+      <i class="bi bi-hourglass-split"></i>
+      <h3>Loading Job Opportunities...</h3>
+      <p>Please wait while we fetch your job postings.</p>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div class="error-message" *ngIf="!isLoading && errorMessage">
+    <div class="error-content">
+      <i class="bi bi-exclamation-triangle"></i>
+      <h3>Failed to Load Job Opportunities</h3>
+      <p>{{ errorMessage }}</p>
+      <button class="retry-btn" (click)="loadJobsFromDatabase()">
+        <i class="bi bi-arrow-clockwise"></i> Retry Loading
+      </button>
+    </div>
+  </div>
+
+  <!-- No Jobs Message -->
+  <div class="no-jobs-message" *ngIf="!isLoading && jobs && jobs.length === 0">
+    <div class="no-jobs-content">
+      <i class="bi bi-briefcase"></i>
+      <h3>No Job Opportunities Yet</h3>
+      <p>You haven't posted any job opportunities yet. Use the "Post New Opportunity" button above to create your first job posting and start attracting candidates.</p>
+    </div>
+  </div>
+
+  <!-- View Details Modal -->
+  <div class="modal-overlay" *ngIf="showDetailModal" (click)="closeDetailModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closeDetailModal()"><i class="bi bi-x"></i></button>
+      <div class="modal-header">
+        <h2 class="modal-title">{{ selectedJob?.title }}</h2>
+        <p class="modal-subtitle">{{ selectedJob?.company }} • {{ selectedJob?.type }}</p>
+      </div>
+      <div class="modal-content">
+        <div class="modal-info-grid">
+          <div class="info-item"><i class="bi bi-geo-alt"></i> {{ selectedJob?.location }}</div>
+          <div class="info-item"><i class="bi bi-briefcase"></i> {{ selectedJob?.type }}</div>
+          <div class="info-item"><i class="bi bi-building"></i> {{ selectedJob?.workMode }}</div>
+          <div class="info-item"><i class="bi bi-people"></i> {{ selectedJob?.applicants }} applications</div>
+          <div class="info-item"><i class="bi bi-currency-dollar"></i> {{ selectedJob?.salary }}</div>
+          <div class="info-item"><i class="bi bi-calendar"></i> Posted {{ selectedJob?.posted }}</div>
+        </div>
+        <div>
+          <h4>Job Description</h4>
+          <p>{{ selectedJob?.description }}</p>
+        </div>
+        <div>
+          <h4>Requirements</h4>
+          <div>
+            <span class="requirement-tag" *ngFor="let req of selectedJob?.requirements">{{ req }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-close-modal" (click)="closeDetailModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Post New Job Modal -->
+  <div class="modal-overlay" *ngIf="showPostJobModal" (click)="closePostJobModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closePostJobModal()"><i class="bi bi-x"></i></button>
+      <h2 class="modal-title">Post New Job Opportunity</h2>
+      <form class="job-form" (ngSubmit)="postJob()" #jobForm="ngForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Job Title *</label>
+            <input type="text"
+                   placeholder="Senior Frontend Developer"
+                   class="form-input"
+                   [(ngModel)]="newJob.title"
+                   name="title"
+                   required />
+          </div>
+          <div class="form-group">
+            <label>Location *</label>
+            <input type="text"
+                   placeholder="San Francisco, CA"
+                   class="form-input"
+                   [(ngModel)]="newJob.location"
+                   name="location"
+                   required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Job Type *</label>
+            <select class="form-input"
+                    [(ngModel)]="newJob.type"
+                    name="type"
+                    required>
+              <option value="Full-time">Full-time</option>
+              <option value="Part-time">Part-time</option>
+              <option value="Contract">Contract</option>
+              <option value="Internship">Internship</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Work Mode *</label>
+            <select class="form-input"
+                    [(ngModel)]="newJob.workMode"
+                    name="workMode"
+                    required>
+              <option value="Hybrid">Hybrid</option>
+              <option value="Remote">Remote</option>
+              <option value="Onsite">Onsite</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Salary *</label>
+            <input type="text"
+                   placeholder="$80,000 - $120,000"
+                   class="form-input"
+                   [(ngModel)]="newJob.salary"
+                   name="salary"
+                   required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Job Description *</label>
+          <textarea
+            class="form-textarea"
+            rows="4"
+            placeholder="Provide a detailed description of the role, responsibilities, and what makes this opportunity exciting..."
+            [(ngModel)]="newJob.description"
+            name="description"
+            required
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label>Requirements *</label>
+          <textarea
+            class="form-textarea"
+            rows="2"
+            placeholder="React, TypeScript, 3+ years experience, Team collaboration (comma separated)"
+            [(ngModel)]="newJob.requirements"
+            name="requirements"
+            required
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label>Application Deadline</label>
+          <input type="date"
+                 class="form-input"
+                 [(ngModel)]="newJob.closingDate"
+                 name="closingDate" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closePostJobModal()">Cancel</button>
+          <button type="submit" class="btn-submit" [disabled]="!jobForm.valid">Post Job</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Job Modal -->
+  <div class="modal-overlay" *ngIf="showEditJobModal" (click)="closeEditJobModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closeEditJobModal()"><i class="bi bi-x"></i></button>
+      <h2 class="modal-title">Edit Job Opportunity</h2>
+      <form class="job-form" (ngSubmit)="editJobSubmit()" #editJobForm="ngForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Job Title *</label>
+            <input type="text"
+                   placeholder="Senior Frontend Developer"
+                   class="form-input"
+                   [(ngModel)]="editJob.title"
+                   name="editTitle"
+                   required />
+          </div>
+          <div class="form-group">
+            <label>Location *</label>
+            <input type="text"
+                   placeholder="San Francisco, CA"
+                   class="form-input"
+                   [(ngModel)]="editJob.location"
+                   name="editLocation"
+                   required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Job Type *</label>
+            <select class="form-input"
+                    [(ngModel)]="editJob.type"
+                    name="editType"
+                    required>
+              <option value="Full-time">Full-time</option>
+              <option value="Part-time">Part-time</option>
+              <option value="Contract">Contract</option>
+              <option value="Internship">Internship</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Work Mode *</label>
+            <select class="form-input"
+                    [(ngModel)]="editJob.workMode"
+                    name="editWorkMode"
+                    required>
+              <option value="Hybrid">Hybrid</option>
+              <option value="Remote">Remote</option>
+              <option value="Onsite">Onsite</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Salary *</label>
+            <input type="text"
+                   placeholder="$80,000 - $120,000"
+                   class="form-input"
+                   [(ngModel)]="editJob.salary"
+                   name="editSalary"
+                   required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Job Description *</label>
+          <textarea
+            class="form-textarea"
+            rows="4"
+            placeholder="Provide a detailed description of the role, responsibilities, and what makes this opportunity exciting..."
+            [(ngModel)]="editJob.description"
+            name="editDescription"
+            required
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label>Requirements *</label>
+          <textarea
+            class="form-textarea"
+            rows="2"
+            placeholder="React, TypeScript, 3+ years experience, Team collaboration (comma separated)"
+            [(ngModel)]="editJob.requirements"
+            name="editRequirements"
+            required
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label>Application Deadline</label>
+          <input type="date"
+                 class="form-input"
+                 [(ngModel)]="editJob.closingDate"
+                 name="editClosingDate" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeEditJobModal()">Cancel</button>
+          <button type="submit" class="btn-submit" [disabled]="!editJobForm.valid">Update Job</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>

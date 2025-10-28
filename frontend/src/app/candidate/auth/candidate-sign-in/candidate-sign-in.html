@@ -1,0 +1,45 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="logo-container">
+      <div class="logo">O</div>
+    </div>
+    <h2>Welcome back</h2>
+    <p class="portal-text">Candidate Portal</p>
+  <form (ngSubmit)="onSubmit($event)" onsubmit="return false;" novalidate>
+      <div class="form-group">
+        <label for="email">Email or Username</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Enter your email"
+          autocomplete="username"
+          required
+          [(ngModel)]="model.email"
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+          [(ngModel)]="model.password"
+        />
+      </div>
+  <button class="login-button" type="submit">Sign In</button>
+      <div *ngIf="error" class="error" style="margin-top:12px">{{ error }}</div>
+      <div *ngIf="successMessage" class="success" style="margin-top:12px">{{ successMessage }}</div>
+      <!-- test helper removed for normal operation -->
+    </form>
+    <div class="signup-link">
+  Don't have an account? <a href="#" (click)="navigateToSignUp(); $event.preventDefault()">Sign up</a>
+</div>
+    <div class="back-to-home">
+  <a href="#" (click)="navigateToHome(); $event.preventDefault()">← Back to home</a>
+</div>
+  </div>
+</div>

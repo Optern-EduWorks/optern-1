@@ -1,0 +1,185 @@
+<div class="applications-container">
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-content">
+        <h1><i class="bi bi-stack"></i> My Applications</h1>
+        <p>Track the status of your job applications and manage your pipeline.</p>
+    </div>
+    <div class="header-actions">
+    </div>
+  </header>
+
+  <!-- Filter and View Controls -->
+  <div class="controls-bar">
+    <div class="status-filters">
+      <button *ngFor="let filter of ['All Applications', 'Applied', 'Interview Scheduled', 'Shortlisted', 'Rejected']"
+              [class.active]="activeFilter === filter"
+              (click)="setFilter(filter)">
+        {{ filter }} <span class="filter-count">{{ filterCounts[filter] }}</span>
+      </button>
+    </div>
+    <div class="sort-controls">
+      <label>Sort by:</label>
+      <select [(ngModel)]="sortBy" (change)="setSort(sortBy)">
+        <option value="AppliedDate">Applied Date</option>
+        <option value="Status">Status</option>
+        <option value="JobTitle">Job Title</option>
+      </select>
+      <button (click)="setSort(sortBy)" class="sort-order-btn">
+        <i class="bi" [ngClass]="sortOrder === 'asc' ? 'bi-sort-up' : 'bi-sort-down'"></i>
+      </button>
+    </div>
+    <div class="view-toggle">
+      <button [class.active]="viewMode === 'list'" (click)="setView('list')"><i class="bi bi-list-ul"></i></button>
+      <button [class.active]="viewMode === 'grid'" (click)="setView('grid')"><i class="bi bi-grid-fill"></i></button>
+    </div>
+  </div>
+
+  <!-- Application Listings -->
+  <div [ngSwitch]="viewMode">
+    <!-- Empty State -->
+    <div *ngIf="filteredApplications.length === 0" class="empty-state">
+      <div class="empty-state-content">
+        <i class="bi bi-clipboard-check"></i>
+        <h3>No Applications Yet</h3>
+        <p>You haven't applied to any jobs yet. Start exploring opportunities and submit your applications!</p>
+        <a href="/opportunities" class="btn btn-primary">
+          <i class="bi bi-search"></i> Browse Opportunities
+        </a>
+      </div>
+    </div>
+
+    <!-- Grid View -->
+    <div *ngSwitchCase="'grid'" class="listings-grid">
+      <div class="card-grid" *ngFor="let app of filteredApplications">
+        <div class="card-header">
+          <img [src]="app.Job?.Company || 'assets/user-profile.jpg'" alt="{{app.Job?.Company}} Logo" class="company-logo">
+          <div>
+            <h3 class="job-title">{{ app.Job?.Title }}</h3>
+            <p class="company-name">{{ app.Job?.Company }}</p>
+          </div>
+        </div>
+        <div class="job-details">
+          <span><i class="bi bi-geo-alt"></i> {{ app.Job?.Location }}</span>
+          <span class="job-tag">{{ app.Job?.EmploymentType }}</span>
+        </div>
+        <div class="job-details">
+          <span class="job-tag salary">{{ app.Job?.SalaryRange }}</span>
+        </div>
+        <p class="applied-date">Applied on {{ app.AppliedDate | date:'mediumDate' }}</p>
+
+        <div class="status-section">
+            <div *ngIf="app.Status === 'Interview Scheduled'" class="interview-details">
+                <i class="bi bi-calendar-check"></i> Interview scheduled for {{ app.interviewDate }}
+            </div>
+            <button class="status-tag" [ngClass]="'status-' + app.Status.toLowerCase().replace(' ', '-')">
+                <i [ngClass]="{
+                    'bi-check-circle-fill': app.Status === 'Applied' || app.Status === 'Shortlisted',
+                    'bi-calendar-event-fill': app.Status === 'Interview Scheduled',
+                    'bi-x-circle-fill': app.Status === 'Rejected'
+                }"></i> {{ app.Status }}
+            </button>
+            <button class="view-details-btn" (click)="openModal(app)"><i class="bi bi-eye"></i> View Details</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- List View -->
+    <div *ngSwitchCase="'list'" class="listings-list">
+      <div class="card-list" *ngFor="let app of filteredApplications">
+        <img [src]="app.Job?.Company || 'assets/user-profile.jpg'" alt="{{app.Job?.Company}} Logo" class="company-logo">
+        <div class="job-info">
+          <h3 class="job-title">{{ app.Job?.Title }}</h3>
+          <p class="company-name">{{ app.Job?.Company }} &bull; {{ app.Job?.Location }}</p>
+          <div class="job-tags">
+            <span class="job-tag">{{ app.Job?.EmploymentType }}</span>
+            <span class="job-tag salary">{{ app.Job?.SalaryRange }}</span>
+          </div>
+        </div>
+        <div class="application-status">
+            <p class="applied-date">Applied on {{ app.AppliedDate | date:'mediumDate' }}</p>
+             <div *ngIf="app.Status === 'Interview Scheduled'" class="interview-details">
+                <i class="bi bi-calendar-check"></i> Interview scheduled for {{ app.interviewDate }}
+            </div>
+        </div>
+        <div class="status-actions">
+           <button class="status-tag" [ngClass]="'status-' + app.Status.toLowerCase().replace(' ', '-')">
+                <i [ngClass]="{
+                    'bi-check-circle-fill': app.Status === 'Applied' || app.Status === 'Shortlisted',
+                    'bi-calendar-event-fill': app.Status === 'Interview Scheduled',
+                    'bi-x-circle-fill': app.Status === 'Rejected'
+                }"></i> {{ app.Status }}
+            </button>
+            <button class="view-details-btn" (click)="openModal(app)"><i class="bi bi-eye"></i> View Details</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Details Modal -->
+<div class="modal-overlay" *ngIf="isModalVisible" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()" *ngIf="selectedApplication">
+
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <div class="modal-header-info">
+        <img [src]="selectedApplication.Job?.Company || 'assets/user-profile.jpg'" alt="{{selectedApplication.Job?.Company}} Logo" class="modal-company-logo">
+        <div>
+          <h2 class="modal-title">{{ selectedApplication.Job?.Title }}</h2>
+          <p class="modal-company">{{ selectedApplication.Job?.Company }}</p>
+        </div>
+      </div>
+      <button class="modal-close-btn" (click)="closeModal()"><i class="bi bi-x"></i></button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <div class="modal-status-bar">
+        <span class="status-tag" [ngClass]="'status-' + selectedApplication.Status.toLowerCase().replace(' ', '-')">
+          <i [ngClass]="{
+              'bi-check-circle-fill': selectedApplication.Status === 'Applied' || selectedApplication.Status === 'Shortlisted',
+              'bi-calendar-event-fill': selectedApplication.Status === 'Interview Scheduled',
+              'bi-x-circle-fill': selectedApplication.Status === 'Rejected'
+          }"></i> {{ selectedApplication.Status }}
+        </span>
+        <span class="modal-applied-date">Applied on {{ selectedApplication.AppliedDate | date:'mediumDate' }}</span>
+      </div>
+
+      <div class="modal-details-grid">
+        <span><i class="bi bi-geo-alt"></i> {{ selectedApplication.Job?.Location }}</span>
+        <span><i class="bi bi-briefcase"></i> {{ selectedApplication.Job?.EmploymentType }}</span>
+        <span class="job-tag salary"><i class="bi bi-cash"></i> {{ selectedApplication.Job?.SalaryRange }}</span>
+      </div>
+
+      <div class="modal-section" *ngIf="selectedApplication.CoverLetter">
+        <h3>Cover Letter</h3>
+        <p>{{ selectedApplication.CoverLetter }}</p>
+      </div>
+
+      <div class="modal-section" *ngIf="selectedApplication.Job?.Description">
+        <h3>Job Description</h3>
+        <p>{{ selectedApplication.Job?.Description }}</p>
+      </div>
+
+      <div class="modal-section" *ngIf="selectedApplication.Job?.Skills">
+        <h3>Skills</h3>
+        <div class="job-skills">
+            <span *ngFor="let skill of selectedApplication.Job?.Skills.split(',')" class="skill-tag">{{ skill.trim() }}</span>
+        </div>
+      </div>
+
+      <div class="modal-section" *ngIf="selectedApplication.InterviewStatus">
+        <h3>Interview Status</h3>
+        <p>{{ selectedApplication.InterviewStatus }}</p>
+      </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <button class="view-posting-btn"><i class="bi bi-box-arrow-up-right"></i> View Job Posting</button>
+      <button class="contact-company-btn"><i class="bi bi-envelope"></i> Contact Company</button>
+      <button class="download-resume-btn" *ngIf="selectedApplication.ResumeUrl" (click)="downloadResume(selectedApplication)"><i class="bi bi-download"></i> Download Resume</button>
+      <button class="withdraw-btn" *ngIf="selectedApplication.Status !== 'Rejected'" (click)="withdrawApplication(selectedApplication)"><i class="bi bi-x-circle"></i> Withdraw Application</button>
+    </div>
+  </div>
+</div>

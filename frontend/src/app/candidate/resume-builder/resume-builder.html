@@ -1,0 +1,385 @@
+<div class="page-container">
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-title">
+      <i class="bi bi-file-earmark-person-fill page-icon"></i>
+      <h1>Resume Builder</h1>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="build-btn" (click)="buildResume()" [disabled]="isSaving">
+        <i class="bi bi-tools"></i> Build Resume
+      </button>
+      <button type="button" class="save-btn" (click)="saveResume()" [disabled]="isSaving">
+        <i class="bi bi-save" *ngIf="!isSaving"></i>
+        <i class="bi bi-hourglass-split" *ngIf="isSaving"></i>
+        {{ isSaving ? 'Saving...' : 'Save Resume' }}
+      </button>
+    </div>
+  </header>
+
+  <!-- Resume Builder Tabs -->
+  <nav class="builder-tabs">
+    <a class="tab-link" [class.active]="activeTab === 'personal'" (click)="selectTab('personal')">
+      <i class="bi bi-person-fill"></i> Personal Information
+    </a>
+    <a class="tab-link" [class.active]="activeTab === 'education'" (click)="selectTab('education')">
+      <i class="bi bi-mortarboard-fill"></i> Education
+    </a>
+    <a class="tab-link" [class.active]="activeTab === 'skills'" (click)="selectTab('skills')">
+      <i class="bi bi-star-fill"></i> Skills
+    </a>
+    <a class="tab-link" [class.active]="activeTab === 'experience'" (click)="selectTab('experience')">
+      <i class="bi bi-briefcase-fill"></i> Experience
+    </a>
+    <a class="tab-link" [class.active]="activeTab === 'projects'" (click)="selectTab('projects')">
+      <i class="bi bi-kanban-fill"></i> Projects
+    </a>
+    <a class="tab-link" [class.active]="activeTab === 'certifications'" (click)="selectTab('certifications')">
+      <i class="bi bi-patch-check-fill"></i> Certifications
+    </a>
+    <a class="tab-link" [class.active]="activeTab === 'preview'" (click)="selectTab('preview')">
+      <i class="bi bi-eye-fill"></i> Preview & Download
+    </a>
+  </nav>
+
+  <!-- Save Message -->
+  <div *ngIf="saveMessage" class="save-message" [class.error]="saveMessageType === 'error'" [class.success]="saveMessageType === 'success'">
+    {{ saveMessage }}
+  </div>
+
+  <!-- Tab Content Container -->
+  <div class="tab-content-container">
+
+    <!-- Personal Information Tab -->
+    <div *ngIf="activeTab === 'personal'">
+      <div class="form-header">
+        <h3 class="form-title">Personal Information</h3>
+      </div>
+      <form class="resume-form" #personalForm="ngForm">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="fullName">Full Name <span>*</span></label>
+            <input id="fullName" type="text" [(ngModel)]="resume.fullName" name="fullName" required>
+          </div>
+          <div class="form-field">
+            <label for="email">Email <span>*</span></label>
+            <input id="email" type="email" [(ngModel)]="resume.email" name="email" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="phone">Phone Number</label>
+            <input id="phone" type="text" [(ngModel)]="resume.phoneNumber" name="phoneNumber">
+          </div>
+          <div class="form-field">
+            <label for="linkedin">LinkedIn Profile</label>
+            <input id="linkedin" type="url" [(ngModel)]="resume.linkedInProfile" name="linkedInProfile">
+          </div>
+        </div>
+        <div class="form-row single-column">
+          <div class="form-field">
+            <label for="address">Address</label>
+            <textarea id="address" [(ngModel)]="resume.address" name="address"></textarea>
+          </div>
+        </div>
+        <div class="form-row single-column">
+          <div class="form-field">
+            <label for="objective">Professional Objective</label>
+            <textarea id="objective" [(ngModel)]="resume.professionalObjective" name="professionalObjective"></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Education Tab -->
+    <div *ngIf="activeTab === 'education'">
+      <div class="form-header">
+        <h3 class="form-title">Education</h3>
+        <button type="button" class="add-item-btn" (click)="addEducation()" [disabled]="isSaving">
+          <i class="bi bi-plus-circle"></i> Add Education
+        </button>
+      </div>
+      <form class="resume-form">
+        <div *ngIf="resume.educations.length === 0">
+          <p class="no-items-message">No education entries added yet. Click "Add Education" to get started.</p>
+        </div>
+        <fieldset *ngFor="let education of resume.educations; let i = index" class="form-section">
+          <legend>Education {{ i + 1 }}</legend>
+          <button type="button" class="remove-item-btn" (click)="removeEducation(i)">
+            <i class="bi bi-trash"></i> Remove
+          </button>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="institution-{{i}}">University/College <span>*</span></label>
+              <input id="institution-{{i}}" type="text" [(ngModel)]="education.institution" [name]="'institution-' + i" required>
+            </div>
+            <div class="form-field">
+              <label for="degree-{{i}}">Degree <span>*</span></label>
+              <input id="degree-{{i}}" type="text" [(ngModel)]="education.degree" [name]="'degree-' + i" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="gradYear-{{i}}">Graduation Year <span>*</span></label>
+              <input id="gradYear-{{i}}" type="text" [(ngModel)]="education.graduationYear" [name]="'graduationYear-' + i" required>
+            </div>
+            <div class="form-field">
+              <label for="gpa-{{i}}">GPA (Optional)</label>
+              <input id="gpa-{{i}}" type="text" [(ngModel)]="education.gpa" [name]="'gpa-' + i">
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+
+    <!-- Skills Tab -->
+    <div *ngIf="activeTab === 'skills'">
+      <div class="form-header">
+        <h3 class="form-title">Skills</h3>
+      </div>
+      <form class="resume-form">
+        <div class="form-row single-column">
+          <div class="form-field">
+            <label for="techSkills">Technical Skills (comma-separated)</label>
+            <textarea id="techSkills" [(ngModel)]="technicalSkillsInput" name="technicalSkills"
+                      placeholder="e.g., JavaScript, React, Node.js, Python, SQL"></textarea>
+            <small class="field-hint">Separate each skill with a comma. These will be displayed as individual skill tags.</small>
+          </div>
+        </div>
+        <div class="form-row single-column">
+          <div class="form-field">
+            <label for="softSkills">Soft Skills (comma-separated)</label>
+            <textarea id="softSkills" [(ngModel)]="softSkillsInput" name="softSkills"
+                      placeholder="e.g., Leadership, Communication, Problem Solving, Team Collaboration"></textarea>
+            <small class="field-hint">Separate each skill with a comma. These will be displayed as individual skill tags.</small>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Experience Tab -->
+    <div *ngIf="activeTab === 'experience'">
+      <div class="form-header">
+        <h3 class="form-title">Experience</h3>
+        <button type="button" class="add-item-btn" (click)="addExperience()" [disabled]="isSaving">
+          <i class="bi bi-plus-circle"></i> Add Experience
+        </button>
+      </div>
+      <form class="resume-form">
+        <div *ngIf="resume.experiences.length === 0">
+          <p class="no-items-message">No experience entries added yet. Click "Add Experience" to get started.</p>
+        </div>
+        <fieldset *ngFor="let experience of resume.experiences; let i = index" class="form-section">
+          <legend>Experience {{ i + 1 }}</legend>
+          <button type="button" class="remove-item-btn" (click)="removeExperience(i)">
+            <i class="bi bi-trash"></i> Remove
+          </button>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="company-{{i}}">Company <span>*</span></label>
+              <input id="company-{{i}}" type="text" [(ngModel)]="experience.company" [name]="'company-' + i" required>
+            </div>
+            <div class="form-field">
+              <label for="position-{{i}}">Position <span>*</span></label>
+              <input id="position-{{i}}" type="text" [(ngModel)]="experience.position" [name]="'position-' + i" required>
+            </div>
+          </div>
+          <div class="form-row single-column">
+            <div class="form-field">
+              <label for="duration-{{i}}">Duration <span>*</span></label>
+              <input id="duration-{{i}}" type="text" [(ngModel)]="experience.duration" [name]="'duration-' + i" required>
+            </div>
+          </div>
+          <div class="form-row single-column">
+            <div class="form-field">
+              <label for="expDescription-{{i}}">Description <span>*</span></label>
+              <textarea id="expDescription-{{i}}" [(ngModel)]="experience.description" [name]="'description-' + i" required></textarea>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+
+    <!-- Projects Tab -->
+    <div *ngIf="activeTab === 'projects'">
+      <div class="form-header">
+        <h3 class="form-title">Projects</h3>
+        <button type="button" class="add-item-btn" (click)="addProject()" [disabled]="isSaving">
+          <i class="bi bi-plus-circle"></i> Add Project
+        </button>
+      </div>
+      <form class="resume-form">
+        <div *ngIf="resume.projects.length === 0">
+          <p class="no-items-message">No project entries added yet. Click "Add Project" to get started.</p>
+        </div>
+        <fieldset *ngFor="let project of resume.projects; let i = index" class="form-section">
+          <legend>Project {{ i + 1 }}</legend>
+          <button type="button" class="remove-item-btn" (click)="removeProject(i)">
+            <i class="bi bi-trash"></i> Remove
+          </button>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="projectTitle-{{i}}">Project Title <span>*</span></label>
+              <input id="projectTitle-{{i}}" type="text" [(ngModel)]="project.projectTitle" [name]="'projectTitle-' + i" required>
+            </div>
+            <div class="form-field">
+              <label for="technologies-{{i}}">Technologies Used</label>
+              <input id="technologies-{{i}}" type="text" [(ngModel)]="project.technologies" [name]="'technologies-' + i">
+            </div>
+          </div>
+          <div class="form-row single-column">
+            <div class="form-field">
+              <label for="projectLink-{{i}}">Project Link (Optional)</label>
+              <input id="projectLink-{{i}}" type="url" [(ngModel)]="project.projectLink" [name]="'projectLink-' + i">
+            </div>
+          </div>
+          <div class="form-row single-column">
+            <div class="form-field">
+              <label for="projDescription-{{i}}">Description <span>*</span></label>
+              <textarea id="projDescription-{{i}}" [(ngModel)]="project.description" [name]="'projDescription-' + i" required></textarea>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+
+    <!-- Certifications Tab -->
+    <div *ngIf="activeTab === 'certifications'">
+      <div class="form-header">
+        <h3 class="form-title">Certifications</h3>
+        <button type="button" class="add-item-btn" (click)="addCertification()" [disabled]="isSaving">
+          <i class="bi bi-plus-circle"></i> Add Certification
+        </button>
+      </div>
+      <form class="resume-form">
+        <div *ngIf="resume.certifications.length === 0">
+          <p class="no-items-message">No certification entries added yet. Click "Add Certification" to get started.</p>
+        </div>
+        <fieldset *ngFor="let certification of resume.certifications; let i = index" class="form-section">
+          <legend>Certification {{ i + 1 }}</legend>
+          <button type="button" class="remove-item-btn" (click)="removeCertification(i)">
+            <i class="bi bi-trash"></i> Remove
+          </button>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="certName-{{i}}">Certification Name <span>*</span></label>
+              <input id="certName-{{i}}" type="text" [(ngModel)]="certification.certificationName" [name]="'certificationName-' + i" required>
+            </div>
+            <div class="form-field">
+              <label for="issuer-{{i}}">Issuing Organization <span>*</span></label>
+              <input id="issuer-{{i}}" type="text" [(ngModel)]="certification.issuingOrganization" [name]="'issuingOrganization-' + i" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="issueDate-{{i}}">Issue Date <span>*</span></label>
+              <input id="issueDate-{{i}}" type="date" [(ngModel)]="certification.issueDate" [name]="'issueDate-' + i" required>
+            </div>
+            <div class="form-field">
+              <label for="expiryDate-{{i}}">Expiry Date (Optional)</label>
+              <input id="expiryDate-{{i}}" type="date" [(ngModel)]="certification.expiryDate" [name]="'expiryDate-' + i">
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+
+    <!-- Preview & Download Tab -->
+    <div *ngIf="activeTab === 'preview'">
+      <div class="form-header">
+        <h3 class="form-title">Resume Preview & Download</h3>
+        <div class="preview-actions">
+          <button type="button" class="edit-btn" (click)="selectTab('personal')" [disabled]="isSaving">
+            <i class="bi bi-pencil"></i> Edit Resume
+          </button>
+          <button type="button" class="download-btn" (click)="downloadResume()" [disabled]="isSaving || !hasResumeData()">
+            <i class="bi bi-download"></i> Download PDF
+          </button>
+        </div>
+      </div>
+
+      <div class="resume-preview" *ngIf="hasResumeData()">
+        <div class="resume-header">
+          <h1>{{ resume.fullName }}</h1>
+          <div class="contact-info">
+            <span *ngIf="resume.email">{{ resume.email }}</span>
+            <span *ngIf="resume.phoneNumber">{{ resume.phoneNumber }}</span>
+            <span *ngIf="resume.linkedInProfile">{{ resume.linkedInProfile }}</span>
+            <span *ngIf="resume.address">{{ resume.address }}</span>
+          </div>
+        </div>
+
+        <div class="resume-section" *ngIf="resume.professionalObjective">
+          <h2>Professional Objective</h2>
+          <p>{{ resume.professionalObjective }}</p>
+        </div>
+
+        <div class="resume-section" *ngIf="resume.experiences.length > 0">
+          <h2>Experience</h2>
+          <div *ngFor="let experience of resume.experiences" class="experience-item">
+            <div class="experience-header">
+              <strong>{{ experience.position }}</strong> at {{ experience.company }}
+              <span class="duration">{{ experience.duration }}</span>
+            </div>
+            <p>{{ experience.description }}</p>
+          </div>
+        </div>
+
+        <div class="resume-section" *ngIf="resume.educations.length > 0">
+          <h2>Education</h2>
+          <div *ngFor="let education of resume.educations" class="education-item">
+            <div class="education-header">
+              <strong>{{ education.degree }}</strong>
+              <span class="graduation-year">{{ education.graduationYear }}</span>
+            </div>
+            <div class="institution">{{ education.institution }}</div>
+            <div *ngIf="education.gpa" class="gpa">GPA: {{ education.gpa }}</div>
+          </div>
+        </div>
+
+        <div class="resume-section" *ngIf="getAllSkills().length > 0">
+          <h2>Skills</h2>
+          <div class="skills-container">
+            <div *ngFor="let skill of getAllSkills()" class="skill-tag">
+              {{ skill.skillName }}
+            </div>
+          </div>
+        </div>
+
+        <div class="resume-section" *ngIf="resume.projects.length > 0">
+          <h2>Projects</h2>
+          <div *ngFor="let project of resume.projects" class="project-item">
+            <div class="project-header">
+              <strong>{{ project.projectTitle }}</strong>
+              <span *ngIf="project.technologies" class="technologies">{{ project.technologies }}</span>
+            </div>
+            <p>{{ project.description }}</p>
+            <a *ngIf="project.projectLink" [href]="project.projectLink" target="_blank" class="project-link">
+              {{ project.projectLink }}
+            </a>
+          </div>
+        </div>
+
+        <div class="resume-section" *ngIf="resume.certifications.length > 0">
+          <h2>Certifications</h2>
+          <div *ngFor="let certification of resume.certifications" class="certification-item">
+            <div class="certification-header">
+              <strong>{{ certification.certificationName }}</strong>
+              <span class="certification-date">{{ formatDate(certification.issueDate) }}</span>
+            </div>
+            <div class="issuer">{{ certification.issuingOrganization }}</div>
+            <div *ngIf="certification.expiryDate" class="expiry">Expires: {{ formatDate(certification.expiryDate) }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!hasResumeData()" class="no-preview-message">
+        <p>Please fill in your resume information first before previewing.</p>
+        <button type="button" class="edit-btn" (click)="selectTab('personal')">
+          <i class="bi bi-pencil"></i> Start Building Resume
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
