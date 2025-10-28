@@ -198,7 +198,7 @@
           <span class="detail-label">Attachment</span>
           <div class="attachment-info">
             <i class="bi bi-paperclip"></i>
-            <span class="file-name">{{ selectedGrievance?.attachmentFileName }}</span>
+            <span class="file-name">{{ selectedGrievance.attachmentFileName }}</span>
             <span class="file-size" *ngIf="selectedGrievance?.attachmentFileSize">
               ({{ formatFileSize(selectedGrievance.attachmentFileSize!) }})
             </span>

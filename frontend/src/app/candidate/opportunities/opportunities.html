@@ -88,7 +88,7 @@
     <div *ngSwitchCase="'list'" class="job-listings-list">
       <div class="job-card-list" *ngFor="let job of filteredJobs">
         <div class="job-card-list-header">
-          <img [src]="job.logo" alt="{{job.company}} logo" class="company-logo">
+          <div class="company-avatar">{{ getCompanyInitials(job.company) }}</div>
           <div class="job-title-section">
             <h3 class="job-title">{{ job.title }}</h3>
             <p class="job-company">{{ job.company }}</p>
@@ -135,7 +135,7 @@
     <div *ngSwitchCase="'grid'" class="job-listings-grid">
       <div class="job-card-grid" *ngFor="let job of filteredJobs">
         <div class="job-card-grid-header">
-          <img [src]="job.logo" alt="{{job.company}} logo" class="company-logo">
+          <div class="company-avatar">{{ getCompanyInitials(job.company) }}</div>
           <div>
             <h3 class="job-title">{{ job.title }}</h3>
             <p class="job-company">{{ job.company }}</p>

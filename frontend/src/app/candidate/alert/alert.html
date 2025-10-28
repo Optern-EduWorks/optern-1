@@ -1,0 +1,14 @@
+<div class="alerts-container" *ngIf="alerts.length > 0">
+  <div [ngClass]="getAlertClass(alert.type)" *ngFor="let alert of alerts" [@fadeInOut]>
+    <div class="alert-content">
+      <i [class]="getAlertIcon(alert.type)" class="alert-icon"></i>
+      <div class="alert-text">
+        <div class="alert-title">{{ alert.title }}</div>
+        <div class="alert-message">{{ alert.message }}</div>
+      </div>
+      <button class="alert-close" (click)="removeAlert(alert.id)" aria-label="Close alert">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+  </div>
+</div>

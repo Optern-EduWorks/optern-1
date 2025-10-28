@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
+import { AuthService, User } from '../../services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./sidebar.css']
 })
 export class SidebarComponent implements OnInit {
-  currentUser: any = null;
+  currentUser: User | null = null;
 
   constructor(public router: Router, private authService: AuthService) {}
 

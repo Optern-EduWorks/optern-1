@@ -53,12 +53,28 @@
     <div *ngSwitchCase="'grid'" class="listings-grid">
       <div class="card-grid" *ngFor="let app of filteredApplications; trackBy: trackByApplicationId">
         <div class="card-header">
-          <img src="assets/user-profile.jpg" alt="{{app.Job?.Company?.Name}} Logo" class="company-logo">
+          <div class="company-avatar">{{ getCompanyInitials(app.Job?.Company?.Name) }}</div>
           <div>
             <h3 class="job-title">{{ app.Job?.Title }}</h3>
             <p class="company-name">{{ app.Job?.Company?.Name }}</p>
           </div>
         </div>
+
+        <!-- Company Profile Section -->
+        <div class="company-profile">
+          <div class="company-info">
+            <span class="company-industry" *ngIf="app.Job?.Company?.Industry">
+              <i class="bi bi-building"></i> {{ app.Job.Company.Industry }}
+            </span>
+            <span class="company-size" *ngIf="app.Job?.Company?.CompanySize">
+              <i class="bi bi-people"></i> {{ app.Job.Company.CompanySize }} employees
+            </span>
+          </div>
+          <p class="company-description" *ngIf="app.Job?.Company?.Description">
+            {{ app.Job.Company.Description | slice:0:80 }}...
+          </p>
+        </div>
+
         <div class="job-details">
           <span><i class="bi bi-geo-alt"></i> {{ app.Job?.Location }}</span>
           <span class="job-tag">{{ app.Job?.EmploymentType }}</span>
@@ -66,6 +82,19 @@
         <div class="job-details">
           <span class="job-tag salary">{{ app.Job?.SalaryRange }}</span>
         </div>
+
+        <!-- Job Description -->
+        <div class="job-description-section" *ngIf="app.Job?.Description">
+          <p class="job-description">{{ app.Job.Description | slice:0:100 }}...</p>
+        </div>
+
+        <!-- Skills -->
+        <div class="job-skills-section" *ngIf="app.Job?.Skills">
+          <div class="job-skills">
+            <span *ngFor="let skill of app.Job.Skills.split(',')" class="skill-tag">{{ skill.trim() }}</span>
+          </div>
+        </div>
+
         <p class="applied-date">Applied on {{ app.AppliedDate | date:'mediumDate' }}</p>
 
         <div class="status-section">

@@ -70,7 +70,7 @@
 
   <div class="profile-section">
     <div class="user-info">
-      <img src="assets/user-profile.jpg" alt="User Avatar" class="user-avatar" />
+      <div class="user-avatar">{{ currentUser?.username ? (currentUser!.username | slice:0:2 | uppercase) : 'GU' }}</div>
       <div>
         <div class="user-name">{{ currentUser?.username || 'Guest User' }}</div>
         <div class="user-university">{{ currentUser?.email || 'Not logged in' }}</div>

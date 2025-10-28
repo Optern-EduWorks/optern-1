@@ -119,10 +119,10 @@ export class RecruiterDashboardComponent implements OnInit, OnDestroy, AfterView
 
     // Load activities
     this.dashboardService.getRecruiterActivities().subscribe({
-      next: (activities) => {
+      next: (activities: ActivityItem[]) => {
         this.activities = activities;
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error loading recruiter activities:', error);
       }
     });

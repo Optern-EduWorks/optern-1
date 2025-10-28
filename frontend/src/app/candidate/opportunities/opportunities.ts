@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { JobService, Job } from '../../services/job.service';
 import { ApplicationService } from '../../services/application.service';
 import { AuthService } from '../../services/auth.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-opportunities',
@@ -57,6 +58,7 @@ export class Opportunities {
   private jobService = inject(JobService);
   private applicationService = inject(ApplicationService);
   private authService = inject(AuthService);
+  private alertService = inject(AlertService);
 
   constructor() {
     console.log('Initializing Opportunities component');
@@ -347,16 +349,16 @@ export class Opportunities {
     document.body.appendChild(modalOverlay);
   }
 
-  apply(job: Job) {
+  async apply(job: Job) {
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) {
-      alert('Please sign in before applying');
+      this.alertService.warning('Authentication Required', 'Please sign in before applying for jobs.');
       return;
     }
 
     const token = this.authService.getToken();
     if (!token) {
-      alert('Authentication token missing. Please sign in again.');
+      this.alertService.error('Authentication Error', 'Authentication token missing. Please sign in again.');
       return;
     }
 
@@ -366,13 +368,14 @@ export class Opportunities {
     }
 
     // Show confirmation dialog
-    const confirmed = window.confirm(
-      `Are you sure you want to apply for this job?\n\n` +
-      `📋 Job Details:\n` +
-      `• Position: ${job.title}\n` +
-      `• Company: ${job.company}\n` +
-      `• Location: ${job.location || 'Not specified'}\n\n` +
-      `Once applied, you cannot withdraw your application.`
+    const confirmed = await this.alertService.confirm(
+      'Confirm Job Application',
+      `Are you sure you want to apply for "${job.title}" at ${job.company}? You can withdraw your application later if needed.`,
+      {
+        confirmText: 'Apply Now',
+        cancelText: 'Cancel',
+        type: 'info'
+      }
     );
 
     if (!confirmed) {
@@ -398,8 +401,11 @@ export class Opportunities {
       next: (response: any) => {
         console.log('Application response:', response);
         if (response && response.success) {
-          // Show more detailed success message
-          alert(`✅ Application submitted successfully!\n\n📋 Application Details:\n• Job: ${job.title}\n• Company: ${job.company}\n• Applied: ${new Date().toLocaleDateString()}\n\nYou will be notified about the status of your application.`);
+          // Show success message
+          this.alertService.success(
+            'Application Submitted',
+            `Your application for ${job.title} at ${job.company} has been submitted successfully. You will be notified about the status of your application.`
+          );
 
           // Remove from applying set and add to applied set
           this.applyingJobIds.delete(job.jobID);
@@ -422,7 +428,7 @@ export class Opportunities {
         } else {
           // Remove from applying set on unexpected response
           this.applyingJobIds.delete(job.jobID);
-          alert('Application submitted but response was unexpected');
+          this.alertService.warning('Application Status', 'Application submitted but response was unexpected. Please check your applications list.');
         }
       },
       error: (err) => {
@@ -430,7 +436,7 @@ export class Opportunities {
         this.applyingJobIds.delete(job.jobID);
 
         console.error('Application error:', err);
-        let errorMessage = '❌ Application failed';
+        let errorMessage = 'Application failed';
 
         if (err?.error?.message) {
           errorMessage += ': ' + err.error.message;
@@ -440,8 +446,15 @@ export class Opportunities {
           errorMessage += ` (Error ${err.status})`;
         }
 
-        alert(errorMessage);
+        this.alertService.error('Application Error', errorMessage);
       }
     });
+  }
+
+  getCompanyInitials(companyName: string): string {
+    if (!companyName || typeof companyName !== 'string') {
+      return 'CO';
+    }
+    return companyName.slice(0, 2).toUpperCase();
   }
 }

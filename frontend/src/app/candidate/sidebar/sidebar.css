@@ -2,8 +2,8 @@
   display: block;
   width: 280px;
   height: 100vh;
-  background-color: #ffffff;
-  border-right: 1px solid #f0f0f0;
+  background-color: white;
+  border-right: 1px solid var(--primary-blue-200);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   position: fixed;
   top: 0;
@@ -74,7 +74,7 @@
 
 /* Active and Hover States */
 .navigation ul li.active a {
-  background-color: #1976D2; /* Blue background for active link */
+  background-color: var(--primary-blue-600); /* Blue background for active link */
   color: #ffffff;
 }
 
@@ -84,7 +84,7 @@
 }
 
 .navigation ul li:not(.active) a:hover {
-  background-color: #f5f5f5; /* Light grey on hover */
+  background-color: var(--primary-blue-50); /* Light blue on hover */
 }
 
 /* --- Profile Section --- */
@@ -101,12 +101,19 @@
   margin-bottom: 20px;
 }
 
-.user-info img {
+.user-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   margin-right: 12px;
-  object-fit: cover;
+  background-color: var(--primary-blue-600);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
 }
 
 .user-name {
@@ -132,7 +139,7 @@
 .status-dot {
   width: 8px;
   height: 8px;
-  background-color: #1976D2; /* Blue dot */
+  background-color: var(--primary-blue-600); /* Blue dot */
   border-radius: 50%;
   margin-right: 6px;
 }
@@ -164,7 +171,7 @@
 .logo-icon {
   width: 38px;  /* Slightly smaller */
   height: 38px;
-  background-color: #1976D2;
+  background-color: var(--primary-blue-600);
   color: white;
   font-size: 22px;  /* Adjusted font size for 'O' */
   font-weight: 500; /* Lighter font weight */
@@ -174,7 +181,7 @@
   justify-content: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   /* The next line helps prevent text selection on the 'O' */
-  user-select: none; 
+  user-select: none;
 }
 
 
@@ -188,4 +195,3 @@
   font-weight: 800;
   color: #333;
 }
-

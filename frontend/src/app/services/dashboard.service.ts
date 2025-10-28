@@ -25,6 +25,17 @@ export interface AnnouncementItem {
   createdAt: Date;
 }
 
+export interface ActivityItem {
+  id: number;
+  description: string;
+  timestamp: string;
+  type: string;
+  relatedId?: number;
+  icon?: string;
+  title?: string;
+  timeAgo?: string;
+}
+
 export interface JobPerformanceItem {
   id: number;
   title: string;
@@ -81,5 +92,9 @@ export class DashboardService {
 
   getChartData(): Observable<ChartData> {
     return this.http.get<ChartData>(`${this.baseUrl}/chart-data`, { headers: this.getHeaders() });
+  }
+
+  getRecruiterActivities(): Observable<ActivityItem[]> {
+    return this.http.get<ActivityItem[]>(`${this.baseUrl}/recruiter-activities`, { headers: this.getHeaders() });
   }
 }

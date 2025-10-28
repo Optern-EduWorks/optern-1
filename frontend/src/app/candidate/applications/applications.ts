@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ApplicationService } from '../../services/application.service';
 import { AuthService } from '../../services/auth.service';
 import { SignalRService } from '../../services/signalr.service';
+import { AlertService } from '../../services/alert.service';
 import { Subscription } from 'rxjs';
 
 
@@ -31,6 +32,7 @@ export class Applications implements OnInit, OnDestroy {
   private applicationService = inject(ApplicationService);
   private authService = inject(AuthService);
   private signalRService = inject(SignalRService);
+  private alertService = inject(AlertService);
   private subscription: Subscription = new Subscription();
 
   filteredApplications = [...this.allApplications];
@@ -218,24 +220,41 @@ export class Applications implements OnInit, OnDestroy {
     if (app.ResumeUrl) {
       window.open(app.ResumeUrl, '_blank');
     } else {
-      alert('Resume not available');
+      this.alertService.warning('Resume Unavailable', 'Resume not available for download.');
     }
   }
 
-  withdrawApplication(app: any): void {
-    if (confirm(`Are you sure you want to withdraw your application for "${app.Job?.Title}"? This action cannot be undone.`)) {
+  async withdrawApplication(app: any): Promise<void> {
+    const confirmed = await this.alertService.confirm(
+      'Withdraw Application',
+      `Are you sure you want to withdraw your application for "${app.Job?.Title}"? This action cannot be undone.`,
+      {
+        confirmText: 'Withdraw',
+        cancelText: 'Cancel',
+        type: 'danger'
+      }
+    );
+
+    if (confirmed) {
       this.applicationService.delete(app.ApplicationID).subscribe({
         next: () => {
-          alert('Application withdrawn successfully.');
+          this.alertService.success('Application Withdrawn', 'Your application has been withdrawn successfully.');
           this.loadApplications(); // Reload the applications list
           this.closeModal(); // Close the modal
         },
         error: (err) => {
           console.error('Error withdrawing application:', err);
-          alert('Failed to withdraw application. Please try again.');
+          this.alertService.error('Withdrawal Failed', 'Failed to withdraw application. Please try again.');
         }
       });
     }
+  }
+
+  getCompanyInitials(companyName: string | undefined): string {
+    if (!companyName || typeof companyName !== 'string') {
+      return 'CO';
+    }
+    return companyName.slice(0, 2).toUpperCase();
   }
 
   // View job posting details
