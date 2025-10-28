@@ -126,7 +126,6 @@ public class ApplicationsController : ControllerBase
                         AppliedDate = a.AppliedDate,
                         CoverLetter = a.CoverLetter,
                         ResumeUrl = a.ResumeUrl,
-                        InterviewStatus = a.InterviewStatus,
                         Job = a.Job == null ? null : new {
                             JobID = a.Job.JobID,
                             Title = a.Job.Title,
@@ -177,7 +176,6 @@ public class ApplicationsController : ControllerBase
                 AppliedDate = a.AppliedDate,
                 CoverLetter = a.CoverLetter,
                 ResumeUrl = a.ResumeUrl,
-                InterviewStatus = a.InterviewStatus,
                 Job = a.Job == null ? null : new {
                     JobID = a.Job.JobID,
                     Title = a.Job.Title,
@@ -255,7 +253,6 @@ public class ApplicationsController : ControllerBase
             AppliedDate = a.AppliedDate,
             CoverLetter = a.CoverLetter,
             ResumeUrl = a.ResumeUrl,
-            InterviewStatus = a.InterviewStatus,
             Job = a.Job == null ? null : new {
                 JobID = a.Job.JobID,
                 Title = a.Job.Title,
