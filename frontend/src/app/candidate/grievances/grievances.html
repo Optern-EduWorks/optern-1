@@ -39,9 +39,11 @@
 
   <!-- Empty State -->
   <div *ngIf="!isLoading && !error && filteredGrievances.length === 0" class="empty-state">
-    <i class="bi bi-shield-exclamation"></i>
-    <h3>No grievances found</h3>
-    <p>There are no submitted grievances. Click the button above to submit your first grievance.</p>
+    <div class="empty-state-content">
+      <i class="bi bi-shield-exclamation"></i>
+      <h3>No grievances found</h3>
+      <p>There are no submitted grievances. Click the button above to submit your first grievance.</p>
+    </div>
   </div>
 
   <!-- Grievances List -->

@@ -14,6 +14,45 @@
 .filter-count { background-color: #e5e7eb; border-radius: 4px; font-size: 12px; padding: 2px 6px; }
 .status-filters button.active .filter-count { background-color: #4f46e5; color: white; }
 
+/* --- Empty State --- */
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 40px 20px;
+  margin: 20px 0;
+}
+
+.empty-state-content {
+  text-align: center;
+  max-width: 400px;
+}
+
+.empty-state-content i {
+  font-size: 64px;
+  color: #d1d5db;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.empty-state-content h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 12px 0;
+}
+
+.empty-state-content p {
+  font-size: 16px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
 /* --- Grievance List & Cards --- */
 .grievance-list { display: flex; flex-direction: column; gap: 16px; }
 .grievance-card { background-color: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: start; }

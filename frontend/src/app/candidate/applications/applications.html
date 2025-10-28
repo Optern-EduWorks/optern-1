@@ -176,9 +176,7 @@
 
     <!-- Modal Footer -->
     <div class="modal-footer">
-      <button class="view-posting-btn"><i class="bi bi-box-arrow-up-right"></i> View Job Posting</button>
-      <button class="contact-company-btn"><i class="bi bi-envelope"></i> Contact Company</button>
-      <button class="download-resume-btn" *ngIf="selectedApplication.ResumeUrl" (click)="downloadResume(selectedApplication)"><i class="bi bi-download"></i> Download Resume</button>
+      <button class="view-posting-btn" (click)="viewJobPosting(selectedApplication.Job)"><i class="bi bi-box-arrow-up-right"></i> View Job Posting</button>
       <button class="withdraw-btn" *ngIf="selectedApplication.Status !== 'Rejected'" (click)="withdrawApplication(selectedApplication)"><i class="bi bi-x-circle"></i> Withdraw Application</button>
     </div>
   </div>

@@ -237,4 +237,93 @@ export class Applications implements OnInit, OnDestroy {
       });
     }
   }
+
+  // View job posting details
+  viewJobPosting(job: any) {
+    // Create a detailed modal for the job posting
+    const jobDetailsHtml = `
+      <div style="max-width: 600px; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        <div style="background: white; border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <img src="assets/user-profile.jpg" alt="${job.Company?.Name} logo" style="width: 60px; height: 60px; border-radius: 8px; margin-right: 16px; border: 1px solid #e5e7eb;">
+            <div>
+              <h2 style="margin: 0; font-size: 24px; font-weight: 600; color: #111827;">${job.Title}</h2>
+              <p style="margin: 4px 0 0 0; font-size: 16px; color: #6b7280;">${job.Company?.Name}</p>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="bi bi-geo-alt" style="color: #6b7280;"></i>
+              <span>${job.Location}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="bi bi-briefcase" style="color: #6b7280;"></i>
+              <span>${job.EmploymentType}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="bi bi-cash-stack" style="color: #6b7280;"></i>
+              <span>${job.SalaryRange}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="bi bi-calendar" style="color: #6b7280;"></i>
+              <span>Posted ${new Date(job.PostedDate).toLocaleDateString()}</span>
+            </div>
+          </div>
+
+          ${job.RemoteAllowed ? '<div style="background: #e0f2fe; color: #0ea5e9; padding: 8px 12px; border-radius: 6px; display: inline-block; margin-bottom: 20px;">Remote Work Available</div>' : ''}
+
+          <div style="margin-bottom: 20px;">
+            <h3 style="font-size: 18px; font-weight: 600; color: #111827; margin-bottom: 12px;">Job Description</h3>
+            <p style="color: #374151; line-height: 1.6;">${job.Description}</p>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h3 style="font-size: 18px; font-weight: 600; color: #111827; margin-bottom: 12px;">Required Skills</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              ${job.Skills ? job.Skills.split(',').map((skill: string) => `<span style="background: #eef2ff; color: #4f46e5; padding: 6px 12px; border-radius: 6px; font-size: 14px;">${skill.trim()}</span>`).join('') : ''}
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <i class="bi bi-star-fill" style="color: #f59e0b;"></i>
+              <span style="color: #6b7280;">Job Posting</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button onclick="this.closest('.modal-overlay').remove()" style="background: #fff; border: 1px solid #d1d5db; color: #6b7280; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Create modal overlay
+    const modalOverlay = document.createElement('div');
+    modalOverlay.className = 'modal-overlay';
+    modalOverlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    `;
+
+    modalOverlay.innerHTML = jobDetailsHtml;
+
+    // Close modal when clicking outside
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.remove();
+      }
+    });
+
+    document.body.appendChild(modalOverlay);
+  }
 }
