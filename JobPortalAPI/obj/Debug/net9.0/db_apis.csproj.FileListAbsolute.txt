@@ -1264,3 +1264,4 @@ C:\Users\golla\Downloads\optern-main derft\optern-main\JobPortalAPI\obj\Debug\ne
 C:\Users\golla\Downloads\optern-main derft\optern-main\JobPortalAPI\obj\Debug\net9.0\db_apis.pdb
 C:\Users\golla\Downloads\optern-main derft\optern-main\JobPortalAPI\obj\Debug\net9.0\db_apis.genruntimeconfig.cache
 C:\Users\golla\Downloads\optern-main derft\optern-main\JobPortalAPI\obj\Debug\net9.0\ref\db_apis.dll
+C:\Users\golla\Downloads\optern-main derft\optern-main\JobPortalAPI\bin\Debug\net9.0\appsettings.Production.json

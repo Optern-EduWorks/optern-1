@@ -6,7 +6,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Load environment specific configurations
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
 Console.WriteLine("Starting controller registration...");
 
@@ -37,8 +43,9 @@ foreach (var controller in controllers)
 builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<JobPortalContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseSqlServer("Server=tcp:optern.database.windows.net,1433;Initial Catalog=Opterndb;Persist Security Info=False;User ID=Optern_db;Password=Eduworks@2025;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;")
 );
+
 
 // JWT Configuration
 var jwtKey = "YourSuperSecretKeyHere12345678901234567890";

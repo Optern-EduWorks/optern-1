@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Quick Login - JobPortalAPI</title>
+  </head>
+  <body>
+    <h2>Quick Login (Server-hosted)</h2>
+    <form id="loginForm">
+      <label>Email: <input type="email" id="email" required></label><br>
+      <label>Password: <input type="password" id="password" required></label><br>
+      <button type="submit">Sign In</button>
+    </form>
+    <button id="useTest" style="margin-top:10px">Use test account</button>
+    <pre id="result"></pre>
+    <script>
+      document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        try {
+          const res = await fetch('/api/Auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ Email: email, Password: password })
+          });
+          const text = await res.text();
+          document.getElementById('result').textContent = res.status + '\n' + text;
+        } catch (err) {
+          document.getElementById('result').textContent = 'Error: ' + err;
+        }
+      });
+
+      document.getElementById('useTest').addEventListener('click', function() {
+        // prefill with the test account created earlier
+        document.getElementById('email').value = 'test+1@example.com';
+        document.getElementById('password').value = 'P@ssword1';
+        document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+      });
+    </script>
+  </body>
+ </html>
